@@ -23,6 +23,8 @@ class Root extends React.Component {
               component={() => <Form type="capi" />}
             />
             <Route path="/cawi" component={() => <Form type="cawi" />} />
+            <Route path="/cawiv2" component={() => <Form type="cawiv2" />} />
+          
             <Redirect from="*" to="/" />
           </Switch>
           </div>

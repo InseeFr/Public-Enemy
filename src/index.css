@@ -75,35 +75,24 @@ nav {
   background: #aac7f0;
   list-style-type: none;
   text-align: center;
-  height: 60px;
+  height: 90px;
   padding: 0;
+  
 }
-/* 
-nav ul li {
-  display: inline-block;
-  font-size: 40px;
-  padding: 20px;
-} */
 
-/* ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #b0c4de;
-} */
+
 
 /*Menu items*/
 .text-link {
   display: inline-block;
   color: #15417a;
   text-align: center;
-  padding: 14px 60px;
+  padding: 14px 60px 10px 60px;
   text-decoration: none;
   font-size: 20px;
   vertical-align: middle;
-  width: 120px;
-  height: 30px;
+  width: 5%;
+  height: 10px;
   border: 1px solid #aac7f0;
   background: #aac7f0;
 }

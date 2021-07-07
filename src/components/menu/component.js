@@ -17,7 +17,10 @@ class Menu extends React.Component {
               Face à face
             </Link>
             <Link to="/cawi" className="text-link">
-              Web
+              Web (Stromae)
+            </Link>
+            <Link to="/cawiv2" className="text-link">
+              Web (Stromae V2)
             </Link>
           </ul>
         </nav>
