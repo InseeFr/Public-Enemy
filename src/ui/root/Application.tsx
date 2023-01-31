@@ -11,6 +11,7 @@ import {
   QuestionnaireEditPage,
   QuestionnaireListPage,
 } from "ui/pages";
+import { SurveyUnitListPage } from "ui/pages/SurveyUnitListPage";
 
 export const Application = memo(() => {
   const { classes } = useStyles();
@@ -49,6 +50,10 @@ export const Application = memo(() => {
                 path="/questionnaires/add"
                 element={<QuestionnaireAddPage />}
               ></Route>
+              <Route
+                path="/questionnaires/:questionnaireId/modes/:modeName"
+                element={<SurveyUnitListPage />}
+              />
               <Route path="*" element={<ErrorPage />} />
             </Routes>
           </Container>

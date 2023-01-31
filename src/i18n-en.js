@@ -33,4 +33,8 @@ export const messagesEn = {
   questionnaire_delete_confirmation_agree: "Agree",
   questionnaire_delete_confirmation_disagree: "Disagree",
   questionnaire_delete_success: "Questionnaire deleted",
+  survey_unit_list_label: "Survey units",
+  survey_unit_id: "Id",
+  survey_unit_list_actions: "Actions",
+  survey_unit_mode_label: "Collect mode: {modeName}",
 };

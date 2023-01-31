@@ -1,11 +1,10 @@
 import { Paper } from "@mui/material";
-import React, { memo } from "react";
+import { memo, PropsWithChildren } from "react";
 import { makeStyles } from "tss-react/mui";
 
-export type BlocProps = {
-  children: React.ReactNode | undefined;
+export type BlocProps = PropsWithChildren<{
   className?: string;
-};
+}>;
 
 /**
  * Block component

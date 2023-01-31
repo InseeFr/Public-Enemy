@@ -71,7 +71,7 @@ export const QuestionnaireEditForm = memo(
      * Check validation on context change
      */
     useEffect(() => {
-      if (questionnaire.context !== "") {
+      if (questionnaire.context) {
         validateSurveyContextField();
       }
     }, [questionnaire.context]);
@@ -85,7 +85,10 @@ export const QuestionnaireEditForm = memo(
     ) => {
       setQuestionnaire({
         ...questionnaire,
-        context: event.target.value,
+        context: {
+          ...questionnaire.context,
+          name: event.target.value,
+        },
       });
     };
 
@@ -116,7 +119,7 @@ export const QuestionnaireEditForm = memo(
      * @returns true if context field is valid, false otherwise
      */
     const validateSurveyContextField = (): boolean => {
-      if (questionnaire.context.length > 0) {
+      if (questionnaire.context.name) {
         setErrorContextInput("");
         return true;
       }
@@ -253,7 +256,9 @@ export const QuestionnaireEditForm = memo(
               })}
               :{" "}
               {questionnaire.modes.map((mode) => (
-                <span key={`${mode}-${questionnaire.id}`}>{mode} </span>
+                <span key={`${mode.name}-${questionnaire.id}`}>
+                  {mode.name}{" "}
+                </span>
               ))}
             </Typography>
           </Grid>
@@ -269,7 +274,9 @@ export const QuestionnaireEditForm = memo(
                 select
                 onChange={handleContextChange}
                 error={errorContextInput ? true : false}
-                value={questionnaire.context}
+                value={
+                  questionnaire.context.name ? questionnaire.context.name : ""
+                }
                 label={intl.formatMessage({
                   id: "questionnaire_context",
                 })}

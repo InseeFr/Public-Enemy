@@ -1,10 +1,7 @@
 import Typography from "@mui/material/Typography";
-import * as React from "react";
-import { memo } from "react";
+import { memo, PropsWithChildren } from "react";
 
-export type TitleProps = {
-  children: React.ReactNode | undefined;
-};
+export type TitleProps = PropsWithChildren;
 
 export const Title = memo((props: TitleProps) => {
   return (

@@ -1,7 +1,13 @@
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import CallIcon from "@mui/icons-material/Call";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import SettingsIcon from "@mui/icons-material/Settings";
+import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
+import WebIcon from "@mui/icons-material/Web";
+
 import {
   Button,
+  Chip,
   Grid,
   IconButton,
   Paper,
@@ -13,10 +19,10 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { Questionnaire } from "core/application/model";
+import { Mode, Questionnaire } from "core/application/model";
 import { makeQuestionnaireUseCase } from "core/factory";
 import { useNotifier } from "core/infrastructure";
-import { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { Link } from "react-router-dom";
 import { makeStyles } from "tss-react/mui";
@@ -47,6 +53,21 @@ export const QuestionnaireListPage = memo(() => {
         notifier.error(intl.formatMessage({ id: "error_request_failed" }));
         console.log(err);
       });
+  };
+
+  const getIcon = (mode: Mode): JSX.Element => {
+    switch (mode.name) {
+      case "CAPI":
+        return <SupervisedUserCircleIcon />;
+      case "PAPI":
+        return <PictureAsPdfIcon />;
+      case "CAWI":
+        return <WebIcon />;
+      case "CATI":
+        return <CallIcon />;
+      default:
+        return <WebIcon />;
+    }
   };
 
   return (
@@ -105,7 +126,21 @@ export const QuestionnaireListPage = memo(() => {
                           {questionnaire.label}
                         </TableCell>
                         <TableCell component="th" scope="row">
-                          {questionnaire.modes}
+                          {questionnaire.modes?.map((mode) => (
+                            <React.Fragment
+                              key={`${questionnaire.id}-${mode.name}`}
+                            >
+                              <Link
+                                to={`/questionnaires/${questionnaire.id}/modes/${mode.name}`}
+                              >
+                                <Chip
+                                  icon={getIcon(mode)}
+                                  label={mode.name}
+                                  className={classes.btnMode}
+                                />
+                              </Link>{" "}
+                            </React.Fragment>
+                          ))}
                         </TableCell>
                         <TableCell align="center">
                           <Link to={`/questionnaires/${questionnaire.id}`}>
@@ -134,6 +169,9 @@ export const QuestionnaireListPage = memo(() => {
 const useStyles = makeStyles()((theme) => ({
   btnAdd: {
     marginBottom: theme.spacing(2),
+  },
+  btnMode: {
+    cursor: "pointer",
   },
 }));
 

@@ -7,4 +7,5 @@ export { ListItemLink } from "./ListItemLink";
 export { Loader } from "./Loader";
 export { SidebarNav } from "./SidebarNav";
 export type { SidebarNavProps } from "./SidebarNav";
+export { Subtitle } from "./Subtitle";
 export { Title } from "./Title";

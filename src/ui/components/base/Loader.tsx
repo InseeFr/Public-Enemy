@@ -1,9 +1,8 @@
 import { Box, CircularProgress } from "@mui/material";
-import React, { memo, PropsWithChildren } from "react";
+import { memo, PropsWithChildren } from "react";
 import { makeStyles } from "tss-react/mui";
 
 type LoaderType = PropsWithChildren<{
-  children?: React.ReactNode;
   isLoading: boolean;
 }>;
 

@@ -1,8 +1,10 @@
+import { Mode, SurveyContext } from "./";
+
 export type Questionnaire = {
   id: number;
   poguesId: string;
   label: string;
-  modes: string[];
-  context: string;
+  modes: Mode[];
+  context: SurveyContext;
   surveyUnitData: File | undefined;
 };
