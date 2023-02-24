@@ -36,8 +36,10 @@ export const messagesFr = {
   questionnaire_delete_confirmation_agree: "Confirmer la suppression",
   questionnaire_delete_confirmation_disagree: "Annuler",
   questionnaire_delete_success: "Questionnaire supprimé",
-  survey_unit_list_label: "Unités enquêté",
+  survey_unit_list_label: "Unités enquêtées",
   survey_unit_id: "Id",
   survey_unit_list_actions: "Actions",
   survey_unit_mode_label: "Mode de collecte: {modeName}",
+  survey_unit_list_new_window:
+    "Ouvrir dans une nouvelle fenêtre l'enquête pour l'unité enquêtée: {surveyUnitId}",
 };

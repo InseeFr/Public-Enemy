@@ -274,9 +274,7 @@ export const QuestionnaireEditForm = memo(
                 select
                 onChange={handleContextChange}
                 error={errorContextInput ? true : false}
-                value={
-                  questionnaire.context.name ? questionnaire.context.name : ""
-                }
+                value={questionnaire.context.name ?? ""}
                 label={intl.formatMessage({
                   id: "questionnaire_context",
                 })}

@@ -41,7 +41,7 @@ export const SurveyUnitListPage = memo(() => {
     if (!(questionnaireId && modeName)) {
       return;
     }
-    const questionnaireIdNumber = parseInt(questionnaireId);
+    const questionnaireIdNumber = parseInt(questionnaireId, 10);
     loadSurveyUnitsData(questionnaireIdNumber, modeName);
 
     questionnaireUseCase
@@ -63,6 +63,7 @@ export const SurveyUnitListPage = memo(() => {
       .catch((err) => {
         notifier.error(intl.formatMessage({ id: "error_request_failed" }));
         console.log(err);
+        setSurveyUnitsLoading(false);
       });
   };
 
@@ -114,6 +115,10 @@ export const SurveyUnitListPage = memo(() => {
                             <a
                               target="_blank"
                               href={`${orchestratorUrl}/questionnaire/${surveyUnitsData.questionnaireModelId}/unite-enquetee/${surveyUnit.id}`}
+                              aria-label={intl.formatMessage(
+                                { id: "survey_unit_list_new_window" },
+                                { surveyUnitId: surveyUnit.displayableId }
+                              )}
                               rel="noreferrer"
                             >
                               <IconButton aria-label="edit">

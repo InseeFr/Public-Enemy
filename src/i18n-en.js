@@ -37,4 +37,6 @@ export const messagesEn = {
   survey_unit_id: "Id",
   survey_unit_list_actions: "Actions",
   survey_unit_mode_label: "Collect mode: {modeName}",
+  survey_unit_list_new_window:
+    "Open the survey in a new window for survey unit: {surveyUnitId}",
 };
