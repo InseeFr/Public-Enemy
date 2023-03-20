@@ -39,7 +39,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "yarn version --new-version \"${nextRelease.version}\""
+        "prepareCmd": "yarn version --no-git-tag-version --new-version \"${nextRelease.version}\""
       }
     ],
     [
