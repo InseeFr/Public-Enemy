@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+## [2.0.0-beta.2](https://github.com/InseeFr/Public-Enemy/compare/2.0.0-beta.1...2.0.0-beta.2) (2023-03-20)
+
+
+### Bug Fixes
+
+* correct versioning values ([433d061](https://github.com/InseeFr/Public-Enemy/commit/433d061de6f3e59f1df149633874054c4b5f4041))
+
 ## [2.0.0-beta.1](https://github.com/InseeFr/Public-Enemy/compare/...2.0.0-beta.1) (2023-03-20)
 
 
