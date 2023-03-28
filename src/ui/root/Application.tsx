@@ -49,6 +49,9 @@ export const Application = memo(() => {
                   <QuestionnaireEditPage
                     fetchSurveyContexts={questionnaireUseCase.getSurveyContexts}
                     editQuestionnaire={questionnaireUseCase.editQuestionnaire}
+                    checkSurveyUnitsCSVData={
+                      surveyUnitUseCase.checkSurveyUnitsCSV
+                    }
                   />
                 }
               />
@@ -79,6 +82,9 @@ export const Application = memo(() => {
                   <QuestionnaireAddPage
                     fetchSurveyContexts={questionnaireUseCase.getSurveyContexts}
                     addQuestionnaire={questionnaireUseCase.addQuestionnaire}
+                    checkSurveyUnitsCSVData={
+                      surveyUnitUseCase.checkSurveyUnitsCSV
+                    }
                   />
                 }
               ></Route>

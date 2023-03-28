@@ -1,4 +1,4 @@
-import { SurveyUnitsData } from "../model";
+import { SurveyUnitsData, SurveyUnitsMessages } from "../model";
 import { SurveyUnitRepositoryPort } from "../port";
 
 export type SurveyUnitUseCaseType = {
@@ -6,6 +6,11 @@ export type SurveyUnitUseCaseType = {
     id: number,
     modeName: string
   ) => Promise<SurveyUnitsData>;
+
+  checkSurveyUnitsCSV: (
+    poguesId: string,
+    surveyUnitsCSVData: File
+  ) => Promise<SurveyUnitsMessages>;
 };
 
 /**
@@ -27,7 +32,18 @@ export function createSurveyUnitUseCase(
     return surveyUnitRepository.getSurveyUnitsData(id, modeName);
   };
 
+  const checkSurveyUnitsCSV = (
+    poguesId: string,
+    surveyUnitsCSVData: File
+  ): Promise<SurveyUnitsMessages> => {
+    return surveyUnitRepository.checkSurveyUnitsCSV(
+      poguesId,
+      surveyUnitsCSVData
+    );
+  };
+
   return {
     getSurveyUnitsData,
+    checkSurveyUnitsCSV,
   };
 }

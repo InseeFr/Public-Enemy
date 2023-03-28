@@ -1,3 +1,12 @@
+import {
+  ApiError,
+  ApiErrorMessages,
+  ApiErrorSurveyUnits,
+  ErrorDetails,
+  ErrorDetailsSurveyUnit,
+  ErrorObject,
+} from "core/application/model/error";
+
 /**
  * Generic HTTP Get Request
  * @param url endpoint for request
@@ -122,10 +131,47 @@ const fetcher = <ResponseType>(
     method,
     body: payload,
   }).then((response) => {
-    if (!response.ok) {
-      throw new Error("Problem with request");
+    if (response.ok) {
+      return response.json();
     }
+    return resolveErrors(response);
+  });
+};
 
-    return response.json();
+const resolveErrors = async (response: Response) => {
+  const contentType = response.headers.get("content-type");
+  if (contentType && contentType.indexOf("application/json") == -1) {
+    throw new ApiError(response.status, response.url, await response.text());
+  }
+
+  return response.json().then((errObject: ErrorObject) => {
+    switch (errObject.code) {
+      // survey global validations error
+      case 1001: {
+        const errObjectDetails = errObject as ErrorDetails<string[]>;
+        throw new ApiErrorMessages(
+          errObjectDetails.code,
+          errObjectDetails.path,
+          errObjectDetails.message,
+          errObjectDetails.details
+        );
+        break;
+      }
+      // survey specific validations error
+      case 1002: {
+        const errObjectDetails = errObject as ErrorDetails<
+          ErrorDetailsSurveyUnit[]
+        >;
+        throw new ApiErrorSurveyUnits(
+          errObjectDetails.code,
+          errObjectDetails.path,
+          errObjectDetails.message,
+          errObjectDetails.details
+        );
+        break;
+      }
+      default:
+        throw new ApiError(errObject.code, errObject.path, errObject.message);
+    }
   });
 };
