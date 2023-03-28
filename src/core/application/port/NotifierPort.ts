@@ -4,8 +4,8 @@ export type NotificationType = {
 };
 
 export type NotifierPort = {
-  info: (message: string) => void;
-  warn: (message: string) => void;
-  error: (message: string) => void;
-  success: (message: string) => void;
+  info: (message: string | JSX.Element) => void;
+  warn: (message: string | JSX.Element) => void;
+  error: (message: string | JSX.Element) => void;
+  success: (message: string | JSX.Element) => void;
 };

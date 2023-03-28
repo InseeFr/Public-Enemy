@@ -24,6 +24,7 @@ export const messagesFr = {
   questionnaire_edit_errors:
     "Veuillez corriger les erreurs du formulaire avant de poursuivre",
   questionnaire_edit_upload: "Charger les unités enquêtés",
+  questionnaire_check_upload: "Vérification des données CSV",
   questionnaire_edit_save: "Recharger le questionnaire dans les orchestrateurs",
   questionnaire_edit_confirmation_label: "Confirmer le rechargement",
   questionnaire_edit_confirmation_body:
