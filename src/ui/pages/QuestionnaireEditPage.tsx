@@ -1,5 +1,9 @@
 import { Grid } from "@mui/material";
-import { Questionnaire, SurveyContext } from "core/application/model";
+import {
+  Questionnaire,
+  SurveyContext,
+  SurveyUnitsMessages,
+} from "core/application/model";
 import { makeQuestionnaireUseCase } from "core/factory";
 import { memo, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -9,6 +13,10 @@ import { QuestionnaireEditForm } from "ui/components/QuestionnaireEditForm";
 export type QuestionnaireEditPageProps = {
   fetchSurveyContexts: () => Promise<SurveyContext[]>;
   editQuestionnaire: (questionnaire: Questionnaire) => Promise<Questionnaire>;
+  checkSurveyUnitsCSVData: (
+    poguesId: string,
+    surveyUnitsData: File
+  ) => Promise<SurveyUnitsMessages>;
 };
 
 export const QuestionnaireEditPage = memo(
@@ -39,6 +47,7 @@ export const QuestionnaireEditPage = memo(
                   questionnaire={questionnaire}
                   isEditMode={true}
                   fetchSurveyContexts={props.fetchSurveyContexts}
+                  checkSurveyUnitsCSVData={props.checkSurveyUnitsCSVData}
                   saveQuestionnaire={props.editQuestionnaire}
                 />
               ) : (

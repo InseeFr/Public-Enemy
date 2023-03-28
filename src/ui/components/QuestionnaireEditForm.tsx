@@ -1,5 +1,6 @@
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import SaveIcon from "@mui/icons-material/Save";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { LoadingButton } from "@mui/lab";
 import {
   Alert,
@@ -14,7 +15,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Questionnaire, SurveyContext } from "core/application/model";
+import {
+  Questionnaire,
+  SurveyContext,
+  SurveyUnitsMessages,
+} from "core/application/model";
+import {
+  ApiError,
+  ApiErrorMessages,
+  ApiErrorSurveyUnits,
+  ErrorDetailsSurveyUnit,
+} from "core/application/model/error";
 import { useNotifier } from "core/infrastructure";
 import { getEnvVar } from "core/utils/env";
 import * as React from "react";
@@ -23,11 +34,16 @@ import { useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "tss-react/mui";
 import { ConfirmationDialog, Loader, Title } from "./base";
+import { CSVAlert } from "./CSVAlert";
 
 export type QuestionnaireEditFormProps = {
   questionnaire: Questionnaire;
   isEditMode: boolean;
   fetchSurveyContexts: () => Promise<SurveyContext[]>;
+  checkSurveyUnitsCSVData: (
+    poguesId: string,
+    surveyUnitsCSVData: File
+  ) => Promise<SurveyUnitsMessages>;
   saveQuestionnaire: (questionnaire: Questionnaire) => Promise<Questionnaire>;
 };
 
@@ -43,11 +59,18 @@ export const QuestionnaireEditForm = memo(
     const intl = useIntl();
     const [isLoading, setLoading] = useState(true);
     const [isSubmitting, setSubmitting] = useState(false);
+    const [isFormValid, setFormValid] = useState(false);
+    const [isCheckingCsvData, setCheckingCsvData] = useState(false);
+    const [isCSVDataValid, setCSVDataValid] = useState(false);
+    const [isSurveyContextValid, setSurveyContextValid] = useState(false);
     const { classes } = useStyles();
     const [errorContextInput, setErrorContextInput] = useState("");
     const [errorSurveyUnitDataInput, setErrorSurveyUnitDataInput] =
       useState("");
     const [hasErrors, setHasErrors] = useState<boolean>(false);
+    const [messagesErrors, setMessagesErrors] = useState<string[]>();
+    const [surveyUnitsErrors, setSurveyUnitsErrors] =
+      useState<ErrorDetailsSurveyUnit[]>();
 
     const apiUrl = getEnvVar("VITE_API_URL");
 
@@ -61,6 +84,14 @@ export const QuestionnaireEditForm = memo(
         setLoading(false);
       });
     }, []);
+
+    useEffect(() => {
+      if (isSurveyContextValid && isCSVDataValid) {
+        setFormValid(true);
+        return;
+      }
+      setFormValid(false);
+    }, [isSurveyContextValid, isCSVDataValid]);
 
     /**
      * Check validation on data change
@@ -112,6 +143,53 @@ export const QuestionnaireEditForm = memo(
         );
         return;
       }
+      setCSVDataValid(true);
+      setCheckingCsvData(true);
+      setMessagesErrors(undefined);
+      setSurveyUnitsErrors(undefined);
+
+      props
+        .checkSurveyUnitsCSVData(questionnaire.poguesId, fileList[0])
+        .then((warningMessages) => {
+          if (warningMessages) {
+            const messageWarnings = (
+              <>
+                {warningMessages.map((message: string, index: number) => (
+                  <React.Fragment key={`${index}`}>
+                    {message}
+                    <br />
+                  </React.Fragment>
+                ))}
+                Ces informations ne seront donc pas prises en compte.
+              </>
+            );
+            notifier.info(messageWarnings);
+          }
+          setCSVDataValid(true);
+          validateForm();
+
+          return;
+        })
+        .catch((err) => {
+          if (err instanceof ApiErrorMessages) {
+            setMessagesErrors(err.details);
+            return;
+          }
+
+          if (err instanceof ApiErrorSurveyUnits) {
+            setSurveyUnitsErrors(err.details);
+            return;
+          }
+
+          if (err instanceof ApiError) {
+            setMessagesErrors([err.message]);
+            return;
+          }
+        })
+        .finally(() => {
+          setCheckingCsvData(false);
+        });
+
       setQuestionnaire((state) => ({
         ...state,
         surveyUnitData: fileList[0],
@@ -141,7 +219,7 @@ export const QuestionnaireEditForm = memo(
      * @returns true if data field is valid, false otherwise
      */
     const validateSurveyUnitDataField = (): boolean => {
-      if (questionnaire.surveyUnitData) {
+      if (questionnaire.surveyUnitData && isCSVDataValid) {
         setErrorSurveyUnitDataInput("");
         return true;
       }
@@ -158,12 +236,9 @@ export const QuestionnaireEditForm = memo(
      * Handle form validation
      * @returns true if form is valid, false otherwise
      */
-    const validateForm = (): boolean => {
+    const validateForm = (): void => {
       const isSurveyContextValid = validateSurveyContextField();
-      const isDataValid = validateSurveyUnitDataField();
-      const isValid = isSurveyContextValid && isDataValid;
-      setHasErrors(!isValid);
-      return isValid;
+      setFormValid(isSurveyContextValid && isCSVDataValid);
     };
 
     /**
@@ -174,7 +249,10 @@ export const QuestionnaireEditForm = memo(
       event: React.FormEvent<HTMLFormElement>
     ) => {
       event.preventDefault();
-      validateForm() && saveAction();
+      validateForm();
+      if (isFormValid) {
+        saveAction();
+      }
     };
 
     /**
@@ -185,7 +263,10 @@ export const QuestionnaireEditForm = memo(
       event: React.FormEvent<HTMLFormElement>
     ) => {
       event.preventDefault();
-      validateForm() && setOpenConfirmationDialog(true);
+      validateForm();
+      if (isFormValid) {
+        setOpenConfirmationDialog(true);
+      }
     };
 
     /**
@@ -294,7 +375,14 @@ export const QuestionnaireEditForm = memo(
             </FormControl>
           </Grid>
 
-          <Grid item xs={12} sm={6}></Grid>
+          <Grid item xs={12}>
+            {(messagesErrors || surveyUnitsErrors) && (
+              <CSVAlert
+                globalMessagesErrors={messagesErrors}
+                surveyUnitsErrors={surveyUnitsErrors}
+              />
+            )}
+          </Grid>
 
           <Grid item xs={12} sm={6}>
             <FormControl
@@ -303,10 +391,20 @@ export const QuestionnaireEditForm = memo(
               fullWidth
               size="small"
             >
-              <Button variant="contained" component="label">
-                {intl.formatMessage({
-                  id: "questionnaire_edit_upload",
-                })}
+              <LoadingButton
+                variant="contained"
+                component="label"
+                startIcon={<UploadFileIcon />}
+                loading={isCheckingCsvData}
+                loadingPosition="start"
+              >
+                {isCheckingCsvData
+                  ? intl.formatMessage({
+                      id: "questionnaire_check_upload",
+                    })
+                  : intl.formatMessage({
+                      id: "questionnaire_edit_upload",
+                    })}
                 <Input
                   data-testid="upload"
                   onChange={handleSurveyUnitDataChange}
@@ -314,7 +412,7 @@ export const QuestionnaireEditForm = memo(
                   sx={{ display: "none" }}
                   type="file"
                 />
-              </Button>
+              </LoadingButton>
 
               <FormHelperText>
                 {errorSurveyUnitDataInput
@@ -323,7 +421,7 @@ export const QuestionnaireEditForm = memo(
               </FormHelperText>
               <Typography variant="body2" gutterBottom>
                 <Button
-                  href={`${apiUrl}/questionnaires/${questionnaire.poguesId}/csv`}
+                  href={`${apiUrl}/questionnaires/${questionnaire.poguesId}`}
                 >
                   <AttachFileIcon></AttachFileIcon>
                   <Typography variant="body2">
@@ -345,6 +443,7 @@ export const QuestionnaireEditForm = memo(
               startIcon={<SaveIcon />}
               loading={isSubmitting}
               loadingPosition="start"
+              disabled={!isFormValid}
             >
               {props.isEditMode
                 ? intl.formatMessage({ id: "questionnaire_edit_save" })

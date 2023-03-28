@@ -21,6 +21,7 @@ export const messagesEn = {
   questionnaire_edit_label: "Edit questionnaire {name}",
   questionnaire_edit_name: "Name",
   questionnaire_edit_upload: "Upload survey units",
+  questionnaire_check_upload: "Checking CSV data",
   questionnaire_edit_items_id: "ID",
   questionnaire_edit_items_value: "Value",
   questionnaire_edit_context_notfound: "Please select a context",
