@@ -10,9 +10,20 @@ import { SnackbarProvider } from "notistack";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { IntlProvider } from "react-intl";
+import { QueryClient, QueryClientProvider } from "react-query";
 import reportWebVitals from "../reportWebVitals";
 import { Application } from "./root/Application";
 import { appTheme } from "./theme";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0,
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
+});
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -28,14 +39,16 @@ if (getEnvVar("VITE_LOCALE")) {
 */
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={appTheme}>
-      <IntlProvider messages={getMessages(locale)} locale={locale}>
-        <SnackbarProvider maxSnack={3}>
-          <CssBaseline />
-          <Application />
-        </SnackbarProvider>
-      </IntlProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={appTheme}>
+        <IntlProvider messages={getMessages(locale)} locale={locale}>
+          <SnackbarProvider maxSnack={3}>
+            <CssBaseline />
+            <Application />
+          </SnackbarProvider>
+        </IntlProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 ); /*
 })();*/

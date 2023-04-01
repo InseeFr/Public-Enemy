@@ -3,6 +3,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Grid, Stack, TextField } from "@mui/material";
 import { Questionnaire } from "core/application/model";
 import { useNotifier } from "core/infrastructure";
+import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
 import * as React from "react";
 import { memo, useEffect, useState } from "react";
 import { useIntl } from "react-intl";
@@ -17,46 +18,31 @@ export const QuestionnaireCheckPoguesIdPage = memo(
     const { poguesId } = useParams<string>();
     const navigate = useNavigate();
     const intl = useIntl();
-    const [isSubmitting, setSubmitting] = useState(false);
     const [poguesIdInput, setPoguesIdInput] = useState("");
     const [isLoading, setLoading] = useState(true);
 
-    useEffect(() => {
-      if (poguesId !== undefined) {
-        setPoguesIdInput(poguesId);
-        handleQuestionnaireRetrieval(poguesId);
-        return;
-      }
-      setLoading(false);
-    }, []);
-
-    /**
-     * Retrieve questionnaire from pogues Id and redirect to questionnaire add page
-     * @param pId pogues identifier
-     * @returns
-     */
-    const handleQuestionnaireRetrieval = (pId: string) => {
-      if (pId === undefined) {
-        return;
-      }
-      setSubmitting(true);
-
-      props
-        .fetchPoguesQuestionnaire(pId)
-        .then((questionnaireData) => {
+    const { mutate: fetchPoguesQuestionnaire, isLoading: isSubmitting } =
+      useApiMutation((id: string) => props.fetchPoguesQuestionnaire(id), {
+        onSuccess(questionnaireData) {
           notifier.success(
             intl.formatMessage({ id: "questionnaire_retrieve_success" })
           );
           navigate("/questionnaires/add", { state: questionnaireData });
           return;
-        })
-        .catch((err) => {
-          notifier.error(intl.formatMessage({ id: "error_request_failed" }));
-          console.log(err);
-          setSubmitting(false);
+        },
+        onError() {
           setLoading(false);
-        });
-    };
+        },
+      });
+
+    useEffect(() => {
+      if (poguesId !== undefined) {
+        setPoguesIdInput(poguesId);
+        fetchPoguesQuestionnaire(poguesId);
+        return;
+      }
+      setLoading(false);
+    }, []);
 
     const handlePoguesIdChange = (
       event: React.ChangeEvent<HTMLInputElement>
@@ -66,7 +52,7 @@ export const QuestionnaireCheckPoguesIdPage = memo(
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      handleQuestionnaireRetrieval(poguesIdInput);
+      fetchPoguesQuestionnaire(poguesIdInput);
     };
 
     return (

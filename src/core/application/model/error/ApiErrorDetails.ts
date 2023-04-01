@@ -1,6 +1,6 @@
 import { ApiError } from ".";
 
-export class ApiErrorDetails<ErrorDetailsObject> extends ApiError {
+export class ApiErrorDetails<ErrorDetailsObject = unknown> extends ApiError {
   details: ErrorDetailsObject;
 
   constructor(
