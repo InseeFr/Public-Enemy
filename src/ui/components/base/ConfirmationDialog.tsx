@@ -1,3 +1,4 @@
+import { LoadingButton } from "@mui/lab";
 import {
   Button,
   Dialog,
@@ -11,11 +12,11 @@ import { memo } from "react";
 type DialogTypeProps = {
   title: string;
   body: string;
-  agreeBtnLabel: string;
-  disagreeBtnLabel: string;
+  agreeBtn: { label: string; isSubmitting?: boolean };
+  disagreeBtn: { label: string };
   handleConfirmation: () => void;
-  openConfirmationDialog: boolean;
-  setOpenConfirmationDialog: (open: boolean) => void;
+  displayConfirmationDialog: boolean;
+  setDisplayConfirmationDialog: (open: boolean) => void;
 };
 
 /**
@@ -25,22 +26,22 @@ export const ConfirmationDialog = memo(
   ({
     title,
     body,
-    agreeBtnLabel,
-    disagreeBtnLabel,
+    agreeBtn,
+    disagreeBtn,
     handleConfirmation,
-    openConfirmationDialog,
-    setOpenConfirmationDialog,
+    displayConfirmationDialog,
+    setDisplayConfirmationDialog,
   }: DialogTypeProps) => {
     /**
      * Toogle confirmation dialog
      */
     const toggleConfirmationDialog = () => {
-      setOpenConfirmationDialog(!openConfirmationDialog);
+      setDisplayConfirmationDialog(!displayConfirmationDialog);
     };
 
     return (
       <Dialog
-        open={openConfirmationDialog}
+        open={displayConfirmationDialog}
         onClose={toggleConfirmationDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -59,17 +60,18 @@ export const ConfirmationDialog = memo(
             variant="contained"
             onClick={toggleConfirmationDialog}
           >
-            {disagreeBtnLabel}
+            {disagreeBtn.label}
           </Button>
-          <Button
+          <LoadingButton
             data-testid="confirmation-agree"
             color="info"
             variant="contained"
             onClick={handleConfirmation}
             autoFocus
+            loading={agreeBtn.isSubmitting ?? false}
           >
-            {agreeBtnLabel}
-          </Button>
+            {agreeBtn.label}
+          </LoadingButton>
         </DialogActions>
       </Dialog>
     );

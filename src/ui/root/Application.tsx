@@ -1,6 +1,10 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { makeQuestionnaireUseCase, makeSurveyUnitUseCase } from "core/factory";
+import {
+  createQuestionnaireRepository,
+  createSurveyUnitRepository,
+} from "core/infrastructure";
+import { getEnvVar } from "core/utils/env";
 import { memo, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { makeStyles } from "tss-react/mui";
@@ -20,8 +24,12 @@ export const Application = memo(() => {
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const questionnaireUseCase = makeQuestionnaireUseCase();
-  const surveyUnitUseCase = makeSurveyUnitUseCase();
+  const questionnaireRepository = createQuestionnaireRepository(
+    getEnvVar("VITE_API_URL")
+  );
+  const surveyUnitRepository = createSurveyUnitRepository(
+    getEnvVar("VITE_API_URL")
+  );
 
   return (
     <>
@@ -36,9 +44,11 @@ export const Application = memo(() => {
                 path="/questionnaires"
                 element={
                   <QuestionnaireListPage
-                    fetchQuestionnaires={questionnaireUseCase.getQuestionnaires}
+                    fetchQuestionnaires={
+                      questionnaireRepository.getQuestionnaires
+                    }
                     deleteQuestionnaire={
-                      questionnaireUseCase.deleteQuestionnaire
+                      questionnaireRepository.deleteQuestionnaire
                     }
                   />
                 }
@@ -47,10 +57,17 @@ export const Application = memo(() => {
                 path="/questionnaires/:id"
                 element={
                   <QuestionnaireEditPage
-                    fetchSurveyContexts={questionnaireUseCase.getSurveyContexts}
-                    editQuestionnaire={questionnaireUseCase.editQuestionnaire}
-                    checkSurveyUnitsCSVData={
-                      surveyUnitUseCase.checkSurveyUnitsCSV
+                    fetchQuestionnaire={
+                      questionnaireRepository.getQuestionnaire
+                    }
+                    fetchSurveyContexts={
+                      questionnaireRepository.getSurveyContexts
+                    }
+                    editQuestionnaire={
+                      questionnaireRepository.editQuestionnaire
+                    }
+                    checkSurveyUnitsCsvData={
+                      surveyUnitRepository.checkSurveyUnitsCSV
                     }
                   />
                 }
@@ -60,7 +77,7 @@ export const Application = memo(() => {
                 element={
                   <QuestionnaireCheckPoguesIdPage
                     fetchPoguesQuestionnaire={
-                      questionnaireUseCase.getQuestionnaireFromPogues
+                      questionnaireRepository.getQuestionnaireFromPogues
                     }
                   />
                 }
@@ -70,7 +87,7 @@ export const Application = memo(() => {
                   element={
                     <QuestionnaireCheckPoguesIdPage
                       fetchPoguesQuestionnaire={
-                        questionnaireUseCase.getQuestionnaireFromPogues
+                        questionnaireRepository.getQuestionnaireFromPogues
                       }
                     />
                   }
@@ -80,10 +97,12 @@ export const Application = memo(() => {
                 path="/questionnaires/add"
                 element={
                   <QuestionnaireAddPage
-                    fetchSurveyContexts={questionnaireUseCase.getSurveyContexts}
-                    addQuestionnaire={questionnaireUseCase.addQuestionnaire}
-                    checkSurveyUnitsCSVData={
-                      surveyUnitUseCase.checkSurveyUnitsCSV
+                    fetchSurveyContexts={
+                      questionnaireRepository.getSurveyContexts
+                    }
+                    addQuestionnaire={questionnaireRepository.addQuestionnaire}
+                    checkSurveyUnitsCsvData={
+                      surveyUnitRepository.checkSurveyUnitsCSV
                     }
                   />
                 }
@@ -92,8 +111,12 @@ export const Application = memo(() => {
                 path="/questionnaires/:questionnaireId/modes/:modeName"
                 element={
                   <SurveyUnitListPage
-                    fetchSurveyUnitsData={surveyUnitUseCase.getSurveyUnitsData}
-                    fetchQuestionnaire={questionnaireUseCase.getQuestionnaire}
+                    fetchSurveyUnitsData={
+                      surveyUnitRepository.getSurveyUnitsData
+                    }
+                    fetchQuestionnaire={
+                      questionnaireRepository.getQuestionnaire
+                    }
                   />
                 }
               />

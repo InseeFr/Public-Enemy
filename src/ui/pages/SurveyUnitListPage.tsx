@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { Questionnaire, SurveyUnitsData } from "core/application/model";
 import { useNotifier } from "core/infrastructure";
+import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
 import { getEnvVar } from "core/utils/env";
 import { memo, useEffect, useState } from "react";
 import { useIntl } from "react-intl";
@@ -32,14 +33,31 @@ type SurveyUnitListPageProps = {
 };
 
 export const SurveyUnitListPage = memo((props: SurveyUnitListPageProps) => {
-  const [surveyUnitsData, setSurveyUnitsData] = useState<SurveyUnitsData>();
-  const [questionnaire, setQuestionnaire] = useState<Questionnaire>();
   const intl = useIntl();
-  const [isSurveyUnitsLoading, setSurveyUnitsLoading] = useState(true);
-  const [isQuestionnaireLoading, setQuestionnaireLoading] = useState(true);
   const notifier = useNotifier();
   const orchestratorUrl = getEnvVar("VITE_ORCHESTRATOR_URL");
   const { questionnaireId, modeName } = useParams<SurveyUnitParams>();
+  const [canFetchData, setCanFetchData] = useState(false);
+
+  const { isLoading: isQuestionnaireLoading, data: questionnaire } =
+    useApiQuery(
+      ["questionnaire", questionnaireId],
+      () => {
+        const idNumber = Number(questionnaireId);
+        return props.fetchQuestionnaire(idNumber);
+      },
+      { enabled: canFetchData }
+    );
+
+  const { isLoading: isSurveyUnitsLoading, data: surveyUnitsData } =
+    useApiQuery(
+      ["surveyUnitsData", questionnaireId, modeName],
+      () => {
+        const idNumber = Number(questionnaireId);
+        return props.fetchSurveyUnitsData(idNumber, modeName as string);
+      },
+      { enabled: canFetchData }
+    );
 
   useEffect(() => {
     if (!(questionnaireId && modeName)) {
@@ -48,32 +66,8 @@ export const SurveyUnitListPage = memo((props: SurveyUnitListPageProps) => {
       );
       return;
     }
-
-    const questionnaireIdNumber = parseInt(questionnaireId, 10);
-    loadSurveyUnitsData(questionnaireIdNumber, modeName);
-
-    props
-      .fetchQuestionnaire(questionnaireIdNumber)
-      .then((questionnaireData) => {
-        setQuestionnaire(questionnaireData);
-        setQuestionnaireLoading(false);
-      });
-  }, [questionnaireId, modeName]);
-
-  const loadSurveyUnitsData = (questionnaireId: number, mode: string): void => {
-    setSurveyUnitsLoading(true);
-    props
-      .fetchSurveyUnitsData(questionnaireId, mode)
-      .then((surveyUnitsData) => {
-        setSurveyUnitsData(surveyUnitsData);
-        setSurveyUnitsLoading(false);
-      })
-      .catch((err) => {
-        notifier.error(intl.formatMessage({ id: "error_request_failed" }));
-        console.log(err);
-        setSurveyUnitsLoading(false);
-      });
-  };
+    setCanFetchData(true);
+  });
 
   return (
     <Grid component="main" container justifyContent="center">

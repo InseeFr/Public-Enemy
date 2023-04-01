@@ -1,7 +1,6 @@
 import {
   ApiError,
-  ApiErrorMessages,
-  ApiErrorSurveyUnits,
+  ApiErrorDetails,
   ErrorDetails,
   ErrorDetailsSurveyUnit,
   ErrorObject,
@@ -149,7 +148,7 @@ const resolveErrors = async (response: Response) => {
       // survey global validations error
       case 1001: {
         const errObjectDetails = errObject as ErrorDetails<string[]>;
-        throw new ApiErrorMessages(
+        throw new ApiErrorDetails<string[]>(
           errObjectDetails.code,
           errObjectDetails.path,
           errObjectDetails.message,
@@ -162,7 +161,7 @@ const resolveErrors = async (response: Response) => {
         const errObjectDetails = errObject as ErrorDetails<
           ErrorDetailsSurveyUnit[]
         >;
-        throw new ApiErrorSurveyUnits(
+        throw new ApiErrorDetails<ErrorDetailsSurveyUnit[]>(
           errObjectDetails.code,
           errObjectDetails.path,
           errObjectDetails.message,

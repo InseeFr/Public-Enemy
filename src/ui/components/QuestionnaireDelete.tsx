@@ -2,82 +2,83 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton } from "@mui/material";
 import { Questionnaire } from "core/application/model";
 import { useNotifier } from "core/infrastructure";
+import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
 import { memo, useState } from "react";
 import { useIntl } from "react-intl";
+import { useQueryClient } from "react-query";
 import { ConfirmationDialog } from "./base";
 
 type QuestionnaireDeleteType = {
   questionnaire: Questionnaire;
-  loadQuestionnaires: () => void;
   deleteQuestionnaire: (id: number) => Promise<void>;
 };
 
 /**
  * Component used for questionnaire deletion
  */
-export const QuestionnaireDelete = memo(
-  ({
-    questionnaire,
-    loadQuestionnaires,
-    deleteQuestionnaire,
-  }: QuestionnaireDeleteType) => {
-    const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
-    const notifier = useNotifier();
-    const intl = useIntl();
+export const QuestionnaireDelete = memo((props: QuestionnaireDeleteType) => {
+  const [displayConfirmationDialog, setDisplayConfirmationDialog] =
+    useState(false);
+  const notifier = useNotifier();
+  const intl = useIntl();
+  const queryClient = useQueryClient();
 
-    /**
-     * open/close confirmation dialog
-     */
-    const toggleConfirmationDialog = () => {
-      setOpenConfirmationDialog(!openConfirmationDialog);
-    };
+  const { mutate: deleteQuestionnaire, isLoading: isDeleting } = useApiMutation(
+    (id: number) => props.deleteQuestionnaire(id),
+    {
+      onSuccess: () => {
+        notifier.success(
+          intl.formatMessage({ id: "questionnaire_delete_success" })
+        );
+        queryClient.invalidateQueries({ queryKey: "fetchQuestionnaires" });
+      },
+      onSettled: () => {
+        setDisplayConfirmationDialog(false);
+      },
+    }
+  );
 
-    /**
-     * Event used when deletion is triggered
-     */
-    const handleDelete = () => {
-      deleteQuestionnaire(questionnaire.id)
-        .then(() => {
-          notifier.success(
-            intl.formatMessage({ id: "questionnaire_delete_success" })
-          );
-        })
-        .catch((err: Error) => {
-          notifier.error(intl.formatMessage({ id: "error_request_failed" }));
-          console.log(err);
-        })
-        .finally(() => {
-          loadQuestionnaires();
-          setOpenConfirmationDialog(false);
-        });
-    };
+  const deleteAction = () => {
+    deleteQuestionnaire(props.questionnaire.id);
+  };
 
-    return (
-      <>
-        <IconButton aria-label="delete" onClick={toggleConfirmationDialog}>
-          <DeleteIcon />
-        </IconButton>
-        <ConfirmationDialog
-          title={intl.formatMessage({
-            id: "questionnaire_delete_confirmation_label",
-          })}
-          body={intl.formatMessage(
-            { id: "questionnaire_delete_confirmation_body" },
-            { name: questionnaire.label }
-          )}
-          disagreeBtnLabel={intl.formatMessage({
+  /**
+   * open/close confirmation dialog
+   */
+  const toggleConfirmationDialog = () => {
+    setDisplayConfirmationDialog(!displayConfirmationDialog);
+  };
+
+  return (
+    <>
+      <IconButton aria-label="delete" onClick={toggleConfirmationDialog}>
+        <DeleteIcon />
+      </IconButton>
+      <ConfirmationDialog
+        title={intl.formatMessage({
+          id: "questionnaire_delete_confirmation_label",
+        })}
+        body={intl.formatMessage(
+          { id: "questionnaire_delete_confirmation_body" },
+          { name: props.questionnaire.label }
+        )}
+        disagreeBtn={{
+          label: intl.formatMessage({
             id: "questionnaire_delete_confirmation_disagree",
-          })}
-          agreeBtnLabel={intl.formatMessage({
+          }),
+        }}
+        agreeBtn={{
+          label: intl.formatMessage({
             id: "questionnaire_delete_confirmation_agree",
-          })}
-          handleConfirmation={handleDelete}
-          openConfirmationDialog={openConfirmationDialog}
-          setOpenConfirmationDialog={setOpenConfirmationDialog}
-        />
-      </>
-    );
-  }
-);
+          }),
+          isSubmitting: isDeleting,
+        }}
+        handleConfirmation={deleteAction}
+        displayConfirmationDialog={displayConfirmationDialog}
+        setDisplayConfirmationDialog={setDisplayConfirmationDialog}
+      />
+    </>
+  );
+});
 
 QuestionnaireDelete.displayName = "QuestionnaireDelete";
