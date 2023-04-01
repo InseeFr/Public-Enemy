@@ -20,8 +20,8 @@ import {
   TableRow,
 } from "@mui/material";
 import { Mode, Questionnaire } from "core/application/model";
-import { useNotifier } from "core/infrastructure";
-import React, { memo, useEffect, useState } from "react";
+import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
+import React, { memo } from "react";
 import { useIntl } from "react-intl";
 import { Link } from "react-router-dom";
 import { makeStyles } from "tss-react/mui";
@@ -35,29 +35,13 @@ export type QuestionnaireEditPageProps = {
 
 export const QuestionnaireListPage = memo(
   (props: QuestionnaireEditPageProps) => {
-    const [questionnaires, setQuestionnaires] = useState<Questionnaire[]>();
     const intl = useIntl();
-    const [isLoading, setLoading] = useState(true);
-    const notifier = useNotifier();
     const { classes } = useStyles();
 
-    useEffect(() => {
-      loadQuestionnaires();
-    }, []);
-
-    const loadQuestionnaires = (): void => {
-      setLoading(true);
-      props
-        .fetchQuestionnaires()
-        .then((questionnairesData) => {
-          setQuestionnaires(questionnairesData);
-          setLoading(false);
-        })
-        .catch((err) => {
-          notifier.error(intl.formatMessage({ id: "error_request_failed" }));
-          console.log(err);
-        });
-    };
+    const { isLoading, data: questionnaires } = useApiQuery(
+      "fetchQuestionnaires",
+      props.fetchQuestionnaires
+    );
 
     const getIcon = (mode: Mode): JSX.Element => {
       switch (mode.name) {
@@ -130,21 +114,24 @@ export const QuestionnaireListPage = memo(
                             {questionnaire.label}
                           </TableCell>
                           <TableCell component="th" scope="row">
-                            {questionnaire.modes?.map((mode) => (
-                              <React.Fragment
-                                key={`${questionnaire.id}-${mode.name}`}
-                              >
-                                <Link
-                                  to={`/questionnaires/${questionnaire.id}/modes/${mode.name}`}
-                                >
-                                  <Chip
-                                    icon={getIcon(mode)}
-                                    label={mode.name}
-                                    className={classes.btnMode}
-                                  />
-                                </Link>{" "}
-                              </React.Fragment>
-                            ))}
+                            {questionnaire.modes?.map(
+                              (mode) =>
+                                mode.isWebMode && (
+                                  <React.Fragment
+                                    key={`${questionnaire.id}-${mode.name}`}
+                                  >
+                                    <Link
+                                      to={`/questionnaires/${questionnaire.id}/modes/${mode.name}`}
+                                    >
+                                      <Chip
+                                        icon={getIcon(mode)}
+                                        label={mode.name}
+                                        className={classes.btnMode}
+                                      />
+                                    </Link>{" "}
+                                  </React.Fragment>
+                                )
+                            )}
                           </TableCell>
                           <TableCell align="center">
                             <Link to={`/questionnaires/${questionnaire.id}`}>
@@ -154,7 +141,6 @@ export const QuestionnaireListPage = memo(
                             </Link>
                             <QuestionnaireDelete
                               questionnaire={questionnaire}
-                              loadQuestionnaires={loadQuestionnaires}
                               deleteQuestionnaire={props.deleteQuestionnaire}
                             />
                           </TableCell>
