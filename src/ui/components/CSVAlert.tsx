@@ -38,22 +38,24 @@ export const CsvAlert = memo(({ messages }: CsvAlertType) => {
           <AlertTitle>
             {intl.formatMessage({ id: "survey_unit_csv_validation_error" })}
           </AlertTitle>
-          {messages.errors?.map((message, index) => (
-            <React.Fragment key={`${index}`}>
+          {messages.errors?.map((message) => (
+            <React.Fragment key={`message-${message}`}>
               {message} <br />
             </React.Fragment>
           ))}
 
-          {messages.details?.map((surveyUnitError, indexSU) => (
-            <React.Fragment key={`${indexSU}`}>
+          {messages.details?.map((surveyUnitError) => (
+            <React.Fragment key={`surveyUnit-${surveyUnitError.surveyUnitId}`}>
               <strong>
                 {intl.formatMessage({ id: "survey_unit_label" })}{" "}
                 {surveyUnitError.surveyUnitId}
               </strong>
               <ul>
                 {surveyUnitError.attributesErrors?.map((attributeError) =>
-                  attributeError.messages?.map((message, indexMessage) => (
-                    <li key={`${attributeError.attributeKey}-${indexMessage}`}>
+                  attributeError.messages?.map((message) => (
+                    <li
+                      key={`attribute-${attributeError.attributeKey}-${message}`}
+                    >
                       {intl.formatMessage({ id: "survey_unit_variable" })}{" "}
                       &quot;
                       {attributeError.attributeKey}&quot;: {message}
