@@ -19,8 +19,8 @@ export const CsvAlert = memo(({ messages }: CsvAlertType) => {
     }
     const messageWarnings = (
       <>
-        {messages.warnings.map((message: string, index: number) => (
-          <React.Fragment key={`${index}-${message}`}>
+        {messages.warnings.map((message: string) => (
+          <React.Fragment key={`message-${message}`}>
             {message}
             <br />
           </React.Fragment>
