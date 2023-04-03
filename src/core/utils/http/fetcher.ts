@@ -154,7 +154,6 @@ const resolveErrors = async (response: Response) => {
           errObjectDetails.message,
           errObjectDetails.details
         );
-        break;
       }
       // survey specific validations error
       case 1002: {
@@ -167,7 +166,6 @@ const resolveErrors = async (response: Response) => {
           errObjectDetails.message,
           errObjectDetails.details
         );
-        break;
       }
       default:
         throw new ApiError(errObject.code, errObject.path, errObject.message);
