@@ -2,7 +2,6 @@ import GetAppIcon from "@mui/icons-material/GetApp";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Grid, Stack, TextField } from "@mui/material";
 import { Questionnaire } from "core/application/model";
-import { useNotifier } from "core/infrastructure";
 import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
 import * as React from "react";
 import { memo, useEffect, useState } from "react";
@@ -14,7 +13,6 @@ export const QuestionnaireCheckPoguesIdPage = memo(
   (props: {
     fetchPoguesQuestionnaire: (poguesId: string) => Promise<Questionnaire>;
   }) => {
-    const notifier = useNotifier();
     const { poguesId } = useParams<string>();
     const navigate = useNavigate();
     const intl = useIntl();
@@ -23,10 +21,10 @@ export const QuestionnaireCheckPoguesIdPage = memo(
 
     const { mutate: fetchPoguesQuestionnaire, isLoading: isSubmitting } =
       useApiMutation((id: string) => props.fetchPoguesQuestionnaire(id), {
+        successMessage: intl.formatMessage({
+          id: "questionnaire_retrieve_success",
+        }),
         onSuccess(questionnaireData) {
-          notifier.success(
-            intl.formatMessage({ id: "questionnaire_retrieve_success" })
-          );
           navigate("/questionnaires/add", { state: questionnaireData });
           return;
         },

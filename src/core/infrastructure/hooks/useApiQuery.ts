@@ -25,11 +25,7 @@ export const useApiQuery = <
       options?.onSuccess?.(...args);
     },
     onError: (error: ApiError) => {
-      if (options?.errorMessage) {
-        notifier.error(options.errorMessage);
-      } else {
-        notifier.error(error.message);
-      }
+      notifier.error(options?.errorMessage ?? error.message);
       options?.onError?.(error);
     },
   });

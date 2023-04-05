@@ -37,7 +37,6 @@ export const QuestionnaireListPage = memo(
   (props: QuestionnaireEditPageProps) => {
     const intl = useIntl();
     const { classes } = useStyles();
-
     const { isLoading, data: questionnaires } = useApiQuery(
       "fetchQuestionnaires",
       props.fetchQuestionnaires
@@ -56,6 +55,10 @@ export const QuestionnaireListPage = memo(
         default:
           return <WebIcon />;
       }
+    };
+
+    const getVisiblesModes = (questionnaire: Questionnaire): Mode[] => {
+      return questionnaire?.modes?.filter((mode) => mode.isWebMode);
     };
 
     return (
@@ -114,24 +117,21 @@ export const QuestionnaireListPage = memo(
                             {questionnaire.label}
                           </TableCell>
                           <TableCell component="th" scope="row">
-                            {questionnaire.modes?.map(
-                              (mode) =>
-                                mode.isWebMode && (
-                                  <React.Fragment
-                                    key={`${questionnaire.id}-${mode.name}`}
-                                  >
-                                    <Link
-                                      to={`/questionnaires/${questionnaire.id}/modes/${mode.name}`}
-                                    >
-                                      <Chip
-                                        icon={getIcon(mode)}
-                                        label={mode.name}
-                                        className={classes.btnMode}
-                                      />
-                                    </Link>{" "}
-                                  </React.Fragment>
-                                )
-                            )}
+                            {getVisiblesModes(questionnaire).map((mode) => (
+                              <React.Fragment
+                                key={`${questionnaire.id}-${mode.name}`}
+                              >
+                                <Link
+                                  to={`/questionnaires/${questionnaire.id}/modes/${mode.name}`}
+                                >
+                                  <Chip
+                                    icon={getIcon(mode)}
+                                    label={mode.name}
+                                    className={classes.btnMode}
+                                  />
+                                </Link>{" "}
+                              </React.Fragment>
+                            ))}
                           </TableCell>
                           <TableCell align="center">
                             <Link to={`/questionnaires/${questionnaire.id}`}>
