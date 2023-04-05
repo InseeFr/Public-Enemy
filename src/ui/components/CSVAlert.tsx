@@ -13,7 +13,6 @@ export const CsvAlert = memo(({ messages }: CsvAlertType) => {
   const notifier = useNotifier();
 
   useEffect(() => {
-    console.log(messages);
     if (!messages.warnings) {
       return;
     }
@@ -25,7 +24,7 @@ export const CsvAlert = memo(({ messages }: CsvAlertType) => {
             <br />
           </React.Fragment>
         ))}
-        Ces informations ne seront donc pas prises en compte.
+        {intl.formatMessage({ id: "survey_unit_csv_validation_warnings" })}
       </>
     );
     notifier.info(messageWarnings);

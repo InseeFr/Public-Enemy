@@ -26,6 +26,7 @@ export const messagesEn = {
   questionnaire_edit_items_value: "Value",
   questionnaire_edit_context_notfound: "Please select a context",
   questionnaire_edit_data_notfound: "Please specify a data file",
+  questionnaire_edit_existing_csv: "Current data file",
   questionnaire_edit_errors: "Please correct form errors before continuing",
   questionnaire_edit_save: "Reload questionnaire in orchestrators",
   questionnaire_edit_success: "Questionnaire saved",
@@ -37,6 +38,8 @@ export const messagesEn = {
   questionnaire_delete_success: "Questionnaire deleted",
   survey_unit_csv_validation_error:
     "An error has occurred when checking csv data",
+  survey_unit_csv_validation_warnings:
+    "csv data is valid, but variables defined above won't be used in the questionnaire.",
   survey_unit_list_label: "Survey units",
   survey_unit_label: "Survey unit",
   survey_unit_variable: "Variable",

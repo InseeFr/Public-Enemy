@@ -1,4 +1,5 @@
 import AttachFileIcon from "@mui/icons-material/AttachFile";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import SaveIcon from "@mui/icons-material/Save";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { LoadingButton } from "@mui/lab";
@@ -64,8 +65,13 @@ export const QuestionnaireEditForm = memo(
       props.fetchSurveyContexts
     );
 
-    const { checkCsvData, isCheckingCsvData, isCsvDataValid, messages } =
-      useCsvChecks(props.checkSurveyUnitsCsvData);
+    const {
+      checkCsvData,
+      isCheckingCsvData,
+      isSuccess: isCsvDataValid,
+      reset: resetChecks,
+      messages,
+    } = useCsvChecks(props.checkSurveyUnitsCsvData);
 
     const { mutate: saveQuestionnaire, isLoading: isSubmitting } =
       useApiMutation((questionnaire: Questionnaire) =>
@@ -76,6 +82,7 @@ export const QuestionnaireEditForm = memo(
       if (!questionnaire.surveyUnitData) {
         return;
       }
+      resetChecks();
       checkCsvData({
         id: questionnaire.poguesId,
         data: questionnaire.surveyUnitData,
@@ -139,6 +146,10 @@ export const QuestionnaireEditForm = memo(
           navigate("/questionnaires");
         },
       });
+    };
+
+    const closeConfirmationDialog = () => {
+      setDisplayConfirmationDialog(false);
     };
 
     return (
@@ -224,11 +235,20 @@ export const QuestionnaireEditForm = memo(
                   type="file"
                 />
               </LoadingButton>
-
               <FormHelperText>
                 {questionnaire.surveyUnitData?.name}
               </FormHelperText>
               <Typography variant="body2" gutterBottom>
+                {props.isEditMode && (
+                  <Button
+                    href={`${apiUrl}/questionnaires/${questionnaire.id}/data`}
+                  >
+                    <FileDownloadIcon></FileDownloadIcon>
+                    {intl.formatMessage({
+                      id: "questionnaire_edit_existing_csv",
+                    })}
+                  </Button>
+                )}
                 <Button
                   href={`${apiUrl}/questionnaires/${questionnaire.poguesId}/csv`}
                 >
@@ -283,7 +303,7 @@ export const QuestionnaireEditForm = memo(
               }}
               handleConfirmation={saveAction}
               displayConfirmationDialog={displayConfirmationDialog}
-              setDisplayConfirmationDialog={setDisplayConfirmationDialog}
+              closeConfirmationDialog={closeConfirmationDialog}
             />
           )}
         </Box>

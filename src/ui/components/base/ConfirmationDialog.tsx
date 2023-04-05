@@ -16,7 +16,7 @@ type DialogTypeProps = {
   disagreeBtn: { label: string };
   handleConfirmation: () => void;
   displayConfirmationDialog: boolean;
-  setDisplayConfirmationDialog: (open: boolean) => void;
+  closeConfirmationDialog: () => void;
 };
 
 /**
@@ -30,19 +30,12 @@ export const ConfirmationDialog = memo(
     disagreeBtn,
     handleConfirmation,
     displayConfirmationDialog,
-    setDisplayConfirmationDialog,
+    closeConfirmationDialog,
   }: DialogTypeProps) => {
-    /**
-     * Toogle confirmation dialog
-     */
-    const toggleConfirmationDialog = () => {
-      setDisplayConfirmationDialog(!displayConfirmationDialog);
-    };
-
     return (
       <Dialog
         open={displayConfirmationDialog}
-        onClose={toggleConfirmationDialog}
+        onClose={closeConfirmationDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         data-testid="confirmation-dialog"
@@ -58,7 +51,7 @@ export const ConfirmationDialog = memo(
             data-testid="confirmation-disagree"
             color="error"
             variant="contained"
-            onClick={toggleConfirmationDialog}
+            onClick={closeConfirmationDialog}
           >
             {disagreeBtn.label}
           </Button>
