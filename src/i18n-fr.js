@@ -21,6 +21,7 @@ export const messagesFr = {
   questionnaire_edit_label: "Paramétrage du questionnaire: {name}",
   questionnaire_edit_context_notfound: "Veuillez saisir le contexte",
   questionnaire_edit_data_notfound: "Veuillez renseigner le fichier de données",
+  questionnaire_edit_existing_csv: "Fichier de données actuel",
   questionnaire_edit_errors:
     "Veuillez corriger les erreurs du formulaire avant de poursuivre",
   questionnaire_edit_upload: "Charger les unités enquêtés",
@@ -40,6 +41,8 @@ export const messagesFr = {
   questionnaire_delete_success: "Questionnaire supprimé",
   survey_unit_csv_validation_error:
     "Une erreur est survenue pendant la vérification des données",
+  survey_unit_csv_validation_warnings:
+    "Les données sont valides, néanmoins les variables ci-dessus ne seront pas prises en compte dans le questionnaire.",
   survey_unit_list_label: "Unités enquêtées",
   survey_unit_label: "Unités enquêtée",
   survey_unit_variable: "Variable",

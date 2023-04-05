@@ -28,11 +28,7 @@ export const useApiMutation = <
       variables: TVariables,
       context: TContext | undefined
     ) => {
-      if (options?.errorMessage) {
-        notifier.error(options.errorMessage);
-      } else {
-        notifier.error(error.message);
-      }
+      notifier.error(options?.errorMessage ?? error.message);
       options?.onError?.(error, variables, context);
     },
   });
