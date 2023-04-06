@@ -80,4 +80,4 @@ jobs:
           name: inseefr/public-enemy
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          tags: latest
+          tags: ${{steps.version.outputs.prop}}
