@@ -5,8 +5,6 @@ on:
     branches:
       - "v2-develop"
       - "feature/ci"
-    tags:
-      - "*"
 
 jobs:
   build:
@@ -59,7 +57,7 @@ jobs:
           name: build
           path: dist
   docker:
-    needs: build
+    needs: build-release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
