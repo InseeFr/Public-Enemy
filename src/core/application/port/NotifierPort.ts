@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 export type NotificationType = {
-  message: string;
+  message: string | ReactNode;
   type: "default" | "error" | "success" | "warning" | "info" | undefined;
 };
 
