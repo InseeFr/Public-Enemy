@@ -1,6 +1,6 @@
 import { NotificationType, NotifierPort } from "core/application/port";
 import { useSnackbar } from "notistack";
-import type { PropsWithChildren } from "react";
+import type { PropsWithChildren, ReactNode } from "react";
 import { createContext, useContext } from "react";
 
 type NotifyFunction = (notification: NotificationType) => void;
@@ -31,7 +31,7 @@ export const useNotifier = (): NotifierPort => {
    * info notification
    * @param message notify message
    */
-  const info = (message: string): void => {
+  const info = (message: string | ReactNode): void => {
     notify({ message: message, type: "info" });
   };
 
@@ -39,7 +39,7 @@ export const useNotifier = (): NotifierPort => {
    * warn notification
    * @param message notify message
    */
-  const warn = (message: string): void => {
+  const warn = (message: string | ReactNode): void => {
     notify({ message: message, type: "warning" });
   };
 
@@ -47,7 +47,7 @@ export const useNotifier = (): NotifierPort => {
    * success notification
    * @param message notify message
    */
-  const success = (message: string): void => {
+  const success = (message: string | ReactNode): void => {
     notify({ message: message, type: "success" });
   };
 
@@ -55,7 +55,7 @@ export const useNotifier = (): NotifierPort => {
    * error notification
    * @param message notify message
    */
-  const error = (message: string): void => {
+  const error = (message: string | ReactNode): void => {
     notify({ message: message, type: "error" });
   };
 

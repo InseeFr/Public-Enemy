@@ -2,6 +2,7 @@ import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { questionnaireAdd } from "test/mock/questionnaire";
 import { surveyContexts } from "test/mock/surveyContext";
+import { surveyUnitsWarningMessages } from "test/mock/surveyUnitsWarningMessages";
 import {
   act,
   fireEvent,
@@ -18,6 +19,9 @@ const file = new File(['"test","test2"'], "units.csv", {
 
 const saveQuestionnaire = vi.fn(() => Promise.resolve(questionnaireAdd));
 const fetchSurveyContexts = vi.fn(() => Promise.resolve(surveyContexts));
+const checkSurveyUnitsCsvData = vi.fn(() =>
+  Promise.resolve(surveyUnitsWarningMessages)
+);
 
 beforeEach(async () => {
   // Clear mocks and add some testing data after before each test run
@@ -35,6 +39,7 @@ function createQuestionnaireEditFormRouter(isEditMode: boolean) {
             fetchSurveyContexts={fetchSurveyContexts}
             isEditMode={isEditMode}
             saveQuestionnaire={saveQuestionnaire}
+            checkSurveyUnitsCsvData={checkSurveyUnitsCsvData}
           />
         ),
       },
