@@ -1,6 +1,7 @@
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { simpleQuestionnaire } from "test/mock/questionnaire";
 import { surveyContexts } from "test/mock/surveyContext";
+import { surveyUnitsWarningMessages } from "test/mock/surveyUnitsWarningMessages";
 import { notifySpy, renderWithProviders } from "test/test-utils";
 import { vi } from "vitest";
 import { QuestionnaireAddPage } from "./QuestionnaireAddPage";
@@ -8,6 +9,9 @@ import { QuestionnaireAddPage } from "./QuestionnaireAddPage";
 describe("QuestionnaireAddPage", () => {
   const addQuestionnaire = vi.fn(() => Promise.resolve(simpleQuestionnaire));
   const fetchSurveyContexts = vi.fn(() => Promise.resolve(surveyContexts));
+  const checkSurveyUnitsCsvData = vi.fn(() =>
+    Promise.resolve(surveyUnitsWarningMessages)
+  );
   const router = createMemoryRouter(
     [
       {
@@ -16,6 +20,7 @@ describe("QuestionnaireAddPage", () => {
           <QuestionnaireAddPage
             addQuestionnaire={addQuestionnaire}
             fetchSurveyContexts={fetchSurveyContexts}
+            checkSurveyUnitsCsvData={checkSurveyUnitsCsvData}
           />
         ),
       },
