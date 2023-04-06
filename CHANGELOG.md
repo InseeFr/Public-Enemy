@@ -1,5 +1,18 @@
 # Semantic Versioning Changelog
 
+## [2.0.0-beta.3](https://github.com/InseeFr/Public-Enemy/compare/2.0.0-beta.2...2.0.0-beta.3) (2023-04-06)
+
+
+### Bug Fixes
+
+* sonarlint issues ([77412d9](https://github.com/InseeFr/Public-Enemy/commit/77412d9e5833f4e4f7072c4273a09cb17c87a1e2))
+* sonarlint issues ([0c3f373](https://github.com/InseeFr/Public-Enemy/commit/0c3f373589a4503f2a4dc88443a4fdb3117bd55c))
+
+
+### Features
+
+* add csv checks ([8afa71b](https://github.com/InseeFr/Public-Enemy/commit/8afa71b248e0364b87df5319141613d7e63be925))
+
 ## [2.0.0-beta.2](https://github.com/InseeFr/Public-Enemy/compare/2.0.0-beta.1...2.0.0-beta.2) (2023-03-20)
 
 
