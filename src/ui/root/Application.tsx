@@ -77,7 +77,10 @@ export const Application = memo(() => {
                 element={
                   <QuestionnaireCheckPoguesIdPage
                     fetchPoguesQuestionnaire={
-                      questionnaireRepository.getQuestionnaireFromPogues
+                      questionnaireRepository.getPoguesQuestionnaire
+                    }
+                    fetchQuestionnaireFromPoguesId={
+                      questionnaireRepository.getQuestionnaireFromPoguesId
                     }
                   />
                 }
@@ -87,7 +90,10 @@ export const Application = memo(() => {
                   element={
                     <QuestionnaireCheckPoguesIdPage
                       fetchPoguesQuestionnaire={
-                        questionnaireRepository.getQuestionnaireFromPogues
+                        questionnaireRepository.getPoguesQuestionnaire
+                      }
+                      fetchQuestionnaireFromPoguesId={
+                        questionnaireRepository.getQuestionnaireFromPoguesId
                       }
                     />
                   }
@@ -99,6 +105,9 @@ export const Application = memo(() => {
                   <QuestionnaireAddPage
                     fetchSurveyContexts={
                       questionnaireRepository.getSurveyContexts
+                    }
+                    fetchQuestionnaireFromPoguesId={
+                      questionnaireRepository.getQuestionnaireFromPoguesId
                     }
                     addQuestionnaire={questionnaireRepository.addQuestionnaire}
                     checkSurveyUnitsCsvData={
