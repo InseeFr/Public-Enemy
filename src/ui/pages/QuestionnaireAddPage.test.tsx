@@ -9,6 +9,7 @@ import { QuestionnaireAddPage } from "./QuestionnaireAddPage";
 describe("QuestionnaireAddPage", () => {
   const addQuestionnaire = vi.fn(() => Promise.resolve(simpleQuestionnaire));
   const fetchSurveyContexts = vi.fn(() => Promise.resolve(surveyContexts));
+  const fetchQuestionnaire = vi.fn(() => Promise.resolve(simpleQuestionnaire));
   const checkSurveyUnitsCsvData = vi.fn(() =>
     Promise.resolve(surveyUnitsWarningMessages)
   );
@@ -19,6 +20,7 @@ describe("QuestionnaireAddPage", () => {
         element: (
           <QuestionnaireAddPage
             addQuestionnaire={addQuestionnaire}
+            fetchQuestionnaireFromPoguesId={fetchQuestionnaire}
             fetchSurveyContexts={fetchSurveyContexts}
             checkSurveyUnitsCsvData={checkSurveyUnitsCsvData}
           />
