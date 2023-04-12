@@ -19,12 +19,22 @@ export function createQuestionnaireRepository(
     return getRequest<Questionnaire>(`${apiUrl}/questionnaires/${id}`);
   };
 
-  const getQuestionnaireFromPogues = (
-    poguesId: string
-  ): Promise<Questionnaire> => {
+  /**
+   * get questionnaire filled with pogues informations (not the db one)
+   */
+  const getPoguesQuestionnaire = (poguesId: string): Promise<Questionnaire> => {
     return getRequest<Questionnaire>(
       `${apiUrl}/questionnaires/pogues/${poguesId}`
     );
+  };
+
+  /**
+   * get questionnaire from pogues id (the db one)
+   */
+  const getQuestionnaireFromPoguesId = (
+    poguesId: string
+  ): Promise<Questionnaire> => {
+    return getRequest<Questionnaire>(`${apiUrl}/questionnaires/${poguesId}/db`);
   };
 
   const addQuestionnaire = (
@@ -74,7 +84,8 @@ export function createQuestionnaireRepository(
   return {
     getQuestionnaires,
     getQuestionnaire,
-    getQuestionnaireFromPogues,
+    getQuestionnaireFromPoguesId,
+    getPoguesQuestionnaire,
     addQuestionnaire,
     deleteQuestionnaire,
     editQuestionnaire,

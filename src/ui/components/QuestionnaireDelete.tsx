@@ -44,14 +44,14 @@ export const QuestionnaireDelete = memo((props: QuestionnaireDeleteType) => {
   };
 
   /**
-   * open/close confirmation dialog
+   * open confirmation dialog
    */
   const openConfirmationDialog = () => {
     setDisplayConfirmationDialog(true);
   };
 
   /**
-   * open/close confirmation dialog
+   * close confirmation dialog
    */
   const closeConfirmationDialog = () => {
     setDisplayConfirmationDialog(false);

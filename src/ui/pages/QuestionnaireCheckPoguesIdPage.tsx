@@ -2,7 +2,7 @@ import GetAppIcon from "@mui/icons-material/GetApp";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Grid, Stack, TextField } from "@mui/material";
 import { Questionnaire } from "core/application/model";
-import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
+import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
 import * as React from "react";
 import { memo, useEffect, useState } from "react";
 import { useIntl } from "react-intl";
@@ -12,15 +12,57 @@ import { Block, Loader, Title } from "ui/components/base";
 export const QuestionnaireCheckPoguesIdPage = memo(
   (props: {
     fetchPoguesQuestionnaire: (poguesId: string) => Promise<Questionnaire>;
+    fetchQuestionnaireFromPoguesId: (
+      poguesId: string
+    ) => Promise<Questionnaire>;
   }) => {
     const { poguesId } = useParams<string>();
     const navigate = useNavigate();
     const intl = useIntl();
-    const [poguesIdInput, setPoguesIdInput] = useState("");
+    const [poguesIdInput, setPoguesIdInput] = useState(poguesId ?? "");
     const [isLoading, setLoading] = useState(true);
 
-    const { mutate: fetchPoguesQuestionnaire, isLoading: isSubmitting } =
-      useApiMutation((id: string) => props.fetchPoguesQuestionnaire(id), {
+    useEffect(() => {
+      if (poguesId !== undefined) {
+        setPoguesIdInput(poguesId);
+        getQuestionnaireFromPogues();
+        return;
+      }
+      setLoading(false);
+    }, []);
+
+    const {
+      refetch: getQuestionnaireFromPogues,
+      isLoading: isLoadingQuestionnaire,
+    } = useApiQuery(
+      ["questionnaire", poguesIdInput],
+      () => {
+        return props.fetchQuestionnaireFromPoguesId(poguesIdInput);
+      },
+      {
+        enabled: false,
+        notify: false,
+        // go to the update page if questionnaire already exists
+        onSuccess: (questionnaire: Questionnaire) => {
+          navigate(`/questionnaires/${questionnaire.id}`);
+        },
+        // get pogues questionnaire if questionnaire in db does not exist
+        onError: () => {
+          getPoguesQuestionnaire({});
+        },
+      }
+    );
+
+    const {
+      refetch: getPoguesQuestionnaire,
+      isLoading: isLoadingPoguesQuestionnaire,
+    } = useApiQuery(
+      ["questionnaire-", poguesIdInput],
+      () => {
+        return props.fetchPoguesQuestionnaire(poguesIdInput);
+      },
+      {
+        enabled: false,
         successMessage: intl.formatMessage({
           id: "questionnaire_retrieve_success",
         }),
@@ -31,16 +73,8 @@ export const QuestionnaireCheckPoguesIdPage = memo(
         onError() {
           setLoading(false);
         },
-      });
-
-    useEffect(() => {
-      if (poguesId !== undefined) {
-        setPoguesIdInput(poguesId);
-        fetchPoguesQuestionnaire(poguesId);
-        return;
       }
-      setLoading(false);
-    }, []);
+    );
 
     const handlePoguesIdChange = (
       event: React.ChangeEvent<HTMLInputElement>
@@ -50,7 +84,7 @@ export const QuestionnaireCheckPoguesIdPage = memo(
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      fetchPoguesQuestionnaire(poguesIdInput);
+      getQuestionnaireFromPogues();
     };
 
     return (
@@ -83,7 +117,9 @@ export const QuestionnaireCheckPoguesIdPage = memo(
                     color="info"
                     variant="contained"
                     startIcon={<GetAppIcon />}
-                    loading={isSubmitting}
+                    loading={
+                      isLoadingPoguesQuestionnaire || isLoadingQuestionnaire
+                    }
                     loadingPosition="start"
                   >
                     {intl.formatMessage({ id: "questionnaire_retrieve" })}

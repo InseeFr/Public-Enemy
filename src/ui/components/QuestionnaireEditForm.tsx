@@ -20,13 +20,15 @@ import {
   SurveyContext,
   SurveyUnitsMessages,
 } from "core/application/model";
-import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
+import { ApiError } from "core/application/model/error";
 import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
 import { useCsvChecks } from "core/infrastructure/hooks/useCsvChecks";
+import useNotifier from "core/infrastructure/Notifier";
 import { getEnvVar } from "core/utils/env";
 import * as React from "react";
 import { memo, useEffect, useState } from "react";
 import { useIntl } from "react-intl";
+import { UseMutateFunction } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "tss-react/mui";
 import { ConfirmationDialog, Loader, Title } from "./base";
@@ -40,7 +42,13 @@ export type QuestionnaireEditFormProps = {
     poguesId: string,
     surveyUnitsCsvData: File
   ) => Promise<SurveyUnitsMessages>;
-  saveQuestionnaire: (questionnaire: Questionnaire) => Promise<Questionnaire>;
+  saveQuestionnaire: UseMutateFunction<
+    Questionnaire,
+    ApiError,
+    Questionnaire,
+    unknown
+  >;
+  isSubmitting: boolean;
 };
 
 export const QuestionnaireEditForm = memo(
@@ -55,6 +63,7 @@ export const QuestionnaireEditForm = memo(
     const { classes } = useStyles();
     const navigate = useNavigate();
     const apiUrl = getEnvVar("VITE_API_URL");
+    const notifier = useNotifier();
 
     /**
      * Load contexts on mount
@@ -72,11 +81,6 @@ export const QuestionnaireEditForm = memo(
       reset: resetChecks,
       messages,
     } = useCsvChecks(props.checkSurveyUnitsCsvData);
-
-    const { mutate: saveQuestionnaire, isLoading: isSubmitting } =
-      useApiMutation((questionnaire: Questionnaire) =>
-        props.saveQuestionnaire(questionnaire)
-      );
 
     useEffect(() => {
       if (!questionnaire.surveyUnitData) {
@@ -140,8 +144,11 @@ export const QuestionnaireEditForm = memo(
     };
 
     const saveAction = () => {
-      saveQuestionnaire(questionnaire, {
+      props.saveQuestionnaire(questionnaire, {
         onSuccess: () => {
+          notifier.success(
+            intl.formatMessage({ id: "questionnaire_edit_success" })
+          );
           setDisplayConfirmationDialog(false);
           navigate("/questionnaires");
         },
@@ -268,7 +275,7 @@ export const QuestionnaireEditForm = memo(
               color="info"
               variant="contained"
               startIcon={<SaveIcon />}
-              loading={isSubmitting}
+              loading={props.isSubmitting}
               loadingPosition="start"
               disabled={!(isSurveyContextValid && isCsvDataValid)}
               {...(props.isEditMode && {
@@ -299,7 +306,7 @@ export const QuestionnaireEditForm = memo(
                 label: intl.formatMessage({
                   id: "questionnaire_edit_confirmation_agree",
                 }),
-                isSubmitting: isSubmitting,
+                isSubmitting: props.isSubmitting,
               }}
               handleConfirmation={saveAction}
               displayConfirmationDialog={displayConfirmationDialog}

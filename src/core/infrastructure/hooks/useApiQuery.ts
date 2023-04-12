@@ -13,7 +13,11 @@ export const useApiQuery = <
   options?: Omit<
     UseQueryOptions<TQueryFnData, ApiError, TData, TQueryKey>,
     "queryKey" | "queryFn"
-  > & { successMessage?: string; errorMessage?: string }
+  > & {
+    successMessage?: string;
+    errorMessage?: string;
+    notify?: boolean;
+  }
 ) => {
   const notifier = useNotifier();
   return useQuery<TQueryFnData, ApiError, TData, TQueryKey>(queryKey, queryFn, {
@@ -25,7 +29,8 @@ export const useApiQuery = <
       options?.onSuccess?.(...args);
     },
     onError: (error: ApiError) => {
-      notifier.error(options?.errorMessage ?? error.message);
+      options?.notify !== false &&
+        notifier.error(options?.errorMessage ?? error.message);
       options?.onError?.(error);
     },
   });

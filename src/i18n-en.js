@@ -36,6 +36,10 @@ export const messagesEn = {
   questionnaire_delete_confirmation_agree: "Agree",
   questionnaire_delete_confirmation_disagree: "Disagree",
   questionnaire_delete_success: "Questionnaire deleted",
+  questionnaire_notsynchronized_title:
+    "Error when loading questionnaire into orchestrators",
+  questionnaire_notsynchronized_message:
+    "An error has occurred when saving questionnaire. Please reload the questionnaire into orchestrators by filling the context and data file",
   survey_unit_csv_validation_error:
     "An error has occurred when checking csv data",
   survey_unit_csv_validation_warnings:

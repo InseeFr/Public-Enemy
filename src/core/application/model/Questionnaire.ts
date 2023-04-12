@@ -7,4 +7,5 @@ export type Questionnaire = {
   modes: Mode[];
   context: SurveyContext;
   surveyUnitData: File | undefined;
+  isSynchronized: boolean;
 };
