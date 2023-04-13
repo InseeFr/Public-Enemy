@@ -13,6 +13,7 @@ import {
   ErrorPage,
   QuestionnaireAddPage,
   QuestionnaireCheckPoguesIdPage,
+  QuestionnaireDetailsPage,
   QuestionnaireEditPage,
   QuestionnaireListPage,
 } from "ui/pages";
@@ -54,7 +55,7 @@ export const Application = memo(() => {
                 }
               />
               <Route
-                path="/questionnaires/:id"
+                path="/questionnaires/:id/edit"
                 element={
                   <QuestionnaireEditPage
                     fetchQuestionnaire={
@@ -68,6 +69,19 @@ export const Application = memo(() => {
                     }
                     checkSurveyUnitsCsvData={
                       surveyUnitRepository.checkSurveyUnitsCSV
+                    }
+                  />
+                }
+              />
+              <Route
+                path="/questionnaires/:id"
+                element={
+                  <QuestionnaireDetailsPage
+                    fetchQuestionnaire={
+                      questionnaireRepository.getQuestionnaire
+                    }
+                    deleteQuestionnaire={
+                      questionnaireRepository.deleteQuestionnaire
                     }
                   />
                 }

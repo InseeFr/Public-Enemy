@@ -42,7 +42,7 @@ export const QuestionnaireCheckPoguesIdPage = memo(
       {
         enabled: false,
         notify: false,
-        // go to the update page if questionnaire already exists
+        // go to the details page if questionnaire already exists
         onSuccess: (questionnaire: Questionnaire) => {
           navigate(`/questionnaires/${questionnaire.id}`);
         },

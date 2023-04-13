@@ -1,15 +1,24 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton } from "@mui/material";
 import { Questionnaire } from "core/application/model";
-import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
+import { ApiError } from "core/application/model/error";
+import { useNotifier } from "core/infrastructure";
 import { memo, useState } from "react";
 import { useIntl } from "react-intl";
-import { useQueryClient } from "react-query";
+import { UseMutateFunction } from "react-query";
 import { ConfirmationDialog } from "./base";
 
 type QuestionnaireDeleteType = {
   questionnaire: Questionnaire;
-  deleteQuestionnaire: (id: number) => Promise<void>;
+  mutateDelete: {
+    deleteQuestionnaire: UseMutateFunction<
+      void,
+      ApiError,
+      Questionnaire,
+      unknown
+    >;
+    isDeleting: boolean;
+  };
 };
 
 /**
@@ -19,28 +28,19 @@ export const QuestionnaireDelete = memo((props: QuestionnaireDeleteType) => {
   const [displayConfirmationDialog, setDisplayConfirmationDialog] =
     useState(false);
   const intl = useIntl();
-  const queryClient = useQueryClient();
-
-  const {
-    mutate: deleteQuestionnaire,
-    isLoading: isDeleting,
-    isSuccess,
-    isError,
-  } = useApiMutation((id: number) => props.deleteQuestionnaire(id), {
-    successMessage: intl.formatMessage({
-      id: "questionnaire_delete_success",
-    }),
-
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: "fetchQuestionnaires" });
-    },
-    onSettled: () => {
-      setDisplayConfirmationDialog(isSuccess || isError);
-    },
-  });
+  const notifier = useNotifier();
 
   const deleteAction = () => {
-    deleteQuestionnaire(props.questionnaire.id);
+    props.mutateDelete.deleteQuestionnaire(props.questionnaire, {
+      onSuccess: () => {
+        notifier.success(
+          intl.formatMessage({ id: "questionnaire_delete_success" })
+        );
+      },
+      onSettled: () => {
+        closeConfirmationDialog();
+      },
+    });
   };
 
   /**
@@ -79,7 +79,7 @@ export const QuestionnaireDelete = memo((props: QuestionnaireDeleteType) => {
           label: intl.formatMessage({
             id: "questionnaire_delete_confirmation_agree",
           }),
-          isSubmitting: isDeleting,
+          isSubmitting: props.mutateDelete.isDeleting,
         }}
         handleConfirmation={deleteAction}
         displayConfirmationDialog={displayConfirmationDialog}

@@ -1,13 +1,8 @@
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import CallIcon from "@mui/icons-material/Call";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import SettingsIcon from "@mui/icons-material/Settings";
-import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
-import WebIcon from "@mui/icons-material/Web";
 
 import {
   Button,
-  Chip,
   Grid,
   IconButton,
   Paper,
@@ -20,12 +15,15 @@ import {
   TableRow,
 } from "@mui/material";
 import { Mode, Questionnaire } from "core/application/model";
+import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
 import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
-import React, { memo } from "react";
+import { memo } from "react";
 import { useIntl } from "react-intl";
+import { useQueryClient } from "react-query";
 import { Link } from "react-router-dom";
 import { makeStyles } from "tss-react/mui";
 import { Block, Loader, Title } from "ui/components/base";
+import { ModeListComponent } from "ui/components/ModeListComponent";
 import { QuestionnaireDelete } from "ui/components/QuestionnaireDelete";
 
 export type QuestionnaireEditPageProps = {
@@ -37,25 +35,22 @@ export const QuestionnaireListPage = memo(
   (props: QuestionnaireEditPageProps) => {
     const intl = useIntl();
     const { classes } = useStyles();
+    const queryClient = useQueryClient();
     const { isLoading, data: questionnaires } = useApiQuery(
       "fetchQuestionnaires",
       props.fetchQuestionnaires
     );
 
-    const getIcon = (mode: Mode): JSX.Element => {
-      switch (mode.name) {
-        case "CAPI":
-          return <SupervisedUserCircleIcon />;
-        case "PAPI":
-          return <PictureAsPdfIcon />;
-        case "CAWI":
-          return <WebIcon />;
-        case "CATI":
-          return <CallIcon />;
-        default:
-          return <WebIcon />;
-      }
-    };
+    const { mutate: deleteQuestionnaire, isLoading: isDeleting } =
+      useApiMutation(
+        (questionnaire: Questionnaire) =>
+          props.deleteQuestionnaire(questionnaire.id),
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: "fetchQuestionnaires" });
+          },
+        }
+      );
 
     const getVisiblesModes = (questionnaire: Questionnaire): Mode[] => {
       return questionnaire?.modes?.filter((mode) => mode.isWebMode);
@@ -117,31 +112,22 @@ export const QuestionnaireListPage = memo(
                             {questionnaire.label}
                           </TableCell>
                           <TableCell component="th" scope="row">
-                            {getVisiblesModes(questionnaire).map((mode) => (
-                              <React.Fragment
-                                key={`${questionnaire.id}-${mode.name}`}
-                              >
-                                <Link
-                                  to={`/questionnaires/${questionnaire.id}/modes/${mode.name}`}
-                                >
-                                  <Chip
-                                    icon={getIcon(mode)}
-                                    label={mode.name}
-                                    className={classes.btnMode}
-                                  />
-                                </Link>{" "}
-                              </React.Fragment>
-                            ))}
+                            <ModeListComponent questionnaire={questionnaire} />
                           </TableCell>
                           <TableCell align="center">
-                            <Link to={`/questionnaires/${questionnaire.id}`}>
+                            <Link
+                              to={`/questionnaires/${questionnaire.id}/edit`}
+                            >
                               <IconButton aria-label="edit">
                                 <SettingsIcon />
                               </IconButton>
                             </Link>
                             <QuestionnaireDelete
                               questionnaire={questionnaire}
-                              deleteQuestionnaire={props.deleteQuestionnaire}
+                              mutateDelete={{
+                                deleteQuestionnaire: deleteQuestionnaire,
+                                isDeleting: isDeleting,
+                              }}
                             />
                           </TableCell>
                         </TableRow>
