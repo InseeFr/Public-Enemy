@@ -12,6 +12,7 @@ export const messagesEn = {
   questionnaire_mode: "Mode(s)",
   questionnaire_context: "Context",
   questionnaire_schema: "CSV schema for this questionnaire",
+  questionnaire_survey_units: "Access to survey units",
   questionnaire_list_actions: "Actions",
   questionnaire_add_label: "Configure a new questionnaire",
   questionnaire_add_notfound: "Questionnaire not found",

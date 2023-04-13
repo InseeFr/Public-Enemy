@@ -10,6 +10,7 @@ export const messagesFr = {
   questionnaire_mode: "Mode(s)",
   questionnaire_context: "Contexte",
   questionnaire_schema: "Schéma CSV attendu",
+  questionnaire_survey_units: "Accès aux unités enquêtées",
   questionnaire_list_label: "Liste des questionnaires",
   questionnaire_list_btn_add: "Paramétrer un nouveau questionnaire",
   questionnaire_list_actions: "Actions",

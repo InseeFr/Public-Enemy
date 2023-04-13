@@ -1,0 +1,27 @@
+import { Mode, Questionnaire } from "core/application/model";
+import React, { memo } from "react";
+import { Link } from "react-router-dom";
+import { ModeIcon } from "ui/components/base";
+
+type ModeListProps = {
+  questionnaire: Questionnaire;
+};
+export const ModeListComponent = memo(({ questionnaire }: ModeListProps) => {
+  const getVisiblesModes = (questionnaire: Questionnaire): Mode[] => {
+    return questionnaire?.modes?.filter((mode) => mode.isWebMode);
+  };
+
+  return (
+    <>
+      {getVisiblesModes(questionnaire).map((mode) => (
+        <React.Fragment key={`${questionnaire.id}-${mode.name}`}>
+          <Link to={`/questionnaires/${questionnaire.id}/modes/${mode.name}`}>
+            <ModeIcon mode={mode} />
+          </Link>
+        </React.Fragment>
+      ))}
+    </>
+  );
+});
+
+ModeListComponent.displayName = "ModeListComponent";
