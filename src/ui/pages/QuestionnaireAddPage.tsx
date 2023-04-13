@@ -56,7 +56,7 @@ export const QuestionnaireAddPage = memo((props: QuestionnaireAddPageProps) => {
       notify: false,
       // go to the update page if questionnaire already exists
       onSuccess: (questionnaire: Questionnaire) => {
-        navigate(`/questionnaires/${questionnaire.id}`);
+        navigate(`/questionnaires/${questionnaire.id}/edit`);
       },
     }
   );

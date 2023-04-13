@@ -73,7 +73,7 @@ export const SurveyUnitListPage = memo((props: SurveyUnitListPageProps) => {
     <Grid component="main" container justifyContent="center">
       <Grid item xs={12} md={6}>
         <Block>
-          <Loader isLoading={isSurveyUnitsLoading && isQuestionnaireLoading}>
+          <Loader isLoading={isSurveyUnitsLoading || isQuestionnaireLoading}>
             <Title>
               {intl.formatMessage({ id: "survey_unit_list_label" })}
             </Title>
