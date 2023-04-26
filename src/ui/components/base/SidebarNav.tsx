@@ -26,9 +26,9 @@ export const SidebarNav = memo((props: SidebarNavProps) => {
     >
       <Toolbar />
       <List component="nav">
-        {NavMenu.map((item, index) => (
+        {NavMenu.map((item) => (
           <ListItemLink
-            key={`${index}-${item.label}`}
+            key={item.label}
             to={item.pathname}
             primary={intl.formatMessage({ id: item.label })}
             Icon={item.icon}

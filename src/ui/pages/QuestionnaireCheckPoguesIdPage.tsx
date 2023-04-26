@@ -68,7 +68,6 @@ export const QuestionnaireCheckPoguesIdPage = memo(
         }),
         onSuccess(questionnaireData) {
           navigate("/questionnaires/add", { state: questionnaireData });
-          return;
         },
         onError() {
           setLoading(false);
