@@ -149,8 +149,10 @@ export const QuestionnaireEditForm = memo(
           notifier.success(
             intl.formatMessage({ id: "questionnaire_edit_success" })
           );
-          setDisplayConfirmationDialog(false);
           navigate("/questionnaires");
+        },
+        onSettled: () => {
+          closeConfirmationDialog();
         },
       });
     };
@@ -277,7 +279,9 @@ export const QuestionnaireEditForm = memo(
               startIcon={<SaveIcon />}
               loading={props.isSubmitting}
               loadingPosition="start"
-              disabled={!(isSurveyContextValid && isCsvDataValid)}
+              disabled={
+                !isSurveyContextValid || (!props.isEditMode && !isCsvDataValid)
+              }
               {...(props.isEditMode && {
                 onClick: () => setDisplayConfirmationDialog(true),
               })}
