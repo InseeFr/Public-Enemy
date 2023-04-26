@@ -9,6 +9,9 @@ describe.only("QuestionnaireAddPage", () => {
   const mockFetchPoguesQuestionnaire = vi.fn((poguesId: string) =>
     Promise.resolve(simpleQuestionnaire)
   );
+  const mockFetchQuestionnaireFromPogues = vi.fn((poguesId: string) =>
+    Promise.resolve(simpleQuestionnaire)
+  );
 
   const router = createMemoryRouter(
     [
@@ -17,6 +20,7 @@ describe.only("QuestionnaireAddPage", () => {
         element: (
           <QuestionnaireCheckPoguesIdPage
             fetchPoguesQuestionnaire={mockFetchPoguesQuestionnaire}
+            fetchQuestionnaireFromPoguesId={mockFetchQuestionnaireFromPogues}
           />
         ),
       },
