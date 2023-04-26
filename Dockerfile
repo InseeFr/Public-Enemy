@@ -13,20 +13,23 @@ COPY container/nginx.conf etc/nginx/conf.d/
 
 WORKDIR /usr/share/nginx/html
 
+# Add bash
+RUN apk add --no-cache bash
+
 COPY container/env.sh .
 COPY .env .
 
 # Make our shell script executable
 RUN chmod +x env.sh
 
-# Add bash
-RUN apk add --no-cache bash
+# add non-root user
+RUN touch /var/run/nginx.pid
+RUN chown -R nginx:nginx /var/run/nginx.pid /usr/share/nginx/html /var/cache/nginx /var/log/nginx /etc/nginx/conf.d
 
-# Generate env-config.json which include environment variables in our build
-#RUN bash env.sh
+# non root users cannot listen on 80
+EXPOSE 8080
 
-#RUN rm env.sh
-#RUN rm .env
+USER nginx
 
 # Start Nginx server
 ENTRYPOINT bash -c "/usr/share/nginx/html/env.sh && nginx -g 'daemon off;'"
