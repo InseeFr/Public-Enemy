@@ -2,6 +2,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 import {
+  Alert,
   Button,
   Grid,
   IconButton,
@@ -14,7 +15,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { Mode, Questionnaire } from "core/application/model";
+import { Questionnaire } from "core/application/model";
 import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
 import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
 import { memo } from "react";
@@ -24,7 +25,7 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "tss-react/mui";
 import { Block, Loader, Title } from "ui/components/base";
 import { ModeListComponent } from "ui/components/ModeListComponent";
-import { QuestionnaireDelete } from "ui/components/QuestionnaireDelete";
+import { QuestionnaireDeleteButton } from "ui/components/QuestionnaireDeleteButton";
 
 export type QuestionnaireEditPageProps = {
   fetchQuestionnaires: () => Promise<Questionnaire[]>;
@@ -51,10 +52,6 @@ export const QuestionnaireListPage = memo(
           },
         }
       );
-
-    const getVisiblesModes = (questionnaire: Questionnaire): Mode[] => {
-      return questionnaire?.modes?.filter((mode) => mode.isWebMode);
-    };
 
     return (
       <Grid component="main" container justifyContent="center">
@@ -112,17 +109,33 @@ export const QuestionnaireListPage = memo(
                             {questionnaire.label}
                           </TableCell>
                           <TableCell component="th" scope="row">
-                            <ModeListComponent questionnaire={questionnaire} />
+                            {questionnaire.isSynchronized ? (
+                              <ModeListComponent
+                                questionnaire={questionnaire}
+                              />
+                            ) : (
+                              <Alert severity="error">
+                                {intl.formatMessage({
+                                  id: "questionnaire_list_synchronisation",
+                                })}
+                              </Alert>
+                            )}
                           </TableCell>
                           <TableCell align="center">
                             <Link
                               to={`/questionnaires/${questionnaire.id}/edit`}
                             >
                               <IconButton aria-label="edit">
-                                <SettingsIcon />
+                                <SettingsIcon
+                                  color={
+                                    questionnaire.isSynchronized
+                                      ? "inherit"
+                                      : "error"
+                                  }
+                                />
                               </IconButton>
                             </Link>
-                            <QuestionnaireDelete
+                            <QuestionnaireDeleteButton
                               questionnaire={questionnaire}
                               mutateDelete={{
                                 deleteQuestionnaire: deleteQuestionnaire,
@@ -147,9 +160,6 @@ export const QuestionnaireListPage = memo(
 const useStyles = makeStyles()((theme) => ({
   btnAdd: {
     marginBottom: theme.spacing(2),
-  },
-  btnMode: {
-    cursor: "pointer",
   },
 }));
 
