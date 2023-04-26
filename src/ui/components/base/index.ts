@@ -1,6 +1,6 @@
 export { Block } from "./Block";
 export { ConfirmationDialog } from "./ConfirmationDialog";
-export { Error } from "./Error";
+export { ErrorComponent } from "./ErrorComponent";
 export { Footer } from "./Footer";
 export { Header } from "./Header";
 export { ListItemLink } from "./ListItemLink";
