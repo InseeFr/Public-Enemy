@@ -3,6 +3,8 @@ export const messagesFr = {
   menu_home: "Accueil",
   menu_questionnaires: "Questionnaires de test",
   menu_error: "URL inexistante",
+  menu_pogues: "Pogues",
+  menu_documentation: "Documentation",
   error_request_failed: "La requête a échoué",
   questionnaire_id: "Identifiant",
   questionnaire_pogues: "Questionnaire Pogues",
