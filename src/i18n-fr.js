@@ -25,7 +25,7 @@ export const messagesFr = {
   questionnaire_edit_existing_csv: "Fichier de données actuel",
   questionnaire_edit_errors:
     "Veuillez corriger les erreurs du formulaire avant de poursuivre",
-  questionnaire_edit_upload: "Charger les unités enquêtés",
+  questionnaire_edit_upload: "Charger les unités enquêtées",
   questionnaire_check_upload: "Vérification des données CSV",
   questionnaire_edit_save: "Recharger le questionnaire dans les orchestrateurs",
   questionnaire_edit_confirmation_label: "Confirmer le rechargement",
@@ -49,7 +49,7 @@ export const messagesFr = {
   survey_unit_csv_validation_warnings:
     "Les données sont valides, néanmoins les variables ci-dessus ne seront pas prises en compte dans le questionnaire.",
   survey_unit_list_label: "Unités enquêtées",
-  survey_unit_label: "Unités enquêtée",
+  survey_unit_label: "Unités enquêtées",
   survey_unit_variable: "Variable",
   survey_unit_id: "Id",
   survey_unit_list_actions: "Actions",
@@ -58,4 +58,11 @@ export const messagesFr = {
     "Ouvrir dans une nouvelle fenêtre l'enquête pour l'unité enquêtée: {surveyUnitId}",
   survey_unit_list_missing_parameters:
     "Des paramètres sont manquants pour afficher correctement la page",
+  survey_unit_reset_confirmation_label:
+    "Confirmation de la réinitialisation des données",
+  survey_unit_reset_confirmation_body:
+    "Souhaitez vous réellement réinitialiser les données pour cette unité enquêtée ?",
+  survey_unit_reset_confirmation_agree: "Confirmer la réinitialisation",
+  survey_unit_reset_confirmation_disagree: "Annuler",
+  survey_unit_reset_success: "Réinitialisation effectuée",
 };

@@ -12,12 +12,15 @@ import {
 } from "@mui/material";
 import { Questionnaire, SurveyUnitsData } from "core/application/model";
 import { useNotifier } from "core/infrastructure";
+import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
 import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
 import { getEnvVar } from "core/utils/env";
 import { memo, useEffect, useState } from "react";
 import { useIntl } from "react-intl";
+import { useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
 import { Block, Loader, Subtitle, Title } from "ui/components/base";
+import { SurveyUnitResetButton } from "ui/components/SurveyUnitResetButton";
 
 type SurveyUnitParams = {
   questionnaireId: string;
@@ -30,6 +33,7 @@ type SurveyUnitListPageProps = {
     id: number,
     modeName: string
   ) => Promise<SurveyUnitsData>;
+  resetSurveyUnit: (surveyUnitId: string) => Promise<void>;
 };
 
 export const SurveyUnitListPage = memo((props: SurveyUnitListPageProps) => {
@@ -38,6 +42,17 @@ export const SurveyUnitListPage = memo((props: SurveyUnitListPageProps) => {
   const orchestratorUrl = getEnvVar("VITE_ORCHESTRATOR_URL");
   const { questionnaireId, modeName } = useParams<SurveyUnitParams>();
   const [canFetchData, setCanFetchData] = useState(false);
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (!(questionnaireId && modeName)) {
+      notifier.error(
+        intl.formatMessage({ id: "survey_unit_list_missing_parameters" })
+      );
+      return;
+    }
+    setCanFetchData(true);
+  });
 
   const { isLoading: isQuestionnaireLoading, data: questionnaire } =
     useApiQuery(
@@ -59,15 +74,14 @@ export const SurveyUnitListPage = memo((props: SurveyUnitListPageProps) => {
       { enabled: canFetchData }
     );
 
-  useEffect(() => {
-    if (!(questionnaireId && modeName)) {
-      notifier.error(
-        intl.formatMessage({ id: "survey_unit_list_missing_parameters" })
-      );
-      return;
+  const { mutate: resetSurveyUnit, isLoading: isResetting } = useApiMutation(
+    (surveyUnitId: string) => props.resetSurveyUnit(surveyUnitId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: "surveyUnitsData" });
+      },
     }
-    setCanFetchData(true);
-  });
+  );
 
   return (
     <Grid component="main" container justifyContent="center">
@@ -127,6 +141,14 @@ export const SurveyUnitListPage = memo((props: SurveyUnitListPageProps) => {
                                 <PreviewIcon />
                               </IconButton>
                             </a>
+
+                            <SurveyUnitResetButton
+                              surveyUnitId={surveyUnit.id}
+                              mutateReset={{
+                                resetSurveyUnit: resetSurveyUnit,
+                                isResetting: isResetting,
+                              }}
+                            ></SurveyUnitResetButton>
                           </TableCell>
                         </TableRow>
                       ))}
