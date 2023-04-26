@@ -37,8 +37,10 @@ export const deleteRequest = <ResponseType>(url: string) =>
  * @param payload
  * @returns promise of ResponseType
  */
-export const putRequest = <ResponseType>(url: string, payload: object) =>
-  simpleFetch<ResponseType>(url, "PUT", payload);
+export const putRequest = <ResponseType>(
+  url: string,
+  payload: object | undefined
+) => simpleFetch<ResponseType>(url, "PUT", payload);
 
 /**
  * Generic HTTP PATCH Request

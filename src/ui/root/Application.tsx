@@ -140,6 +140,7 @@ export const Application = memo(() => {
                     fetchQuestionnaire={
                       questionnaireRepository.getQuestionnaire
                     }
+                    resetSurveyUnit={surveyUnitRepository.resetSurveyUnit}
                   />
                 }
               />
