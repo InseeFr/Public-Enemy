@@ -5,6 +5,7 @@ export const messagesFr = {
   menu_error: "URL inexistante",
   error_request_failed: "La requête a échoué",
   questionnaire_id: "Identifiant",
+  questionnaire_pogues: "Questionnaire Pogues",
   questionnaire_id_helper: "Identifiant pogues du questionnaire",
   questionnaire_name: "Nom",
   questionnaire_mode: "Mode(s)",

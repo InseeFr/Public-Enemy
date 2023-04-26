@@ -7,6 +7,7 @@ export const messagesEn = {
   questionnaire_list_label: "Questionnaire List",
   questionnaire_list_btn_add: "Configure new questionnaire",
   questionnaire_id: "Id",
+  questionnaire_pogues: "Pogues questionnaire",
   questionnaire_id_helper: "Pogues identifier",
   questionnaire_name: "Name",
   questionnaire_mode: "Mode(s)",
