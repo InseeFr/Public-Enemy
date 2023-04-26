@@ -8,7 +8,9 @@ type ModeListProps = {
 };
 export const ModeListComponent = memo(({ questionnaire }: ModeListProps) => {
   const getVisiblesModes = (questionnaire: Questionnaire): Mode[] => {
-    return questionnaire?.modes?.filter((mode) => mode.isWebMode);
+    //return questionnaire?.modes?.filter((mode) => mode.isWebMode);
+    //as long as stromae is the only orchestrator, keep this line below, otherwise use line above
+    return questionnaire?.modes?.filter((mode) => mode.name === "CAWI");
   };
 
   return (
