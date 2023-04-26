@@ -14,6 +14,7 @@ export const messagesEn = {
   questionnaire_schema: "CSV schema for this questionnaire",
   questionnaire_survey_units: "Access to survey units",
   questionnaire_list_actions: "Actions",
+  questionnaire_list_synchronisation: "Synchronisation problem",
   questionnaire_add_label: "Configure a new questionnaire",
   questionnaire_add_notfound: "Questionnaire not found",
   questionnaire_add_save: "Load questionnaire in orchestrator",

@@ -1,6 +1,7 @@
 import userEvent from "@testing-library/user-event";
+import { Questionnaire } from "core/application/model";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { questionnaireAdd } from "test/mock/questionnaire";
+import { questionnaireAdd, simpleQuestionnaire } from "test/mock/questionnaire";
 import { surveyContexts } from "test/mock/surveyContext";
 import { surveyUnitsWarningMessages } from "test/mock/surveyUnitsWarningMessages";
 import {
@@ -17,7 +18,9 @@ const file = new File(['"test","test2"'], "units.csv", {
   type: "text/csv",
 });
 
-const saveQuestionnaire = vi.fn(() => Promise.resolve(questionnaireAdd));
+const saveQuestionnaire = vi.fn((questionnaire: Questionnaire) =>
+  Promise.resolve(simpleQuestionnaire)
+);
 const fetchSurveyContexts = vi.fn(() => Promise.resolve(surveyContexts));
 const checkSurveyUnitsCsvData = vi.fn(() =>
   Promise.resolve(surveyUnitsWarningMessages)
@@ -38,6 +41,7 @@ function createQuestionnaireEditFormRouter(isEditMode: boolean) {
             questionnaire={questionnaireAdd}
             fetchSurveyContexts={fetchSurveyContexts}
             isEditMode={isEditMode}
+            isSubmitting={false}
             saveQuestionnaire={saveQuestionnaire}
             checkSurveyUnitsCsvData={checkSurveyUnitsCsvData}
           />

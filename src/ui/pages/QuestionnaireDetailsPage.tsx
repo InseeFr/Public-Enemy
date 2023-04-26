@@ -8,7 +8,7 @@ import { useIntl } from "react-intl";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Block, Loader, Subtitle, Title } from "ui/components/base";
 import { ModeListComponent } from "ui/components/ModeListComponent";
-import { QuestionnaireDelete } from "ui/components/QuestionnaireDelete";
+import { QuestionnaireDeleteButton } from "ui/components/QuestionnaireDeleteButton";
 
 export type QuestionnaireDetailsPageProps = {
   fetchQuestionnaire: (id: number) => Promise<Questionnaire>;
@@ -26,6 +26,14 @@ export const QuestionnaireDetailsPage = memo(
       () => {
         const idNumber = Number(id);
         return props.fetchQuestionnaire(idNumber);
+      },
+      {
+        // go to the update page if questionnaire is not synchronized
+        onSuccess: (questionnaire: Questionnaire) => {
+          if (!questionnaire.isSynchronized) {
+            navigate(`/questionnaires/${questionnaire.id}/edit`);
+          }
+        },
       }
     );
 
@@ -56,7 +64,6 @@ export const QuestionnaireDetailsPage = memo(
                       : {questionnaire.poguesId}
                     </Typography>
                   </Grid>
-
                   <Grid item xs={12} sm={6}>
                     <Typography variant="body2" gutterBottom>
                       {intl.formatMessage({
@@ -74,14 +81,13 @@ export const QuestionnaireDetailsPage = memo(
                   <Stack direction="row" justifyContent="begin">
                     <ModeListComponent questionnaire={questionnaire} />
                   </Stack>
-
                   <Stack direction="row" justifyContent="end">
                     <Link to={`/questionnaires/${questionnaire.id}/edit`}>
                       <IconButton aria-label="edit">
                         <SettingsIcon />
                       </IconButton>
                     </Link>
-                    <QuestionnaireDelete
+                    <QuestionnaireDeleteButton
                       questionnaire={questionnaire}
                       mutateDelete={{
                         deleteQuestionnaire: deleteQuestionnaire,

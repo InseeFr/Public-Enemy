@@ -14,6 +14,7 @@ export const messagesFr = {
   questionnaire_list_label: "Liste des questionnaires",
   questionnaire_list_btn_add: "Paramétrer un nouveau questionnaire",
   questionnaire_list_actions: "Actions",
+  questionnaire_list_synchronisation: "Problème de synchronisation",
   questionnaire_add_label: "Paramétrer un nouveau questionnaire",
   questionnaire_add_notfound: "Questionnaire inexistant",
   questionnaire_add_save: "Créer le questionnaire dans les orchestrateurs",
