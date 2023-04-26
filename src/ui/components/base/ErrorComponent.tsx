@@ -2,7 +2,7 @@ import Typography from "@mui/material/Typography";
 import { memo } from "react";
 import { Title } from ".";
 
-export const Error = memo(() => {
+export const ErrorComponent = memo(() => {
   return (
     <>
       <Title>Erreur</Title>
@@ -11,4 +11,4 @@ export const Error = memo(() => {
   );
 });
 
-Error.displayName = "Error";
+ErrorComponent.displayName = "ErrorComponent";

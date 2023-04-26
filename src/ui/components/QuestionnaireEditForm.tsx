@@ -104,7 +104,6 @@ export const QuestionnaireEditForm = memo(
 
       if (questionnaire.context.name) {
         setSurveyContextValid(true);
-        return;
       }
     }, [questionnaire.context]);
 
