@@ -19,6 +19,7 @@ export const simpleQuestionnaire: Questionnaire = {
     value: "ménage",
   },
   surveyUnitData: undefined,
+  isSynchronized: true,
 };
 
 export const questionnaireAdd: Questionnaire = {
@@ -39,4 +40,5 @@ export const questionnaireAdd: Questionnaire = {
     name: "",
   },
   surveyUnitData: undefined,
+  isSynchronized: true,
 };
