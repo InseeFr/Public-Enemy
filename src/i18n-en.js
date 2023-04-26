@@ -3,6 +3,8 @@ export const messagesEn = {
   menu_home: "Home",
   menu_questionnaires: "Tests Questionnaires",
   menu_error: "Page not found",
+  menu_pogues: "Pogues",
+  menu_documentation: "Documentation",
   error_request_failed: "Request failed",
   questionnaire_list_label: "Questionnaire List",
   questionnaire_list_btn_add: "Configure new questionnaire",

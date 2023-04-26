@@ -1,16 +1,23 @@
+import LaunchIcon from "@mui/icons-material/Launch";
 import MenuIcon from "@mui/icons-material/Menu";
+import TextSnippetIcon from "@mui/icons-material/TextSnippet";
+import { Box, Button } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import { getEnvVar } from "core/utils/env";
 import { memo } from "react";
+import { useIntl } from "react-intl";
 import { makeStyles } from "tss-react/mui";
 import { SidebarNavProps } from ".";
 
 export const Header = memo((props: SidebarNavProps) => {
   const { toggleDrawer } = props;
-
   const { classes } = useStyles();
+  const poguesUrl = getEnvVar("VITE_POGUES_URL");
+  const documentationUrl = getEnvVar("VITE_DOCUMENTATION_URL");
+  const intl = useIntl();
 
   return (
     <AppBar className={classes.root}>
@@ -33,6 +40,22 @@ export const Header = memo((props: SidebarNavProps) => {
         >
           Public enemy
         </Typography>
+
+        <Box sx={{ display: { xs: "none", sm: "block" } }}>
+          <Button sx={{ color: "#fff" }} href={poguesUrl}>
+            <LaunchIcon fontSize="small"></LaunchIcon>
+            {intl.formatMessage({
+              id: "menu_pogues",
+            })}
+          </Button>
+
+          <Button sx={{ color: "#fff" }} href={documentationUrl}>
+            <TextSnippetIcon fontSize="small"></TextSnippetIcon>
+            {intl.formatMessage({
+              id: "menu_documentation",
+            })}
+          </Button>
+        </Box>
       </Toolbar>
     </AppBar>
   );
