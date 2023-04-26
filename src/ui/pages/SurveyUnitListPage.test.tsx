@@ -8,6 +8,7 @@ import { SurveyUnitListPage } from "./SurveyUnitListPage";
 describe.only("SurveyUnitListPage", () => {
   const fetchSurveyUnitsData = vi.fn(() => Promise.resolve(surveyUnitsData));
   const fetchQuestionnaire = vi.fn(() => Promise.resolve(simpleQuestionnaire));
+  const resetSurveyUnit = vi.fn(() => Promise.resolve());
   const router = createMemoryRouter(
     [
       {
@@ -16,6 +17,7 @@ describe.only("SurveyUnitListPage", () => {
           <SurveyUnitListPage
             fetchSurveyUnitsData={fetchSurveyUnitsData}
             fetchQuestionnaire={fetchQuestionnaire}
+            resetSurveyUnit={resetSurveyUnit}
           />
         ),
       },

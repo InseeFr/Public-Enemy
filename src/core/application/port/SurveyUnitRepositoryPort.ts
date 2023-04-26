@@ -10,4 +10,6 @@ export type SurveyUnitRepositoryPort = {
     poguesId: string,
     surveyUnitData: File
   ) => Promise<SurveyUnitsMessages>;
+
+  resetSurveyUnit: (surveyUnitId: string) => Promise<void>;
 };

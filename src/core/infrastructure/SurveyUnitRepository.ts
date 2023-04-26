@@ -1,7 +1,7 @@
 import { SurveyUnitsData, SurveyUnitsMessages } from "core/application/model";
 import { SurveyUnitRepositoryPort } from "core/application/port";
 import { getRequest } from "core/utils/http";
-import { postRequestMultiPart } from "core/utils/http/fetcher";
+import { postRequestMultiPart, putRequest } from "core/utils/http/fetcher";
 
 /**
  * Get SurveyUnit Repository
@@ -12,11 +12,11 @@ export function createSurveyUnitRepository(
   apiUrl: string
 ): SurveyUnitRepositoryPort {
   const getSurveyUnitsData = (
-    id: number,
+    questionnaireId: number,
     modeName: string
   ): Promise<SurveyUnitsData> => {
     return getRequest<SurveyUnitsData>(
-      `${apiUrl}/questionnaires/${id}/modes/${modeName}/survey-units`
+      `${apiUrl}/questionnaires/${questionnaireId}/modes/${modeName}/survey-units`
     );
   };
 
@@ -33,8 +33,16 @@ export function createSurveyUnitRepository(
     );
   };
 
+  const resetSurveyUnit = (surveyUnitId: string): Promise<void> => {
+    return putRequest<void>(
+      `${apiUrl}/survey-units/${surveyUnitId}/reset`,
+      undefined
+    );
+  };
+
   return {
     getSurveyUnitsData,
     checkSurveyUnitsCSV,
+    resetSurveyUnit,
   };
 }

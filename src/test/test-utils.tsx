@@ -6,10 +6,12 @@ import { getEnvVar } from "core/utils/env";
 import { SnackbarProvider } from "notistack";
 import React, { ReactElement } from "react";
 import { IntlProvider } from "react-intl";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { appTheme } from "ui/theme";
 import { vi } from "vitest";
 
 let locale: LocaleType = "en";
+const queryClient = new QueryClient();
 if (getEnvVar("VITE_LOCALE")) {
   locale = getEnvVar("VITE_LOCALE");
 }
@@ -19,11 +21,13 @@ const notifySpy = vi.fn();
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <ThemeProvider theme={appTheme}>
-      <IntlProvider messages={getMessages(locale)} locale={locale}>
-        <SnackbarProvider maxSnack={3}>
-          <NotifierProvider notify={notifySpy}>{children}</NotifierProvider>
-        </SnackbarProvider>
-      </IntlProvider>
+      <QueryClientProvider client={queryClient}>
+        <IntlProvider messages={getMessages(locale)} locale={locale}>
+          <SnackbarProvider maxSnack={3}>
+            <NotifierProvider notify={notifySpy}>{children}</NotifierProvider>
+          </SnackbarProvider>
+        </IntlProvider>
+      </QueryClientProvider>
     </ThemeProvider>
   );
 };

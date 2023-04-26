@@ -55,4 +55,10 @@ export const messagesEn = {
     "Open the survey in a new window for survey unit: {surveyUnitId}",
   survey_unit_list_missing_parameters:
     "Some parameters are missing, the page will not be displayed correctly",
+  survey_unit_reset_confirmation_label: "Reset confirmation",
+  survey_unit_reset_confirmation_body:
+    "Do you really want to reset data for this survey unit ?",
+  survey_unit_reset_confirmation_agree: "Agree",
+  survey_unit_reset_confirmation_disagree: "Disagree",
+  survey_unit_reset_success: "Survey unit resetted",
 };
