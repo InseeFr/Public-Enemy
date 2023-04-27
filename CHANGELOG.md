@@ -1,5 +1,24 @@
 # Semantic Versioning Changelog
 
+## [2.0.0-beta.5](https://github.com/InseeFr/Public-Enemy/compare/2.0.0-beta.4...2.0.0-beta.5) (2023-04-27)
+
+
+### Bug Fixes
+
+* sonar issues ([c4a3e50](https://github.com/InseeFr/Public-Enemy/commit/c4a3e50230237e046db4cf300a668a2ab8e2a04b))
+
+
+### Features
+
+* [[#45](https://github.com/InseeFr/Public-Enemy/issues/45)] reset survey unit data/state data ([da0312f](https://github.com/InseeFr/Public-Enemy/commit/da0312fb2d160820c6cf2c37ab6a889553395a26))
+* [[#57](https://github.com/InseeFr/Public-Enemy/issues/57)] add questionnaire details page ([c30bddd](https://github.com/InseeFr/Public-Enemy/commit/c30bdddcbdadaf1e5a26ade91ca333bb65c994bb))
+* [[#58](https://github.com/InseeFr/Public-Enemy/issues/58)] csv file not mandatory anymore on update page ([75dced3](https://github.com/InseeFr/Public-Enemy/commit/75dced330e960a0516bb92ec78355605f4816c51))
+* [[#59](https://github.com/InseeFr/Public-Enemy/issues/59)] add link to pogues from questionnaire details page ([ff115cf](https://github.com/InseeFr/Public-Enemy/commit/ff115cf348360da981794294a1f92cd47dc4a113))
+* [[#60](https://github.com/InseeFr/Public-Enemy/issues/60)] pogues and documentation link in header ([f87de87](https://github.com/InseeFr/Public-Enemy/commit/f87de87111fa5ba75c5b925a7fe463158ae77e93))
+* [[#61](https://github.com/InseeFr/Public-Enemy/issues/61)] display synchronization problems on questionnaire details/list page ([d58d111](https://github.com/InseeFr/Public-Enemy/commit/d58d111c3ca4d9be5175ab079115b986bc581ec8))
+* hide modes linked to queen (not used at this moment) ([44d87d9](https://github.com/InseeFr/Public-Enemy/commit/44d87d990e0a11b7c1902f26fd9023798a427864))
+* resolve synchronisation problems between stromae api and db ([e479623](https://github.com/InseeFr/Public-Enemy/commit/e479623dfdf8e90b14db7c4e30b0182800953fa9))
+
 ## [2.0.0-beta.4](https://github.com/InseeFr/Public-Enemy/compare/2.0.0-beta.3...2.0.0-beta.4) (2023-04-06)
 
 
