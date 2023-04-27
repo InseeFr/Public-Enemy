@@ -23,7 +23,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
-  # rebuild (sic) with correct version
   build-release:
     needs: release
     runs-on: ubuntu-latest
@@ -35,6 +34,7 @@ jobs:
         run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >>$GITHUB_OUTPUT
         id: extract_branch
 
+      # add ref to get the latest version (with commit from semantic-release)
       - uses: actions/checkout@v3
         with:
           ref: ${{ steps.extract_branch.outputs.branch }}
@@ -63,6 +63,7 @@ jobs:
     needs: build-release
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Download build
         id: download
         uses: actions/download-artifact@v3
