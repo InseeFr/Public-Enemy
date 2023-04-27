@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+## [2.0.0-beta.7](https://github.com/InseeFr/Public-Enemy/compare/2.0.0-beta.6...2.0.0-beta.7) (2023-04-27)
+
+
+### Bug Fixes
+
+* ci integration ([38fa54d](https://github.com/InseeFr/Public-Enemy/commit/38fa54dbda9111cb07523dc1bb9da5cfbd19ffbc))
+
 ## [2.0.0-beta.6](https://github.com/InseeFr/Public-Enemy/compare/2.0.0-beta.5...2.0.0-beta.6) (2023-04-27)
 
 
