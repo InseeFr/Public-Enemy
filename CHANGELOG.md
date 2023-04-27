@@ -1,5 +1,13 @@
 # Semantic Versioning Changelog
 
+## [2.0.0-beta.6](https://github.com/InseeFr/Public-Enemy/compare/2.0.0-beta.5...2.0.0-beta.6) (2023-04-27)
+
+
+### Bug Fixes
+
+* build app on PR & mutualize devlop/main workflow file ([6830e82](https://github.com/InseeFr/Public-Enemy/commit/6830e82563e95f8e521d5830f0cc24f0fb2d587c))
+* remove build dependency in release CI ([4661291](https://github.com/InseeFr/Public-Enemy/commit/46612915f745d91befd9e5dfd504720cdc5bfcf2))
+
 ## [2.0.0-beta.5](https://github.com/InseeFr/Public-Enemy/compare/2.0.0-beta.4...2.0.0-beta.5) (2023-04-27)
 
 
