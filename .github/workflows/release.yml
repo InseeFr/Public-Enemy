@@ -1,27 +1,19 @@
-name: Release & Docker
+name: Release Candidate
 
 on:
   push:
     branches:
+      - "v2-develop"
       - "v2-main"
-    tags:
-      - "*"
-
 jobs:
   release:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          persist-credentials: false
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: "temurin"
-          java-version: "17"
       - name: setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: 18
         env:
@@ -32,21 +24,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
-  install:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Use Node.js 16
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16
-      - run: yarn --frozen-lockfile
-  build:
+  # rebuild (sic) with correct version
+  build-release:
     needs: release
     runs-on: ubuntu-latest
     steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >>$GITHUB_OUTPUT
+        id: extract_branch
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.extract_branch.outputs.branch }}
       - name: Use Node.js 16
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: 16
       - run: yarn
@@ -55,20 +46,18 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: build
+          path: dist
   docker:
-    needs: build
+    needs: build-release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: v2-main
       - name: Download build
         id: download
         uses: actions/download-artifact@v3
         with:
           name: build
-          path: build
+          path: dist
       - name: Get current version
         id: version
         uses: notiz-dev/github-action-json-property@release
@@ -77,10 +66,9 @@ jobs:
           prop_path: "version"
       - run: echo ${{steps.version.outputs.prop}}
       - name: Publish to Registry
-        uses: elgohr/Publish-Docker-Github-Action@master
+        uses: elgohr/Publish-Docker-Github-Action@v5
         with:
           name: inseefr/public-enemy
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          default_branch: v2-main
-          tags: ${{steps.version.outputs.prop}}
+          tags: "latest,${{steps.version.outputs.prop}}"
