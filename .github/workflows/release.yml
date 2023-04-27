@@ -27,22 +27,35 @@ jobs:
   build-release:
     needs: release
     runs-on: ubuntu-latest
+    outputs:
+      release-version: ${{steps.version.outputs.prop}}
     steps:
       - name: Extract branch name
         shell: bash
         run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >>$GITHUB_OUTPUT
         id: extract_branch
+
       - uses: actions/checkout@v3
         with:
           ref: ${{ steps.extract_branch.outputs.branch }}
+
+      - name: Get release version
+        id: version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: "package.json"
+          prop_path: "version"
+      - run: echo ${{steps.version.outputs.prop}}
+
       - name: Use Node.js 16
         uses: actions/setup-node@v3
         with:
           node-version: 16
       - run: yarn
       - run: yarn build
+
       - name: Upload build
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build
           path: dist
@@ -50,24 +63,16 @@ jobs:
     needs: build-release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: Download build
         id: download
         uses: actions/download-artifact@v3
         with:
           name: build
           path: dist
-      - name: Get current version
-        id: version
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: "package.json"
-          prop_path: "version"
-      - run: echo ${{steps.version.outputs.prop}}
       - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@v5
         with:
           name: inseefr/public-enemy
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          tags: "latest,${{steps.version.outputs.prop}}"
+          tags: "latest,${{ needs.build-release.outputs.release-version }}"
