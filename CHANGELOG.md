@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+## [2.0.0-beta.8](https://github.com/InseeFr/Public-Enemy/compare/2.0.0-beta.7...2.0.0-beta.8) (2023-04-27)
+
+
+### Bug Fixes
+
+* checkout workspace when building docker image ([daab3c3](https://github.com/InseeFr/Public-Enemy/commit/daab3c3ec34c2a576bb402f1de630ae87e807711))
+
 ## [2.0.0-beta.7](https://github.com/InseeFr/Public-Enemy/compare/2.0.0-beta.6...2.0.0-beta.7) (2023-04-27)
 
 
