@@ -22,6 +22,11 @@ jobs:
       - name: Print version
         run: echo ${{ steps.version.outputs.pe-version }}
 
+      - uses: mukunku/tag-exists-action@v1.2.0
+        id: checkTag
+        with:
+          tag: ${{ steps.version.outputs.pe-version }}
+
       - if: ${{ steps.checkTag.outputs.exists == 'true' }}
         name: "Skip release"
         run: echo "Nothing to tag/release, the release ${{ steps.version.outputs.pe-version }} already exists"
@@ -72,7 +77,6 @@ jobs:
     needs: build-release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: Download build
         id: download
         uses: actions/download-artifact@v3
