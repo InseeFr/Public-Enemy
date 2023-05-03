@@ -78,12 +78,15 @@ jobs:
     needs: build-release
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+
       - name: Download build
         id: download
         uses: actions/download-artifact@v3
         with:
           name: build
           path: dist
+
       - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@v5
         with:
