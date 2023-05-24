@@ -144,11 +144,11 @@ export const QuestionnaireEditForm = memo(
 
     const saveAction = () => {
       props.saveQuestionnaire(questionnaire, {
-        onSuccess: () => {
+        onSuccess: (questionnaire) => {
           notifier.success(
             intl.formatMessage({ id: "questionnaire_edit_success" })
           );
-          navigate("/questionnaires");
+          navigate(`/questionnaires/${questionnaire.id}`);
         },
         onSettled: () => {
           closeConfirmationDialog();
