@@ -5,7 +5,8 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { CssBaseline } from "@mui/material";
 import { getMessages, LocaleType } from "core/i18n/messages";
-import { getEnvVar } from "core/utils/env";
+import { getConfiguration } from "core/utils/configuration";
+import { getEnvVar } from "core/utils/configuration/env";
 import { SnackbarProvider } from "notistack";
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -14,6 +15,20 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import reportWebVitals from "../reportWebVitals";
 import { Application } from "./root/Application";
 import { appTheme } from "./theme";
+
+/* /!\ used in production mode where env config is used after build time
+       should not be used in docker environment 
+*/
+await getConfiguration()
+  .then((conf) => {
+    if (Object.keys(conf).length) {
+      console.log("plop");
+      window._env_ = conf;
+    }
+  })
+  .catch((e) => {
+    console.log(e);
+  });
 
 const queryClient = new QueryClient({
   defaultOptions: {

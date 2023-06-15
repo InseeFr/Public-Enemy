@@ -6,7 +6,7 @@ import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { getEnvVar } from "core/utils/env";
+import { getEnvVar } from "core/utils/configuration/env";
 import { memo } from "react";
 import { useIntl } from "react-intl";
 import { makeStyles } from "tss-react/mui";

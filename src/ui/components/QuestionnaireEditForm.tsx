@@ -24,7 +24,7 @@ import { ApiError } from "core/application/model/error";
 import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
 import { useCsvChecks } from "core/infrastructure/hooks/useCsvChecks";
 import useNotifier from "core/infrastructure/Notifier";
-import { getEnvVar } from "core/utils/env";
+import { getEnvVar } from "core/utils/configuration/env";
 import * as React from "react";
 import { memo, useEffect, useState } from "react";
 import { useIntl } from "react-intl";

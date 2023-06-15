@@ -2,7 +2,7 @@ import { ThemeProvider } from "@emotion/react";
 import { render, RenderOptions } from "@testing-library/react";
 import { getMessages, LocaleType } from "core/i18n/messages";
 import { NotifierProvider } from "core/infrastructure/Notifier";
-import { getEnvVar } from "core/utils/env";
+import { getEnvVar } from "core/utils/configuration/env";
 import { SnackbarProvider } from "notistack";
 import React, { ReactElement } from "react";
 import { IntlProvider } from "react-intl";
