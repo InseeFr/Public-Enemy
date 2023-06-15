@@ -4,7 +4,7 @@ import {
   createQuestionnaireRepository,
   createSurveyUnitRepository,
 } from "core/infrastructure";
-import { getEnvVar } from "core/utils/env";
+import { getEnvVar } from "core/utils/configuration/env";
 import { memo, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { makeStyles } from "tss-react/mui";

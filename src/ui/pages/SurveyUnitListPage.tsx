@@ -14,7 +14,7 @@ import { Questionnaire, SurveyUnitsData } from "core/application/model";
 import { useNotifier } from "core/infrastructure";
 import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
 import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
-import { getEnvVar } from "core/utils/env";
+import { getEnvVar } from "core/utils/configuration/env";
 import { memo, useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { useQueryClient } from "react-query";

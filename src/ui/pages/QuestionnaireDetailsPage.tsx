@@ -4,7 +4,7 @@ import { Grid, IconButton, Stack, Typography } from "@mui/material";
 import { Questionnaire } from "core/application/model";
 import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
 import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
-import { getEnvVar } from "core/utils/env";
+import { getEnvVar } from "core/utils/configuration/env";
 import { memo } from "react";
 import { useIntl } from "react-intl";
 import { Link, useNavigate, useParams } from "react-router-dom";
