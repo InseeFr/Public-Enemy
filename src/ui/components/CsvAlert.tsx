@@ -13,7 +13,7 @@ export const CsvAlert = memo(({ messages }: CsvAlertType) => {
   const notifier = useNotifier();
 
   useEffect(() => {
-    if (!messages.warnings) {
+    if (!messages.warnings || !messages.warnings.length) {
       return;
     }
     const messageWarnings = (
