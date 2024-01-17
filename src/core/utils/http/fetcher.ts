@@ -11,8 +11,10 @@ import {
  * @param url endpoint for request
  * @returns promise of ResponseType
  */
-export const getRequest = <ResponseType>(url: string) =>
-  simpleFetch<ResponseType>(url, "GET", undefined);
+export const getRequest =
+  <ResponseType>(url: string) =>
+  (token?: string) =>
+    simpleFetch<ResponseType>(url, "GET", undefined, token);
 
 /**
  * Generic HTTP POST Request
@@ -20,16 +22,20 @@ export const getRequest = <ResponseType>(url: string) =>
  * @param payload
  * @returns promise of ResponseType
  */
-export const postRequest = <ResponseType>(url: string, payload: object) =>
-  simpleFetch<ResponseType>(url, "POST", payload);
+export const postRequest =
+  <ResponseType>(url: string, payload: object) =>
+  (token?: string) =>
+    simpleFetch<ResponseType>(url, "POST", payload, token);
 
 /**
  * Generic HTTP DELETE Request
  * @param url endpoint for request
  * @returns
  */
-export const deleteRequest = <ResponseType>(url: string) =>
-  simpleFetch<ResponseType>(url, "DELETE", undefined);
+export const deleteRequest =
+  <ResponseType>(url: string) =>
+  (token?: string) =>
+    simpleFetch<ResponseType>(url, "DELETE", undefined, token);
 
 /**
  * Generic HTTP PUT Request
@@ -37,10 +43,10 @@ export const deleteRequest = <ResponseType>(url: string) =>
  * @param payload
  * @returns promise of ResponseType
  */
-export const putRequest = <ResponseType>(
-  url: string,
-  payload: object | undefined
-) => simpleFetch<ResponseType>(url, "PUT", payload);
+export const putRequest =
+  <ResponseType>(url: string, payload: object | undefined) =>
+  (token?: string) =>
+    simpleFetch<ResponseType>(url, "PUT", payload, token);
 
 /**
  * Generic HTTP PATCH Request
@@ -48,8 +54,10 @@ export const putRequest = <ResponseType>(
  * @param payload
  * @returns promise of ResponseType
  */
-export const patchRequest = <ResponseType>(url: string, payload: object) =>
-  simpleFetch<ResponseType>(url, "PATCH", payload);
+export const patchRequest =
+  <ResponseType>(url: string, payload: object) =>
+  (token?: string) =>
+    simpleFetch<ResponseType>(url, "PATCH", payload, token);
 
 /**
  * Generic HTTP POST Request with multipart data
@@ -57,10 +65,10 @@ export const patchRequest = <ResponseType>(url: string, payload: object) =>
  * @param payload
  * @returns promise of ResponseType
  */
-export const postRequestMultiPart = <ResponseType>(
-  url: string,
-  payload: FormData
-) => multipartFetch<ResponseType>(url, "POST", payload);
+export const postRequestMultiPart =
+  <ResponseType>(url: string, payload: FormData) =>
+  (token?: string) =>
+    multipartFetch<ResponseType>(url, "POST", payload, token);
 
 /**
  * Generic HTTP PUT Request with multipart data
@@ -68,10 +76,10 @@ export const postRequestMultiPart = <ResponseType>(
  * @param payload
  * @returns promise of ResponseType
  */
-export const putRequestMultiPart = <ResponseType>(
-  url: string,
-  payload: FormData
-) => multipartFetch<ResponseType>(url, "PUT", payload);
+export const putRequestMultiPart =
+  <ResponseType>(url: string, payload: FormData) =>
+  (token?: string) =>
+    multipartFetch<ResponseType>(url, "PUT", payload, token);
 
 /**
  * Generic simple fetch request
@@ -83,12 +91,16 @@ export const putRequestMultiPart = <ResponseType>(
 const simpleFetch = <ResponseType>(
   url: string,
   method: "GET" | "POST" | "PATCH" | "DELETE" | "PUT",
-  payload: object | undefined
+  payload: object | undefined,
+  token?: string
 ): Promise<ResponseType> => {
-  const headers: HeadersInit = {
+  let headers: HeadersInit = {
     Accept: "application/json, text/plain, */*",
     "Content-Type": "application/json",
   };
+  if (token) {
+    headers = { ...headers, Authorization: `Bearer ${token}` };
+  }
 
   let payloadJson = undefined;
   if (payload !== undefined) {
@@ -108,9 +120,14 @@ const simpleFetch = <ResponseType>(
 const multipartFetch = <ResponseType>(
   url: string,
   method: "POST" | "PATCH" | "PUT",
-  payload: FormData
+  payload: FormData,
+  token?: string
 ): Promise<ResponseType> => {
-  return fetcher<ResponseType>(url, method, undefined, payload);
+  let headers = {};
+  if (token) {
+    headers = { ...headers, Authorization: `Bearer ${token}` };
+  }
+  return fetcher<ResponseType>(url, method, headers, payload);
 };
 
 /**

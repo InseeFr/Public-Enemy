@@ -4,14 +4,15 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { CssBaseline } from "@mui/material";
-import { getMessages, LocaleType } from "core/i18n/messages";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider } from "core/application/auth/provider/component";
+import { LocaleType, getMessages } from "core/i18n/messages";
 import { getConfiguration } from "core/utils/configuration";
 import { getEnvVar } from "core/utils/configuration/env";
 import { SnackbarProvider } from "notistack";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { IntlProvider } from "react-intl";
-import { QueryClient, QueryClientProvider } from "react-query";
 import reportWebVitals from "../reportWebVitals";
 import { Application } from "./root/Application";
 import { appTheme } from "./theme";
@@ -54,16 +55,18 @@ if (getEnvVar("VITE_LOCALE")) {
 */
 root.render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={appTheme}>
-        <IntlProvider messages={getMessages(locale)} locale={locale}>
-          <SnackbarProvider maxSnack={3}>
-            <CssBaseline />
-            <Application />
-          </SnackbarProvider>
-        </IntlProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={appTheme}>
+          <IntlProvider messages={getMessages(locale)} locale={locale}>
+            <SnackbarProvider maxSnack={3}>
+              <CssBaseline />
+              <Application />
+            </SnackbarProvider>
+          </IntlProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </AuthProvider>
   </React.StrictMode>
 ); /*
 })();*/
