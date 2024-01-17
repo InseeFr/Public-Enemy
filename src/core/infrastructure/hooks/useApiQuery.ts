@@ -1,37 +1,43 @@
+import {
+  QueryFunction,
+  QueryKey,
+  UseQueryOptions,
+  useQuery,
+} from "@tanstack/react-query";
 import { ApiError } from "core/application/model/error";
-import type { QueryFunction, QueryKey, UseQueryOptions } from "react-query";
-import { useQuery } from "react-query";
-import { useNotifier } from "..";
 
 export const useApiQuery = <
   TQueryFnData = unknown,
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey
->(
-  queryKey: TQueryKey,
-  queryFn: QueryFunction<TQueryFnData, TQueryKey>,
+>({
+  queryKey,
+  queryFn,
+  options,
+}: {
+  queryKey: TQueryKey;
+  queryFn: QueryFunction<TQueryFnData, TQueryKey>;
   options?: Omit<
     UseQueryOptions<TQueryFnData, ApiError, TData, TQueryKey>,
     "queryKey" | "queryFn"
-  > & {
-    successMessage?: string;
-    errorMessage?: string;
-    notify?: boolean;
-  }
-) => {
-  const notifier = useNotifier();
-  return useQuery<TQueryFnData, ApiError, TData, TQueryKey>(queryKey, queryFn, {
+  >;
+}) => {
+  // const notifier = useNotifier();
+  return useQuery({
+    queryKey,
+    queryFn,
     ...options,
-    onSuccess: (...args) => {
-      if (options?.successMessage) {
-        notifier.success(options.successMessage);
-      }
-      options?.onSuccess?.(...args);
-    },
-    onError: (error: ApiError) => {
-      options?.notify !== false &&
-        notifier.error(options?.errorMessage ?? error.message);
-      options?.onError?.(error);
-    },
+
+    // onSuccess: (...args: unknown[]) => {
+    //   if (options?.successMessage) {
+    //     notifier.success(options.successMessage);
+    //   }
+    //   options?.onSuccess?.(...args);
+    // },
+    // onError: (error: ApiError) => {
+    //   options?.notify !== false &&
+    //     notifier.error(options?.errorMessage ?? error.message);
+    //   options?.onError?.(error);
+    // },
   });
 };

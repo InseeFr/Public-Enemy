@@ -15,24 +15,24 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { UseMutateFunction } from "@tanstack/react-query";
 import {
   Questionnaire,
   SurveyContext,
   SurveyUnitsMessages,
 } from "core/application/model";
 import { ApiError } from "core/application/model/error";
+import useNotifier from "core/infrastructure/Notifier";
 import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
 import { useCsvChecks } from "core/infrastructure/hooks/useCsvChecks";
-import useNotifier from "core/infrastructure/Notifier";
 import { getEnvVar } from "core/utils/configuration/env";
 import * as React from "react";
 import { memo, useEffect, useState } from "react";
 import { useIntl } from "react-intl";
-import { UseMutateFunction } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "tss-react/mui";
-import { ConfirmationDialog, Loader, Title } from "./base";
 import { CsvAlert } from "./CsvAlert";
+import { ConfirmationDialog, Loader, Title } from "./base";
 
 export type QuestionnaireEditFormProps = {
   questionnaire: Questionnaire;
@@ -69,10 +69,10 @@ export const QuestionnaireEditForm = memo(
      * Load contexts on mount
      */
 
-    const { isLoading, data: surveyContexts } = useApiQuery(
-      "fetchSurveyContexts",
-      props.fetchSurveyContexts
-    );
+    const { isLoading, data: surveyContexts } = useApiQuery({
+      queryKey: ["fetchSurveyContexts"],
+      queryFn: props.fetchSurveyContexts,
+    });
 
     const {
       checkCsvData,

@@ -24,32 +24,34 @@ export const QuestionnaireDetailsPage = memo(
     const navigate = useNavigate();
     const poguesUrl = getEnvVar("VITE_POGUES_URL");
 
-    const { isLoading, data: questionnaire } = useApiQuery(
-      ["questionnaire", id],
-      () => {
+    const {
+      isLoading,
+      data: questionnaire,
+      isSuccess,
+    } = useApiQuery({
+      queryKey: ["questionnaire-loading", id],
+      queryFn: () => {
         const idNumber = Number(id);
         return props.fetchQuestionnaire(idNumber);
       },
-      {
-        // go to the update page if questionnaire is not synchronized
-        onSuccess: (questionnaire: Questionnaire) => {
-          if (!questionnaire.isSynchronized) {
-            navigate(`/questionnaires/${questionnaire.id}/edit`);
-          }
-        },
-      }
-    );
+    });
 
-    const { mutate: deleteQuestionnaire, isLoading: isDeleting } =
-      useApiMutation(
-        (questionnaire: Questionnaire) =>
-          props.deleteQuestionnaire(questionnaire.id),
-        {
-          onSuccess: () => {
-            navigate("/questionnaires");
-          },
-        }
-      );
+    if (isSuccess && questionnaire && !questionnaire.isSynchronized) {
+      navigate(`/questionnaires/${questionnaire.id}/edit`);
+    }
+
+    const {
+      mutate: deleteQuestionnaire,
+      isPending: isDeleting,
+      isSuccess: isDeleteSuccess,
+    } = useApiMutation({
+      mutationKey: ["questionnaire-delete", questionnaire],
+      mutationFn: (questionnaire: Questionnaire) =>
+        props.deleteQuestionnaire(questionnaire.id),
+    });
+    if (isDeleteSuccess) {
+      navigate("/questionnaires");
+    }
 
     return (
       <>

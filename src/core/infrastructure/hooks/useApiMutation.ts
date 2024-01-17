@@ -1,22 +1,32 @@
+import {
+  MutationFunction,
+  MutationKey,
+  UseMutationOptions,
+  useMutation,
+} from "@tanstack/react-query";
 import { ApiError } from "core/application/model/error";
-import type { MutationFunction } from "react-query";
-import { useMutation, UseMutationOptions } from "react-query";
-import { useNotifier } from "..";
+import useNotifier from "../Notifier";
 
 export const useApiMutation = <
   TData = unknown,
   TVariables = void,
   TContext = unknown
->(
-  callback: MutationFunction<TData, TVariables>,
+>({
+  mutationKey,
+  mutationFn,
+  options,
+}: {
+  mutationKey: MutationKey;
+  mutationFn: MutationFunction<TData, TVariables>;
   options?: Omit<
     UseMutationOptions<TData, ApiError, TVariables, TContext>,
     "mutationFn"
-  > & { successMessage?: string; errorMessage?: string }
-) => {
+  > & { successMessage?: string; errorMessage?: string };
+}) => {
   const notifier = useNotifier();
-  return useMutation<TData, ApiError, TVariables, TContext>(callback, {
-    ...options,
+  return useMutation<TData, ApiError, TVariables, TContext>({
+    mutationKey,
+    mutationFn,
     onSuccess: (...args) => {
       if (options?.successMessage) {
         notifier.success(options.successMessage);

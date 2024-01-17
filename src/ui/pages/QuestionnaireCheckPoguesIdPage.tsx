@@ -2,6 +2,7 @@ import GetAppIcon from "@mui/icons-material/GetApp";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Grid, Stack, TextField } from "@mui/material";
 import { Questionnaire } from "core/application/model";
+import { useNotifier } from "core/infrastructure";
 import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
 import * as React from "react";
 import { memo, useEffect, useState } from "react";
@@ -21,6 +22,7 @@ export const QuestionnaireCheckPoguesIdPage = memo(
     const intl = useIntl();
     const [poguesIdInput, setPoguesIdInput] = useState(poguesId ?? "");
     const [isLoading, setLoading] = useState(true);
+    const notifier = useNotifier();
 
     useEffect(() => {
       if (poguesId !== undefined) {
@@ -32,48 +34,79 @@ export const QuestionnaireCheckPoguesIdPage = memo(
     }, []);
 
     const {
-      refetch: getQuestionnaireFromPogues,
-      isLoading: isLoadingQuestionnaire,
-    } = useApiQuery(
-      ["questionnaire", poguesIdInput],
-      () => {
-        return props.fetchQuestionnaireFromPoguesId(poguesIdInput);
-      },
-      {
-        enabled: false,
-        notify: false,
-        // go to the details page if questionnaire already exists
-        onSuccess: (questionnaire: Questionnaire) => {
-          navigate(`/questionnaires/${questionnaire.id}`);
-        },
-        // get pogues questionnaire if questionnaire in db does not exist
-        onError: () => {
-          getPoguesQuestionnaire({});
-        },
-      }
-    );
-
-    const {
       refetch: getPoguesQuestionnaire,
       isLoading: isLoadingPoguesQuestionnaire,
-    } = useApiQuery(
-      ["questionnaire-", poguesIdInput],
-      () => {
+      isSuccess: isSuccessPoguesQuestionnaire,
+      isError: isErrorPoguesQuestionnaire,
+      data: poguesQuestionnaire,
+    } = useApiQuery({
+      queryKey: ["questionnaire-", poguesIdInput],
+      queryFn: () => {
+        console.log("Let's fetch from ogues !!!");
         return props.fetchPoguesQuestionnaire(poguesIdInput);
       },
-      {
+      options: {
         enabled: false,
-        successMessage: intl.formatMessage({
+        notifyOnChangeProps: ["data"],
+        // successMessage: intl.formatMessage({
+        //   id: "questionnaire_retrieve_success",
+        // }),
+        // onSuccess(questionnaireData) {
+        //   navigate("/questionnaires/add", { state: questionnaireData });
+        // },
+        // onError() {
+        //   setLoading(false);
+        // },
+      },
+    });
+
+    if (isSuccessPoguesQuestionnaire && poguesQuestionnaire) {
+      notifier.success(
+        intl.formatMessage({
           id: "questionnaire_retrieve_success",
-        }),
-        onSuccess(questionnaireData) {
-          navigate("/questionnaires/add", { state: questionnaireData });
-        },
-        onError() {
-          setLoading(false);
-        },
-      }
-    );
+        })
+      );
+      console.log("poguesQuestionnaire", poguesQuestionnaire);
+      navigate("/questionnaires/add", { state: poguesQuestionnaire });
+    }
+    if (isErrorPoguesQuestionnaire) {
+      setLoading(false);
+    }
+
+    const {
+      refetch: getQuestionnaireFromPogues,
+      isLoading: isLoadingQuestionnaire,
+      isSuccess: isSuccessQuestionnaireFromPogues,
+      isError: isErrorQuestionnaireFromPogues,
+      data: questionnaireFromPogues,
+    } = useApiQuery({
+      queryKey: ["questionnaire", poguesIdInput],
+      queryFn: () => {
+        console.log("Let's fetched ! ");
+        return props.fetchQuestionnaireFromPoguesId(poguesIdInput);
+      },
+      options: {
+        enabled: false,
+        // notifyOnChangeProps: [],
+        // go to the details page if questionnaire already exists
+        // onSuccess: (questionnaire: Questionnaire) => {
+        //   navigate(`/questionnaires/${questionnaire.id}`);
+        // },
+        // // get pogues questionnaire if questionnaire in db does not exist
+        // onError: () => {
+        //   getPoguesQuestionnaire({});
+        // },
+      },
+    });
+
+    if (isSuccessQuestionnaireFromPogues && questionnaireFromPogues) {
+      navigate(`/questionnaires/${questionnaireFromPogues.id}`);
+    }
+    if (isErrorQuestionnaireFromPogues) {
+      // get pogues questionnaire if questionnaire in db does not exist
+      console.log("Let'sgo, not questionnaire inPublic-enemy db");
+      getPoguesQuestionnaire({});
+    }
 
     const handlePoguesIdChange = (
       event: React.ChangeEvent<HTMLInputElement>

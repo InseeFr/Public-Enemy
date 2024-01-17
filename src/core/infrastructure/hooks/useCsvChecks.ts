@@ -27,14 +27,15 @@ export const useCsvChecks = (
 
   const {
     mutate: checkCsvData,
-    isLoading: isCheckingCsvData,
+    isPending: isCheckingCsvData,
     isSuccess,
     reset,
-  } = useCsvApiMutation(
-    ({ id, data }: { id: string; data: File }) => {
+  } = useCsvApiMutation({
+    mutationKey: ["csv-check"],
+    mutationFn: ({ id, data }: { id: string; data: File }) => {
       return checkSurveyUnitsCsvData(id, data);
     },
-    {
+    options: {
       onMutate: () => {
         setMessages({
           warnings: undefined,
@@ -57,8 +58,8 @@ export const useCsvChecks = (
         }
         setMessages({ errors: [err.message] });
       },
-    }
-  );
+    },
+  });
 
   /**
    * force type check on ApiErrorDetails to get the correct type

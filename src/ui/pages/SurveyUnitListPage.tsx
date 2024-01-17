@@ -10,6 +10,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { useQueryClient } from "@tanstack/react-query";
 import { Questionnaire, SurveyUnitsData } from "core/application/model";
 import { useNotifier } from "core/infrastructure";
 import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
@@ -17,7 +18,6 @@ import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
 import { getEnvVar } from "core/utils/configuration/env";
 import { memo, useEffect, useState } from "react";
 import { useIntl } from "react-intl";
-import { useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
 import { Block, Loader, Subtitle, Title } from "ui/components/base";
 import { SurveyUnitResetButton } from "ui/components/SurveyUnitResetButton";
@@ -55,33 +55,39 @@ export const SurveyUnitListPage = memo((props: SurveyUnitListPageProps) => {
   });
 
   const { isLoading: isQuestionnaireLoading, data: questionnaire } =
-    useApiQuery(
-      ["questionnaire", questionnaireId],
-      () => {
+    useApiQuery({
+      queryKey: ["questionnaire", questionnaireId],
+      queryFn: () => {
         const idNumber = Number(questionnaireId);
         return props.fetchQuestionnaire(idNumber);
       },
-      { enabled: canFetchData }
-    );
+      options: { enabled: canFetchData },
+    });
 
   const { isLoading: isSurveyUnitsLoading, data: surveyUnitsData } =
-    useApiQuery(
-      ["surveyUnitsData", questionnaireId, modeName],
-      () => {
+    useApiQuery({
+      queryKey: ["surveyUnitsData", questionnaireId, modeName],
+      queryFn: () => {
         const idNumber = Number(questionnaireId);
         return props.fetchSurveyUnitsData(idNumber, modeName as string);
       },
-      { enabled: canFetchData }
-    );
+      options: { enabled: canFetchData },
+    });
 
-  const { mutate: resetSurveyUnit, isLoading: isResetting } = useApiMutation(
-    (surveyUnitId: string) => props.resetSurveyUnit(surveyUnitId),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: "surveyUnitsData" });
-      },
-    }
-  );
+  const {
+    mutate: resetSurveyUnit,
+    isPending: isResetting,
+    isSuccess,
+  } = useApiMutation({
+    mutationKey: ["reset-survey-unit"],
+    mutationFn: (surveyUnitId: string) => props.resetSurveyUnit(surveyUnitId),
+  });
+
+  if (isSuccess) {
+    queryClient.invalidateQueries({
+      queryKey: ["surveyUnitsData", questionnaireId, modeName],
+    });
+  }
 
   return (
     <Grid component="main" container justifyContent="center">
