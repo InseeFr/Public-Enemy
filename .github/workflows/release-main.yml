@@ -53,11 +53,11 @@ jobs:
           toTag: ${{ steps.previousTag.outputs.previousTag}}
           token: ${{ secrets.GITHUB_TOKEN }}
           writeToFile: false
-        
+
       - uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ needs.check-version.outputs.release-version }}
-          target_commitish: ${{ github.head_ref || github.ref }}  
+          target_commitish: ${{ github.head_ref || github.ref }}
           name: ${{ needs.check-version.outputs.release-version }}
           body: ${{steps.changelog.outputs.changes}}
         env:
@@ -76,10 +76,10 @@ jobs:
         with:
           ref: ${{ steps.extract_branch.outputs.branch }}
 
-      - name: Use Node.js 16
+      - name: Use Node.js 18
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - run: yarn
       - run: yarn build
 
