@@ -35,7 +35,7 @@ export const Application = memo(() => {
     login({
       doesCurrentHrefRequiresAuth: true,
     });
-    return;
+    return <></>;
   }
 
   const questionnaireRepository = createQuestionnaireRepository(
