@@ -9,14 +9,15 @@ import { postRequestMultiPart } from "core/utils/http/fetcher";
  * @returns questionnaire repository
  */
 export function createQuestionnaireRepository(
-  apiUrl: string
+  apiUrl: string,
+  token?: string
 ): QuestionnaireRepositoryPort {
   const getQuestionnaires = (): Promise<Questionnaire[]> => {
-    return getRequest<Questionnaire[]>(`${apiUrl}/questionnaires`);
+    return getRequest<Questionnaire[]>(`${apiUrl}/questionnaires`)(token);
   };
 
   const getQuestionnaire = (id: number): Promise<Questionnaire> => {
-    return getRequest<Questionnaire>(`${apiUrl}/questionnaires/${id}`);
+    return getRequest<Questionnaire>(`${apiUrl}/questionnaires/${id}`)(token);
   };
 
   /**
@@ -25,16 +26,18 @@ export function createQuestionnaireRepository(
   const getPoguesQuestionnaire = (poguesId: string): Promise<Questionnaire> => {
     return getRequest<Questionnaire>(
       `${apiUrl}/questionnaires/pogues/${poguesId}`
-    );
+    )(token);
   };
 
   /**
    * get questionnaire from pogues id (the db one)
    */
   const getQuestionnaireFromPoguesId = (
-    poguesId: string
+    poguesId?: string
   ): Promise<Questionnaire> => {
-    return getRequest<Questionnaire>(`${apiUrl}/questionnaires/${poguesId}/db`);
+    return getRequest<Questionnaire>(`${apiUrl}/questionnaires/${poguesId}/db`)(
+      token
+    );
   };
 
   const addQuestionnaire = (
@@ -54,7 +57,7 @@ export function createQuestionnaireRepository(
     return postRequestMultiPart<Questionnaire>(
       `${apiUrl}/questionnaires/add`,
       formData
-    );
+    )(token);
   };
 
   const editQuestionnaire = (
@@ -70,15 +73,15 @@ export function createQuestionnaireRepository(
     return postRequestMultiPart<Questionnaire>(
       `${apiUrl}/questionnaires/${questionnaire.id}`,
       formData
-    );
+    )(token);
   };
 
   const deleteQuestionnaire = (id: number): Promise<void> => {
-    return deleteRequest<void>(`${apiUrl}/questionnaires/${id}/delete`);
+    return deleteRequest<void>(`${apiUrl}/questionnaires/${id}/delete`)(token);
   };
 
   const getSurveyContexts = (): Promise<SurveyContext[]> => {
-    return getRequest<SurveyContext[]>(`${apiUrl}/contexts`);
+    return getRequest<SurveyContext[]>(`${apiUrl}/contexts`)(token);
   };
 
   return {

@@ -15,12 +15,12 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { useQueryClient } from "@tanstack/react-query";
 import { Questionnaire } from "core/application/model";
 import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
 import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
 import { memo } from "react";
 import { useIntl } from "react-intl";
-import { useQueryClient } from "react-query";
 import { Link } from "react-router-dom";
 import { makeStyles } from "tss-react/mui";
 import { Block, Loader, Title } from "ui/components/base";
@@ -37,21 +37,26 @@ export const QuestionnaireListPage = memo(
     const intl = useIntl();
     const { classes } = useStyles();
     const queryClient = useQueryClient();
-    const { isLoading, data: questionnaires } = useApiQuery(
-      "fetchQuestionnaires",
-      props.fetchQuestionnaires
-    );
+    const { isLoading, data: questionnaires } = useApiQuery({
+      queryKey: ["fetchQuestionnaires"],
+      queryFn: props.fetchQuestionnaires,
+    });
 
-    const { mutate: deleteQuestionnaire, isLoading: isDeleting } =
-      useApiMutation(
-        (questionnaire: Questionnaire) =>
-          props.deleteQuestionnaire(questionnaire.id),
-        {
-          onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: "fetchQuestionnaires" });
-          },
-        }
-      );
+    const {
+      mutate: deleteQuestionnaire,
+      isPending: isDeleting,
+      isSuccess,
+    } = useApiMutation({
+      mutationKey: ["questionnaire-delete"],
+      mutationFn: (questionnaire: Questionnaire) =>
+        props.deleteQuestionnaire(questionnaire.id),
+    });
+
+    if (isSuccess) {
+      queryClient.invalidateQueries({
+        queryKey: ["fetchQuestionnaires"],
+      });
+    }
 
     return (
       <Grid component="main" container justifyContent="center">

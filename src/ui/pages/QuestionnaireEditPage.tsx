@@ -27,18 +27,20 @@ export const QuestionnaireEditPage = memo(
     const { id } = useParams();
     const intl = useIntl();
 
-    const { isLoading, data: questionnaire } = useApiQuery(
-      ["questionnaire", id],
-      () => {
+    const { isLoading, data: questionnaire } = useApiQuery({
+      queryKey: ["questionnaire", id],
+      queryFn: () => {
         const idNumber = Number(id);
         return props.fetchQuestionnaire(idNumber);
-      }
-    );
+      },
+    });
 
-    const { mutate: saveQuestionnaire, isLoading: isSubmitting } =
-      useApiMutation((questionnaire: Questionnaire) =>
-        props.editQuestionnaire(questionnaire)
-      );
+    const { mutate: saveQuestionnaire, isPending: isSubmitting } =
+      useApiMutation({
+        mutationKey: ["questionnaire-edit", questionnaire],
+        mutationFn: (questionnaire: Questionnaire) =>
+          props.editQuestionnaire(questionnaire),
+      });
 
     return (
       <>

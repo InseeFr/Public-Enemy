@@ -2,7 +2,8 @@ import GetAppIcon from "@mui/icons-material/GetApp";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Grid, Stack, TextField } from "@mui/material";
 import { Questionnaire } from "core/application/model";
-import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
+import { useNotifier } from "core/infrastructure";
+import { useCustomQuery } from "core/infrastructure/hooks/useCustomQuery";
 import * as React from "react";
 import { memo, useEffect, useState } from "react";
 import { useIntl } from "react-intl";
@@ -21,59 +22,46 @@ export const QuestionnaireCheckPoguesIdPage = memo(
     const intl = useIntl();
     const [poguesIdInput, setPoguesIdInput] = useState(poguesId ?? "");
     const [isLoading, setLoading] = useState(true);
+    const notifier = useNotifier();
+
+    const {
+      launch,
+      firstSuccess,
+      secondSuccess,
+      questionnairePoguesId,
+      questionnairePogues,
+      globalError,
+      isLoadingPoguesQuestionnaire,
+    } = useCustomQuery(
+      props.fetchQuestionnaireFromPoguesId,
+      props.fetchPoguesQuestionnaire,
+      poguesIdInput
+    );
 
     useEffect(() => {
       if (poguesId !== undefined) {
         setPoguesIdInput(poguesId);
-        getQuestionnaireFromPogues();
+        launch();
         return;
       }
       setLoading(false);
     }, []);
 
-    const {
-      refetch: getQuestionnaireFromPogues,
-      isLoading: isLoadingQuestionnaire,
-    } = useApiQuery(
-      ["questionnaire", poguesIdInput],
-      () => {
-        return props.fetchQuestionnaireFromPoguesId(poguesIdInput);
-      },
-      {
-        enabled: false,
-        notify: false,
-        // go to the details page if questionnaire already exists
-        onSuccess: (questionnaire: Questionnaire) => {
-          navigate(`/questionnaires/${questionnaire.id}`);
-        },
-        // get pogues questionnaire if questionnaire in db does not exist
-        onError: () => {
-          getPoguesQuestionnaire({});
-        },
-      }
-    );
-
-    const {
-      refetch: getPoguesQuestionnaire,
-      isLoading: isLoadingPoguesQuestionnaire,
-    } = useApiQuery(
-      ["questionnaire-", poguesIdInput],
-      () => {
-        return props.fetchPoguesQuestionnaire(poguesIdInput);
-      },
-      {
-        enabled: false,
-        successMessage: intl.formatMessage({
+    if (secondSuccess && questionnairePogues) {
+      notifier.success(
+        intl.formatMessage({
           id: "questionnaire_retrieve_success",
-        }),
-        onSuccess(questionnaireData) {
-          navigate("/questionnaires/add", { state: questionnaireData });
-        },
-        onError() {
-          setLoading(false);
-        },
-      }
-    );
+        })
+      );
+      navigate("/questionnaires/add", { state: questionnairePogues });
+    }
+    if (globalError) {
+      notifier.error(intl.formatMessage({ id: "questionnaire_add_notfound" }));
+    }
+
+    if (firstSuccess && questionnairePoguesId) {
+      navigate(`/questionnaires/${questionnairePoguesId}`);
+    }
 
     const handlePoguesIdChange = (
       event: React.ChangeEvent<HTMLInputElement>
@@ -83,7 +71,7 @@ export const QuestionnaireCheckPoguesIdPage = memo(
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      getQuestionnaireFromPogues();
+      launch();
     };
 
     return (
@@ -116,9 +104,7 @@ export const QuestionnaireCheckPoguesIdPage = memo(
                     color="info"
                     variant="contained"
                     startIcon={<GetAppIcon />}
-                    loading={
-                      isLoadingPoguesQuestionnaire || isLoadingQuestionnaire
-                    }
+                    loading={isLoadingPoguesQuestionnaire}
                     loadingPosition="start"
                   >
                     {intl.formatMessage({ id: "questionnaire_retrieve" })}

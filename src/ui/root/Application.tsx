@@ -4,6 +4,7 @@ import {
   createQuestionnaireRepository,
   createSurveyUnitRepository,
 } from "core/infrastructure";
+import { useAuth } from "core/infrastructure/hooks/useAuth";
 import { getEnvVar } from "core/utils/configuration/env";
 import { memo, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
@@ -25,11 +26,25 @@ export const Application = memo(() => {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const {
+    oidc: { isUserLoggedIn, login, oidcTokens },
+  } = useAuth();
+
+  if (!isUserLoggedIn && login) {
+    login({
+      doesCurrentHrefRequiresAuth: true,
+    });
+    return;
+  }
+
   const questionnaireRepository = createQuestionnaireRepository(
-    getEnvVar("VITE_API_URL")
+    getEnvVar("VITE_API_URL"),
+    oidcTokens?.accessToken
   );
   const surveyUnitRepository = createSurveyUnitRepository(
-    getEnvVar("VITE_API_URL")
+    getEnvVar("VITE_API_URL"),
+    oidcTokens?.accessToken
   );
 
   return (

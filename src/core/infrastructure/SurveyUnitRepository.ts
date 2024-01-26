@@ -9,7 +9,8 @@ import { postRequestMultiPart, putRequest } from "core/utils/http/fetcher";
  * @returns surveyUnit repository
  */
 export function createSurveyUnitRepository(
-  apiUrl: string
+  apiUrl: string,
+  token?: string
 ): SurveyUnitRepositoryPort {
   const getSurveyUnitsData = (
     questionnaireId: number,
@@ -17,7 +18,7 @@ export function createSurveyUnitRepository(
   ): Promise<SurveyUnitsData> => {
     return getRequest<SurveyUnitsData>(
       `${apiUrl}/questionnaires/${questionnaireId}/modes/${modeName}/survey-units`
-    );
+    )(token);
   };
 
   const checkSurveyUnitsCSV = (
@@ -30,16 +31,14 @@ export function createSurveyUnitRepository(
     return postRequestMultiPart<SurveyUnitsMessages>(
       `${apiUrl}/questionnaires/${poguesId}/checkdata`,
       formData
-    );
+    )(token);
   };
-
   const resetSurveyUnit = (surveyUnitId: string): Promise<void> => {
     return putRequest<void>(
       `${apiUrl}/survey-units/${surveyUnitId}/reset`,
       undefined
-    );
+    )(token);
   };
-
   return {
     getSurveyUnitsData,
     checkSurveyUnitsCSV,
