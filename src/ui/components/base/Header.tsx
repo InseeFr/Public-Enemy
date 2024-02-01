@@ -53,14 +53,24 @@ export const Header = memo((props: SidebarNavProps) => {
 
           {"|"}
 
-          <Button sx={{ color: "#fff" }} href={poguesUrl}>
+          <Button
+            sx={{ color: "#fff" }}
+            href={poguesUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
             <LaunchIcon fontSize="small"></LaunchIcon>
             {intl.formatMessage({
               id: "menu_pogues",
             })}
           </Button>
 
-          <Button sx={{ color: "#fff" }} href={documentationUrl}>
+          <Button
+            sx={{ color: "#fff" }}
+            href={documentationUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
             <TextSnippetIcon fontSize="small"></TextSnippetIcon>
             {intl.formatMessage({
               id: "menu_documentation",
