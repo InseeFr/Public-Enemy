@@ -29,7 +29,7 @@ export const useUser = () => {
 
   const user = useMemo(() => {
     if (authType === AuthType.OIDC) return decodedIdToken;
-    return { preferred_username: null, sub: "", timbre: "" };
+    return { preferred_username: null, sub: "", timbre: "", name: "Fake User" };
   }, [decodedIdToken]);
 
   return { user };

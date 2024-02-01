@@ -1,11 +1,13 @@
 import LaunchIcon from "@mui/icons-material/Launch";
 import MenuIcon from "@mui/icons-material/Menu";
+import PersonIcon from "@mui/icons-material/Person";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import { Box, Button } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import { useUser } from "core/infrastructure/hooks/useAuth";
 import { getEnvVar } from "core/utils/configuration/env";
 import { memo } from "react";
 import { useIntl } from "react-intl";
@@ -18,6 +20,8 @@ export const Header = memo((props: SidebarNavProps) => {
   const poguesUrl = getEnvVar("VITE_POGUES_URL");
   const documentationUrl = getEnvVar("VITE_DOCUMENTATION_URL");
   const intl = useIntl();
+
+  const { user } = useUser();
 
   return (
     <AppBar className={classes.root}>
@@ -42,6 +46,13 @@ export const Header = memo((props: SidebarNavProps) => {
         </Typography>
 
         <Box sx={{ display: { xs: "none", sm: "block" } }}>
+          <Button sx={{ color: "#fff" }}>
+            <PersonIcon fontSize="small"></PersonIcon>
+            {`${user?.name}`}
+          </Button>
+
+          {"|"}
+
           <Button sx={{ color: "#fff" }} href={poguesUrl}>
             <LaunchIcon fontSize="small"></LaunchIcon>
             {intl.formatMessage({
