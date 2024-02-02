@@ -1,7 +1,11 @@
 import { SurveyUnitsData, SurveyUnitsMessages } from "core/application/model";
 import { SurveyUnitRepositoryPort } from "core/application/port";
 import { getRequest } from "core/utils/http";
-import { postRequestMultiPart, putRequest } from "core/utils/http/fetcher";
+import {
+  fetcherFile,
+  postRequestMultiPart,
+  putRequest,
+} from "core/utils/http/fetcher";
 
 /**
  * Get SurveyUnit Repository
@@ -39,9 +43,20 @@ export function createSurveyUnitRepository(
       undefined
     )(token);
   };
+
+  const getSurveyUnitsSchemaCSV = (poguesId: string): Promise<void> => {
+    return fetcherFile(`${apiUrl}/questionnaires/${poguesId}/csv`, token);
+  };
+
+  const getExistingSurveyUnitsSchemaCSV = (id: number): Promise<void> => {
+    return fetcherFile(`${apiUrl}/questionnaires/${id}/data`, token);
+  };
+
   return {
     getSurveyUnitsData,
     checkSurveyUnitsCSV,
     resetSurveyUnit,
+    getSurveyUnitsSchemaCSV,
+    getExistingSurveyUnitsSchemaCSV,
   };
 }

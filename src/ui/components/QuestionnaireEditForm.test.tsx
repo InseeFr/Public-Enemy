@@ -26,6 +26,9 @@ const checkSurveyUnitsCsvData = vi.fn(() =>
   Promise.resolve(surveyUnitsWarningMessages)
 );
 
+const getSurveyUnitsSchemaCSV = vi.fn(() => Promise.resolve());
+const getExistingSurveyUnitsSchemaCSV = vi.fn(() => Promise.resolve());
+
 beforeEach(async () => {
   // Clear mocks and add some testing data after before each test run
   await vi.clearAllMocks();
@@ -44,6 +47,8 @@ function createQuestionnaireEditFormRouter(isEditMode: boolean) {
             isSubmitting={false}
             saveQuestionnaire={saveQuestionnaire}
             checkSurveyUnitsCsvData={checkSurveyUnitsCsvData}
+            getSurveyUnitsSchemaCSV={getSurveyUnitsSchemaCSV}
+            getExistingSurveyUnitsSchemaCSV={getExistingSurveyUnitsSchemaCSV}
           />
         ),
       },
