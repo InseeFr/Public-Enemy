@@ -20,6 +20,8 @@ export type QuestionnaireEditPageProps = {
     poguesId: string,
     surveyUnitsData: File
   ) => Promise<SurveyUnitsMessages>;
+  getSurveyUnitsSchemaCSV: (poguesId: string) => Promise<void>;
+  getExistingSurveyUnitsSchemaCSV: (id: number) => Promise<void>;
 };
 
 export const QuestionnaireEditPage = memo(
@@ -43,41 +45,43 @@ export const QuestionnaireEditPage = memo(
       });
 
     return (
-      <>
-        <Grid component="main" container justifyContent="center" spacing={3}>
-          <Grid item xs={12} md={8}>
-            <Block>
-              {questionnaire ? (
-                <>
-                  {!questionnaire.isSynchronized && (
-                    <Alert severity="error">
-                      <AlertTitle>
-                        {intl.formatMessage({
-                          id: "questionnaire_notsynchronized_title",
-                        })}
-                      </AlertTitle>
+      <Grid component="main" container justifyContent="center" spacing={3}>
+        <Grid item xs={12} md={8}>
+          <Block>
+            {questionnaire ? (
+              <>
+                {!questionnaire.isSynchronized && (
+                  <Alert severity="error">
+                    <AlertTitle>
                       {intl.formatMessage({
-                        id: "questionnaire_notsynchronized_message",
+                        id: "questionnaire_notsynchronized_title",
                       })}
-                    </Alert>
-                  )}
+                    </AlertTitle>
+                    {intl.formatMessage({
+                      id: "questionnaire_notsynchronized_message",
+                    })}
+                  </Alert>
+                )}
 
-                  <QuestionnaireEditForm
-                    questionnaire={questionnaire}
-                    isEditMode={true}
-                    fetchSurveyContexts={props.fetchSurveyContexts}
-                    checkSurveyUnitsCsvData={props.checkSurveyUnitsCsvData}
-                    saveQuestionnaire={saveQuestionnaire}
-                    isSubmitting={isSubmitting}
-                  />
-                </>
-              ) : (
-                <Loader isLoading={isLoading}></Loader>
-              )}
-            </Block>
-          </Grid>
+                <QuestionnaireEditForm
+                  questionnaire={questionnaire}
+                  isEditMode={true}
+                  fetchSurveyContexts={props.fetchSurveyContexts}
+                  checkSurveyUnitsCsvData={props.checkSurveyUnitsCsvData}
+                  getExistingSurveyUnitsSchemaCSV={
+                    props.getExistingSurveyUnitsSchemaCSV
+                  }
+                  getSurveyUnitsSchemaCSV={props.getSurveyUnitsSchemaCSV}
+                  saveQuestionnaire={saveQuestionnaire}
+                  isSubmitting={isSubmitting}
+                />
+              </>
+            ) : (
+              <Loader isLoading={isLoading}></Loader>
+            )}
+          </Block>
         </Grid>
-      </>
+      </Grid>
     );
   }
 );

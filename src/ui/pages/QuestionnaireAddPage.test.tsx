@@ -13,6 +13,9 @@ describe("QuestionnaireAddPage", () => {
   const checkSurveyUnitsCsvData = vi.fn(() =>
     Promise.resolve(surveyUnitsWarningMessages)
   );
+  const getSurveyUnitsSchemaCSV = vi.fn(() => Promise.resolve());
+  const getExistingSurveyUnitsSchemaCSV = vi.fn(() => Promise.resolve());
+
   const router = createMemoryRouter(
     [
       {
@@ -23,6 +26,8 @@ describe("QuestionnaireAddPage", () => {
             fetchQuestionnaireFromPoguesId={fetchQuestionnaire}
             fetchSurveyContexts={fetchSurveyContexts}
             checkSurveyUnitsCsvData={checkSurveyUnitsCsvData}
+            getSurveyUnitsSchemaCSV={getSurveyUnitsSchemaCSV}
+            getExistingSurveyUnitsSchemaCSV={getExistingSurveyUnitsSchemaCSV}
           />
         ),
       },

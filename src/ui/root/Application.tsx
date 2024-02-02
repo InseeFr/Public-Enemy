@@ -85,6 +85,12 @@ export const Application = memo(() => {
                     checkSurveyUnitsCsvData={
                       surveyUnitRepository.checkSurveyUnitsCSV
                     }
+                    getSurveyUnitsSchemaCSV={
+                      surveyUnitRepository.getSurveyUnitsSchemaCSV
+                    }
+                    getExistingSurveyUnitsSchemaCSV={
+                      surveyUnitRepository.getExistingSurveyUnitsSchemaCSV
+                    }
                   />
                 }
               />
@@ -141,6 +147,12 @@ export const Application = memo(() => {
                     addQuestionnaire={questionnaireRepository.addQuestionnaire}
                     checkSurveyUnitsCsvData={
                       surveyUnitRepository.checkSurveyUnitsCSV
+                    }
+                    getSurveyUnitsSchemaCSV={
+                      surveyUnitRepository.getSurveyUnitsSchemaCSV
+                    }
+                    getExistingSurveyUnitsSchemaCSV={
+                      surveyUnitRepository.getExistingSurveyUnitsSchemaCSV
                     }
                   />
                 }

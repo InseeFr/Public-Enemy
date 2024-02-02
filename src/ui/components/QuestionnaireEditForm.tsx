@@ -49,6 +49,8 @@ export type QuestionnaireEditFormProps = {
     unknown
   >;
   isSubmitting: boolean;
+  getSurveyUnitsSchemaCSV: (poguesId: string) => Promise<void>;
+  getExistingSurveyUnitsSchemaCSV: (id: number) => Promise<void>;
 };
 
 export const QuestionnaireEditForm = memo(
@@ -160,6 +162,14 @@ export const QuestionnaireEditForm = memo(
       setDisplayConfirmationDialog(false);
     };
 
+    const getExistingSchema = () => {
+      props.getExistingSurveyUnitsSchemaCSV(questionnaire.id);
+    };
+
+    const getExpectedSchema = () => {
+      props.getSurveyUnitsSchemaCSV(questionnaire.poguesId);
+    };
+
     return (
       <Loader isLoading={isLoading}>
         <Title>{questionnaire.label}</Title>
@@ -248,18 +258,14 @@ export const QuestionnaireEditForm = memo(
               </FormHelperText>
               <Typography variant="body2" gutterBottom>
                 {props.isEditMode && (
-                  <Button
-                    href={`${apiUrl}/questionnaires/${questionnaire.id}/data`}
-                  >
+                  <Button onClick={getExistingSchema}>
                     <FileDownloadIcon></FileDownloadIcon>
                     {intl.formatMessage({
                       id: "questionnaire_edit_existing_csv",
                     })}
                   </Button>
                 )}
-                <Button
-                  href={`${apiUrl}/questionnaires/${questionnaire.poguesId}/csv`}
-                >
+                <Button onClick={getExpectedSchema}>
                   <AttachFileIcon></AttachFileIcon>
                   {intl.formatMessage({
                     id: "questionnaire_schema",

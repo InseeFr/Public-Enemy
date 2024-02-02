@@ -11,5 +11,8 @@ export type SurveyUnitRepositoryPort = {
     surveyUnitData: File
   ) => Promise<SurveyUnitsMessages>;
 
+  getSurveyUnitsSchemaCSV: (poguesId: string) => Promise<void>;
+  getExistingSurveyUnitsSchemaCSV: (id: number) => Promise<void>;
+
   resetSurveyUnit: (surveyUnitId: string) => Promise<void>;
 };

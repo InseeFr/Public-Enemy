@@ -191,3 +191,34 @@ const resolveErrors = async (response: Response) => {
     }
   });
 };
+
+const getFilenameFromHeader = (header: string | null): string => {
+  if (header) {
+    const res = /filename="(.*)"/.exec(header);
+    return res && res.length > 0 ? res[1] : "default.csv";
+  }
+  return "default.csv";
+};
+
+export const fetcherFile = async (url: string, token?: string) => {
+  const response = await fetch(url, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    method: "GET",
+  });
+  const { ok, headers } = response;
+  if (ok) {
+    try {
+      const blob = await response.blob();
+      const file = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = file;
+      a.download = getFilenameFromHeader(headers.get("Content-disposition"));
+      a.click();
+      a.remove();
+    } catch (error) {
+      return resolveErrors(response);
+    }
+  }
+  // network error
+  return resolveErrors(response);
+};

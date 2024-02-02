@@ -22,6 +22,8 @@ export type QuestionnaireAddPageProps = {
     poguesId: string,
     surveyUnitsCsvData: File
   ) => Promise<SurveyUnitsMessages>;
+  getSurveyUnitsSchemaCSV: (poguesId: string) => Promise<void>;
+  getExistingSurveyUnitsSchemaCSV: (id: number) => Promise<void>;
 };
 
 export const QuestionnaireAddPage = memo((props: QuestionnaireAddPageProps) => {
@@ -88,6 +90,10 @@ export const QuestionnaireAddPage = memo((props: QuestionnaireAddPageProps) => {
                 isEditMode={false}
                 fetchSurveyContexts={props.fetchSurveyContexts}
                 checkSurveyUnitsCsvData={props.checkSurveyUnitsCsvData}
+                getSurveyUnitsSchemaCSV={props.getSurveyUnitsSchemaCSV}
+                getExistingSurveyUnitsSchemaCSV={
+                  props.getExistingSurveyUnitsSchemaCSV
+                }
                 saveQuestionnaire={saveQuestionnaire}
                 isSubmitting={isSubmitting}
               />
