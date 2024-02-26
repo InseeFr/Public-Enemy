@@ -7,7 +7,6 @@ import { CssBaseline } from "@mui/material";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "core/application/auth/provider/component";
 import { LocaleType, getMessages } from "core/i18n/messages";
-import { getConfiguration } from "core/utils/configuration";
 import { getEnvVar } from "core/utils/configuration/env";
 import { SnackbarProvider } from "notistack";
 import React from "react";
@@ -16,20 +15,6 @@ import { IntlProvider } from "react-intl";
 import reportWebVitals from "../reportWebVitals";
 import { Application } from "./root/Application";
 import { appTheme } from "./theme";
-
-/* /!\ used in production mode where env config is used after build time
-       should not be used in docker environment 
-*/
-await getConfiguration()
-  .then((conf) => {
-    if (Object.keys(conf).length) {
-      console.log("plop");
-      window._env_ = conf;
-    }
-  })
-  .catch((e) => {
-    console.log(e);
-  });
 
 const queryClient = new QueryClient({
   defaultOptions: {

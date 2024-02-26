@@ -39,4 +39,4 @@ dist-ssr
 *.local
 
 # Temporary env files
-env-config.js
+/env-config.js

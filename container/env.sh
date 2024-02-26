@@ -27,5 +27,3 @@ do
 done < .env
 
 echo "}" >> ./env-config.js
-
-sed -i.bak 's~<body[^>]*>~&<script src="/env-config.js"></script>~' ./index.html

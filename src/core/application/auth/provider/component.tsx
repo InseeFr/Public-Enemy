@@ -2,12 +2,9 @@ import { getEnvVar } from "core/utils/configuration";
 import { createOidcProvider } from "oidc-spa/react";
 import React from "react";
 
-export enum AuthType {
-  OIDC = "oidc",
-  NONE = "none",
-}
+export type AuthType = "oidc" | "none";
 
-export const authType = getEnvVar("VITE_AUTH_TYPE");
+export const authType = getEnvVar("VITE_AUTH_TYPE") as AuthType;
 export const oidcConf = {
   authUrl: getEnvVar("VITE_AUTH_URL"),
   realm: getEnvVar("VITE_REALM"),
@@ -35,7 +32,7 @@ const { authUrl, realm, client_id } = oidcConf;
 export const AuthContext = React.createContext(dummyOidcClient);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  if (authType === AuthType.OIDC) {
+  if (authType === "oidc") {
     const { OidcProvider } = createOidcProvider({
       issuerUri: `${authUrl}/realms/${realm}`,
       clientId: client_id,

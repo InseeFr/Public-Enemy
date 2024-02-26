@@ -1,6 +1,5 @@
 import {
   AuthContext,
-  AuthType,
   authType,
 } from "core/application/auth/provider/component";
 import { createUseOidc } from "oidc-spa/react";
@@ -9,7 +8,7 @@ import { useContext, useMemo } from "react";
 export const { useOidc } = createUseOidc();
 
 export const useAuth = () => {
-  if (authType === AuthType.OIDC) {
+  if (authType === "oidc") {
     const oidc = useOidc();
     return { oidc };
   } else {
@@ -28,7 +27,7 @@ export const useUser = () => {
   const { decodedIdToken } = oidc.oidcTokens;
 
   const user = useMemo(() => {
-    if (authType === AuthType.OIDC) return decodedIdToken;
+    if (authType === "oidc") return decodedIdToken;
     return { preferred_username: null, sub: "", timbre: "", name: "Fake User" };
   }, [decodedIdToken]);
 
