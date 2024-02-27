@@ -2,9 +2,7 @@ import { getEnvVar } from "core/utils/configuration";
 import { createOidcProvider } from "oidc-spa/react";
 import React from "react";
 
-export type AuthType = "oidc" | "none";
-
-export const authType = getEnvVar("VITE_AUTH_TYPE") as AuthType;
+export const authType = getEnvVar("VITE_AUTH_TYPE");
 export const oidcConf = {
   authUrl: getEnvVar("VITE_AUTH_URL"),
   realm: getEnvVar("VITE_REALM"),
