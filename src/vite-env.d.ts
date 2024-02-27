@@ -13,7 +13,7 @@ interface envKeys {
   readonly VITE_CLIENT_ID: string;
   readonly VITE_AUTH_TOKEN_FIELD: oidcTokensFieldString;
 }
-// Overload ImportMetaEnv for vite, when we use import.meta.env.XXX, XXX is typed by envKeys and dafault vite env variable.
+// Overload ImportMetaEnv for vite, when we use import.meta.env.XXX, XXX is typed by envKeys and default vite env variable.
 interface ImportMetaEnv extends Readonly<Record<string, string>>, envKeys {}
 
 // When we use window._env_ in code, you have access to envKeys (autocompletion)
