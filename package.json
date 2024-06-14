@@ -34,6 +34,7 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
+    "generate-entrypoint": "node scripts/generate-entrypoint.js",
     "preview": "vite preview",
     "test": "vitest",
     "coverage": "vitest --coverage"
