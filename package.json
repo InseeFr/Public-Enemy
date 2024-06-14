@@ -1,6 +1,6 @@
 {
   "name": "public-enemy",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "description": "Check and test questionnaire models",
   "repository": {
     "type": "git",
@@ -34,6 +34,7 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
+    "generate-entrypoint": "node scripts/generate-entrypoint.js",
     "preview": "vite preview",
     "test": "vitest",
     "coverage": "vitest --coverage"
