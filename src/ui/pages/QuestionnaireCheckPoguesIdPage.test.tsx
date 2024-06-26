@@ -19,8 +19,8 @@ describe.only("QuestionnaireAddPage", () => {
         path: "/check",
         element: (
           <QuestionnaireCheckPoguesIdPage
-            fetchPoguesQuestionnaire={mockFetchPoguesQuestionnaire}
-            fetchQuestionnaireFromPoguesId={mockFetchQuestionnaireFromPogues}
+            fetchPoguesQuestionnaire={mockFetchQuestionnaireFromPogues}
+            fetchQuestionnaireFromPoguesId={mockFetchPoguesQuestionnaire}
           />
         ),
       },
@@ -41,10 +41,8 @@ describe.only("QuestionnaireAddPage", () => {
     await userEvent.click(submitButton);
 
     expect(mockFetchPoguesQuestionnaire).toHaveBeenCalledWith("l8wwljbo");
+    expect(mockFetchQuestionnaireFromPogues).toHaveBeenCalledTimes(0);
 
-    expect(notifySpy).toHaveBeenCalledWith({
-      message: "Questionnaire récupéré",
-      type: "success",
-    });
+    expect(notifySpy).toHaveBeenCalledTimes(0);
   });
 });
