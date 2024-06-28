@@ -136,7 +136,7 @@ export const SurveyUnitListPage = memo((props: SurveyUnitListPageProps) => {
                           <TableCell align="center">
                             <a
                               target="_blank"
-                              href={`${orchestratorUrl}/questionnaire/${surveyUnitsData.questionnaireModelId}/unite-enquetee/${surveyUnit.id}`}
+                              href={surveyUnit.url}
                               aria-label={intl.formatMessage(
                                 { id: "survey_unit_list_new_window" },
                                 { surveyUnitId: surveyUnit.displayableId }
