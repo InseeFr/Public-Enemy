@@ -48,6 +48,7 @@ export const messagesFr = {
     "Erreur de chargement dans les orchestrateurs",
   questionnaire_notsynchronized_message:
     "Un problème est survenu pendant l'enregistrement du questionnaire. Merci de bien vouloir recharger le questionnaire en renseignant à nouveau le contexte et le fichier de données",
+  search_questionnaire: "Rechercher un questionnaire",
   survey_unit_csv_validation_error:
     "Une erreur est survenue pendant la vérification des données",
   survey_unit_csv_validation_warnings:
