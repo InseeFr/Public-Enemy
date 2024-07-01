@@ -19,11 +19,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Questionnaire } from "core/application/model";
 import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
 import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
-import { memo } from "react";
+import { memo, useState } from "react";
 import { useIntl } from "react-intl";
 import { Link } from "react-router-dom";
 import { makeStyles } from "tss-react/mui";
 import { Block, Loader, Title } from "ui/components/base";
+import { SearchQuestionnaire } from "ui/components/SearchQuestionnaire";
 import { ModeListComponent } from "ui/components/ModeListComponent";
 import { QuestionnaireDeleteButton } from "ui/components/QuestionnaireDeleteButton";
 
@@ -41,6 +42,13 @@ export const QuestionnaireListPage = memo(
       queryKey: ["fetchQuestionnaires"],
       queryFn: props.fetchQuestionnaires,
     });
+    const [searchTerm, setSearchTerm] = useState<string>("");
+
+    const filteredQuestionnaires = questionnaires?.filter(
+      (questionnaire) =>
+        questionnaire.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        questionnaire.poguesId.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     const {
       mutate: deleteQuestionnaire,
@@ -66,12 +74,23 @@ export const QuestionnaireListPage = memo(
               <Title>
                 {intl.formatMessage({ id: "questionnaire_list_label" })}
               </Title>
-              <Stack direction="row" justifyContent="end">
-                <Link to={`/questionnaires/check`} className={classes.btnAdd}>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                className={classes.listHead}
+              >
+                <Stack className={classes.searchBar}>
+                  <SearchQuestionnaire
+                    searchTerm={searchTerm}
+                    onSearchTermChange={setSearchTerm}
+                  />
+                </Stack>
+                <Link to={`/questionnaires/check`}>
                   <Button
                     color="info"
                     variant="contained"
                     startIcon={<AddCircleIcon />}
+                    className={classes.btnAdd}
                   >
                     {intl.formatMessage({ id: "questionnaire_list_btn_add" })}
                   </Button>
@@ -105,7 +124,7 @@ export const QuestionnaireListPage = memo(
                   </TableHead>
                   {
                     <TableBody>
-                      {questionnaires?.map((questionnaire) => (
+                      {filteredQuestionnaires?.map((questionnaire) => (
                         <TableRow key={questionnaire.id}>
                           <TableCell component="th" scope="row">
                             {questionnaire.poguesId}
@@ -163,8 +182,15 @@ export const QuestionnaireListPage = memo(
 );
 
 const useStyles = makeStyles()((theme) => ({
-  btnAdd: {
+  listHead: {
     marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
+  },
+  searchBar: {
+    minWidth: "40%",
+  },
+  btnAdd: {
+    height: "100%",
   },
 }));
 
