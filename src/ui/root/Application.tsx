@@ -1,10 +1,10 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import { useOidc } from "core/application/auth/provider";
 import {
   createQuestionnaireRepository,
   createSurveyUnitRepository,
 } from "core/infrastructure";
-import { useAuth } from "core/infrastructure/hooks/useAuth";
 import { getEnvVar } from "core/utils/configuration/env";
 import { memo, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
@@ -27,9 +27,7 @@ export const Application = memo(() => {
     setOpen(!open);
   };
 
-  const {
-    oidc: { isUserLoggedIn, login, oidcTokens },
-  } = useAuth();
+  const { isUserLoggedIn, login, tokens } = useOidc();
 
   if (!isUserLoggedIn && login) {
     login({
@@ -40,11 +38,11 @@ export const Application = memo(() => {
 
   const questionnaireRepository = createQuestionnaireRepository(
     getEnvVar("VITE_API_URL"),
-    oidcTokens?.accessToken
+    tokens?.accessToken
   );
   const surveyUnitRepository = createSurveyUnitRepository(
     getEnvVar("VITE_API_URL"),
-    oidcTokens?.accessToken
+    tokens?.accessToken
   );
 
   return (

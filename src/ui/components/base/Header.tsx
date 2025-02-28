@@ -7,12 +7,12 @@ import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { useUser } from "core/infrastructure/hooks/useAuth";
 import { getEnvVar } from "core/utils/configuration/env";
 import { memo } from "react";
 import { useIntl } from "react-intl";
 import { makeStyles } from "tss-react/mui";
 import { SidebarNavProps } from ".";
+import { useOidc } from "core/application/auth/provider";
 
 export const Header = memo((props: SidebarNavProps) => {
   const { toggleDrawer } = props;
@@ -21,7 +21,7 @@ export const Header = memo((props: SidebarNavProps) => {
   const documentationUrl = getEnvVar("VITE_DOCUMENTATION_URL");
   const intl = useIntl();
 
-  const { user } = useUser();
+  const { decodedIdToken } = useOidc();
 
   return (
     <AppBar className={classes.root}>
@@ -48,7 +48,7 @@ export const Header = memo((props: SidebarNavProps) => {
         <Box sx={{ display: { xs: "none", sm: "block" } }}>
           <Button sx={{ color: "#fff" }}>
             <PersonIcon fontSize="small"></PersonIcon>
-            {`${user?.name}`}
+            {`${decodedIdToken?.preferred_username}`}
           </Button>
 
           {"|"}
