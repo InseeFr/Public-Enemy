@@ -1,23 +1,22 @@
-import { createMockReactOidc } from "oidc-spa/mock/react";
-import { createReactOidc } from "oidc-spa/react";
+import { createMockReactOidc } from 'oidc-spa/mock/react'
+import { createReactOidc } from 'oidc-spa/react'
 
-console.log(import.meta.env)
 
 export const { OidcProvider, useOidc, getOidc } =
-  import.meta.env.VITE_AUTH_TYPE === "oidc"
+  import.meta.env.VITE_AUTH_TYPE === 'oidc'
     ? createReactOidc({
-      clientId: import.meta.env.VITE_CLIENT_ID,
+      clientId: import.meta.env.VITE_OIDC_CLIENT_ID,
       issuerUri: import.meta.env.VITE_OIDC_ISSUER,
-      homeUrl: import.meta.env.BASE_URL || "/",
+      homeUrl: import.meta.env.BASE_URL || '/',
     })
     : createMockReactOidc({
       isUserInitiallyLoggedIn: false,
       mockedTokens: {
         decodedIdToken: {
           sid: `mock-${self.crypto.randomUUID()}`,
-          sub: "mock-sub",
-          preferred_username: "mock-user",
+          sub: 'mock-sub',
+          preferred_username: 'mock-user',
         },
       },
-      homeUrl: import.meta.env.BASE_URL || "/",
-    });
+      homeUrl: import.meta.env.BASE_URL || '/',
+    })

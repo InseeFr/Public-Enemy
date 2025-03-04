@@ -37,8 +37,8 @@
     "generate-entrypoint": "node scripts/generate-entrypoint.js",
     "preview": "vite preview",
     "test": "vitest",
-    "lint": "eslint ./src",
-    "coverage": "vitest --coverage", 
+    "lint": "eslyarnint --fix",
+    "coverage": "vitest --coverage",
     "_format": "prettier --ignore-unknown .",
     "format": "npm run _format -- --write",
     "format:check": "npm run _format -- --list-different"
@@ -81,6 +81,7 @@
     "@testing-library/react": "^14.0.0",
     "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/user-event": "^14.4.3",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@typescript-eslint/eslint-plugin": "^5.42.1",
     "@typescript-eslint/parser": "^5.42.1",
     "@vitejs/plugin-react": "^3.1.0",

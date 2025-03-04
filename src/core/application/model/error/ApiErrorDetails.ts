@@ -1,16 +1,16 @@
-import { ApiError } from ".";
+import { ApiError } from '.'
 
 export class ApiErrorDetails<ErrorDetailsObject = unknown> extends ApiError {
-  details: ErrorDetailsObject;
+  details: ErrorDetailsObject
 
   constructor(
     code: number,
     path: string,
     message: string,
-    details: ErrorDetailsObject
+    details: ErrorDetailsObject,
   ) {
-    super(code, path, message);
-    this.name = "ApiErrorDetails";
-    this.details = details;
+    super(code, path, message)
+    this.name = 'ApiErrorDetails'
+    this.details = details
   }
 }

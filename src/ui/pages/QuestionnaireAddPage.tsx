@@ -1,65 +1,66 @@
-import { Grid } from "@mui/material";
-import { useQueryClient } from "@tanstack/react-query";
+import { memo, useEffect, useState } from 'react'
+
+import { Grid } from '@mui/material'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   Questionnaire,
   SurveyContext,
   SurveyUnitsMessages,
-} from "core/application/model";
-import { useNotifier } from "core/infrastructure";
-import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
-import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
-import { memo, useEffect, useState } from "react";
-import { useIntl } from "react-intl";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Block, Loader } from "ui/components/base";
-import { QuestionnaireEditForm } from "ui/components/QuestionnaireEditForm";
+} from 'core/application/model'
+import { useNotifier } from 'core/infrastructure'
+import { useApiMutation } from 'core/infrastructure/hooks/useApiMutation'
+import { useApiQuery } from 'core/infrastructure/hooks/useApiQuery'
+import { useIntl } from 'react-intl'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { QuestionnaireEditForm } from 'ui/components/QuestionnaireEditForm'
+import { Block, Loader } from 'ui/components/base'
 
 export type QuestionnaireAddPageProps = {
-  fetchSurveyContexts: () => Promise<SurveyContext[]>;
-  fetchQuestionnaireFromPoguesId: (poguesId?: string) => Promise<Questionnaire>;
-  addQuestionnaire: (questionnaire: Questionnaire) => Promise<Questionnaire>;
+  fetchSurveyContexts: () => Promise<SurveyContext[]>
+  fetchQuestionnaireFromPoguesId: (poguesId?: string) => Promise<Questionnaire>
+  addQuestionnaire: (questionnaire: Questionnaire) => Promise<Questionnaire>
   checkSurveyUnitsCsvData: (
     poguesId: string,
-    surveyUnitsCsvData: File
-  ) => Promise<SurveyUnitsMessages>;
-  getSurveyUnitsSchemaCSV: (poguesId: string) => Promise<void>;
-  getExistingSurveyUnitsSchemaCSV: (id: number) => Promise<void>;
-};
+    surveyUnitsCsvData: File,
+  ) => Promise<SurveyUnitsMessages>
+  getSurveyUnitsSchemaCSV: (poguesId: string) => Promise<void>
+  getExistingSurveyUnitsSchemaCSV: (id: number) => Promise<void>
+}
 
 export const QuestionnaireAddPage = memo((props: QuestionnaireAddPageProps) => {
-  const notifier = useNotifier();
-  const location = useLocation();
-  const navigate = useNavigate();
-  const intl = useIntl();
-  const [questionnaire, setQuestionnaire] = useState<Questionnaire>();
-  const queryClient = useQueryClient();
+  const notifier = useNotifier()
+  const location = useLocation()
+  const navigate = useNavigate()
+  const intl = useIntl()
+  const [questionnaire, setQuestionnaire] = useState<Questionnaire>()
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     if (!location?.state) {
-      notifier.error(intl.formatMessage({ id: "questionnaire_add_notfound" }));
-      navigate("/questionnaires");
-      return;
+      notifier.error(intl.formatMessage({ id: 'questionnaire_add_notfound' }))
+      navigate('/questionnaires')
+      return
     }
     setQuestionnaire({
       ...location.state,
-      context: "",
-    });
-  }, [location]);
+      context: '',
+    })
+  }, [location])
 
   const {
     isLoading,
     data: questionnaireResponse,
     isSuccess,
   } = useApiQuery({
-    queryKey: ["questionnaire-pogues"],
+    queryKey: ['questionnaire-pogues'],
     queryFn: () => {
-      return props.fetchQuestionnaireFromPoguesId(questionnaire?.poguesId);
+      return props.fetchQuestionnaireFromPoguesId(questionnaire?.poguesId)
     },
     options: { enabled: !!questionnaire },
-  });
+  })
 
   if (isSuccess && questionnaireResponse) {
-    navigate(`/questionnaires/${questionnaireResponse.id}/edit`);
+    navigate(`/questionnaires/${questionnaireResponse.id}/edit`)
   }
 
   const {
@@ -67,16 +68,16 @@ export const QuestionnaireAddPage = memo((props: QuestionnaireAddPageProps) => {
     isPending: isSubmitting,
     isError,
   } = useApiMutation({
-    mutationKey: ["questionnaire", questionnaire],
+    mutationKey: ['questionnaire', questionnaire],
     mutationFn: (questionnaire: Questionnaire) =>
       props.addQuestionnaire(questionnaire),
-  });
+  })
 
   if (isError) {
     queryClient.invalidateQueries({
-      queryKey: ["questionnaire-pogues"],
-      refetchType: "inactive",
-    });
+      queryKey: ['questionnaire-pogues'],
+      refetchType: 'inactive',
+    })
   }
 
   return (
@@ -102,7 +103,7 @@ export const QuestionnaireAddPage = memo((props: QuestionnaireAddPageProps) => {
         </Block>
       </Grid>
     </Grid>
-  );
-});
+  )
+})
 
-QuestionnaireAddPage.displayName = "QuestionnaireAddPage";
+QuestionnaireAddPage.displayName = 'QuestionnaireAddPage'

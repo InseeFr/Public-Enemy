@@ -1,1 +1,1 @@
-export { OidcProvider, useOidc, getOidc } from "./component";
+export { OidcProvider, useOidc, getOidc } from './component'

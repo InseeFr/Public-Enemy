@@ -1,13 +1,13 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react'
 
 export type NotificationType = {
-  message: string | ReactNode;
-  type: "default" | "error" | "success" | "warning" | "info" | undefined;
-};
+  message: string | ReactNode
+  type: 'default' | 'error' | 'success' | 'warning' | 'info' | undefined
+}
 
 export type NotifierPort = {
-  info: (message: string | ReactNode) => void;
-  warn: (message: string | ReactNode) => void;
-  error: (message: string | ReactNode) => void;
-  success: (message: string | ReactNode) => void;
-};
+  info: (message: string | ReactNode) => void
+  warn: (message: string | ReactNode) => void
+  error: (message: string | ReactNode) => void
+  success: (message: string | ReactNode) => void
+}

@@ -1,19 +1,21 @@
-import RefreshIcon from "@mui/icons-material/Refresh";
-import { IconButton } from "@mui/material";
-import { UseMutateFunction } from "@tanstack/react-query";
-import { ApiError } from "core/application/model/error";
-import { useNotifier } from "core/infrastructure";
-import { memo, useState } from "react";
-import { useIntl } from "react-intl";
-import { ConfirmationDialog } from "./base";
+import { memo, useState } from 'react'
+
+import RefreshIcon from '@mui/icons-material/Refresh'
+import { IconButton } from '@mui/material'
+import { UseMutateFunction } from '@tanstack/react-query'
+import { ApiError } from 'core/application/model/error'
+import { useNotifier } from 'core/infrastructure'
+import { useIntl } from 'react-intl'
+
+import { ConfirmationDialog } from './base'
 
 type SurveyUnitResetButtonType = {
-  surveyUnitId: string;
+  surveyUnitId: string
   mutateReset: {
-    resetSurveyUnit: UseMutateFunction<void, ApiError, string, unknown>;
-    isResetting: boolean;
-  };
-};
+    resetSurveyUnit: UseMutateFunction<void, ApiError, string, unknown>
+    isResetting: boolean
+  }
+}
 
 /**
  * Component used for questionnaire deletion
@@ -21,36 +23,36 @@ type SurveyUnitResetButtonType = {
 export const SurveyUnitResetButton = memo(
   (props: SurveyUnitResetButtonType) => {
     const [displayConfirmationDialog, setDisplayConfirmationDialog] =
-      useState(false);
-    const intl = useIntl();
-    const notifier = useNotifier();
+      useState(false)
+    const intl = useIntl()
+    const notifier = useNotifier()
 
     const resetAction = () => {
       props.mutateReset.resetSurveyUnit(props.surveyUnitId, {
         onSuccess: () => {
           notifier.success(
-            intl.formatMessage({ id: "survey_unit_reset_success" })
-          );
+            intl.formatMessage({ id: 'survey_unit_reset_success' }),
+          )
         },
         onSettled: () => {
-          closeConfirmationDialog();
+          closeConfirmationDialog()
         },
-      });
-    };
+      })
+    }
 
     /**
      * open confirmation dialog
      */
     const openConfirmationDialog = () => {
-      setDisplayConfirmationDialog(true);
-    };
+      setDisplayConfirmationDialog(true)
+    }
 
     /**
      * close confirmation dialog
      */
     const closeConfirmationDialog = () => {
-      setDisplayConfirmationDialog(false);
-    };
+      setDisplayConfirmationDialog(false)
+    }
 
     return (
       <>
@@ -62,19 +64,19 @@ export const SurveyUnitResetButton = memo(
         </IconButton>
         <ConfirmationDialog
           title={intl.formatMessage({
-            id: "survey_unit_reset_confirmation_label",
+            id: 'survey_unit_reset_confirmation_label',
           })}
           body={intl.formatMessage({
-            id: "survey_unit_reset_confirmation_body",
+            id: 'survey_unit_reset_confirmation_body',
           })}
           disagreeBtn={{
             label: intl.formatMessage({
-              id: "survey_unit_reset_confirmation_disagree",
+              id: 'survey_unit_reset_confirmation_disagree',
             }),
           }}
           agreeBtn={{
             label: intl.formatMessage({
-              id: "survey_unit_reset_confirmation_agree",
+              id: 'survey_unit_reset_confirmation_agree',
             }),
             isSubmitting: props.mutateReset.isResetting,
           }}
@@ -83,8 +85,8 @@ export const SurveyUnitResetButton = memo(
           closeConfirmationDialog={closeConfirmationDialog}
         />
       </>
-    );
-  }
-);
+    )
+  },
+)
 
-SurveyUnitResetButton.displayName = "SurveyUnitResetButton";
+SurveyUnitResetButton.displayName = 'SurveyUnitResetButton'

@@ -1,6 +1,7 @@
-import { Grid } from "@mui/material";
-import { memo } from "react";
-import { Block, ErrorComponent } from "ui/components/base";
+import { memo } from 'react'
+
+import { Grid } from '@mui/material'
+import { Block, ErrorComponent } from 'ui/components/base'
 
 export const ErrorPage = memo(() => {
   return (
@@ -11,7 +12,7 @@ export const ErrorPage = memo(() => {
         </Block>
       </Grid>
     </Grid>
-  );
-});
+  )
+})
 
-ErrorPage.displayName = "ErrorPage";
+ErrorPage.displayName = 'ErrorPage'

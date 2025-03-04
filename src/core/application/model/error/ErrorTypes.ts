@@ -1,20 +1,20 @@
 export type ErrorObject = {
-  code: number;
-  path: string;
-  timestamp: string;
-  message: string;
-};
+  code: number
+  path: string
+  timestamp: string
+  message: string
+}
 
 export type ErrorDetails<Details> = ErrorObject & {
-  details: Details;
-};
+  details: Details
+}
 
 export type ErrorDetailsSurveyUnit = {
-  surveyUnitId: string;
-  attributesErrors: ErrorDetailsAttributes[];
-};
+  surveyUnitId: string
+  attributesErrors: ErrorDetailsAttributes[]
+}
 
 export type ErrorDetailsAttributes = {
-  attributeKey: string;
-  messages: string[];
-};
+  attributeKey: string
+  messages: string[]
+}

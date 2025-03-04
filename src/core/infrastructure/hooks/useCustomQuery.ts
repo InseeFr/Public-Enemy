@@ -1,29 +1,29 @@
-import { useApiQuery } from "./useApiQuery";
+import { useApiQuery } from './useApiQuery'
 
 export function useCustomQuery(
   fetchQuestionnaireFromPoguesId: any,
   fetchPoguesQuestionnaire: any,
-  poguesIdInput: string
+  poguesIdInput: string,
 ) {
   const firstQuery = useApiQuery({
-    queryKey: ["questionnaire", poguesIdInput],
+    queryKey: ['questionnaire', poguesIdInput],
     queryFn: () => {
-      return fetchQuestionnaireFromPoguesId(poguesIdInput);
+      return fetchQuestionnaireFromPoguesId(poguesIdInput)
     },
     options: {
       enabled: false,
     },
-  });
+  })
 
   const secondQuery = useApiQuery({
-    queryKey: ["questionnaire-", poguesIdInput],
+    queryKey: ['questionnaire-', poguesIdInput],
     queryFn: () => {
-      return fetchPoguesQuestionnaire(poguesIdInput);
+      return fetchPoguesQuestionnaire(poguesIdInput)
     },
     options: {
       enabled: firstQuery.isError,
     },
-  });
+  })
 
   return {
     launch: firstQuery.refetch,
@@ -33,5 +33,5 @@ export function useCustomQuery(
     questionnairePogues: secondQuery.data,
     isLoadingPoguesQuestionnaire: firstQuery.isLoading || secondQuery.isLoading,
     globalError: secondQuery.isError,
-  };
+  }
 }

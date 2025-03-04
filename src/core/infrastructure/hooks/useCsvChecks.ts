@@ -1,29 +1,31 @@
-import { SurveyUnitsMessages } from "core/application/model";
+import { useState } from 'react'
+
+import { SurveyUnitsMessages } from 'core/application/model'
 import {
   ApiErrorDetails,
   ErrorDetailsSurveyUnit,
-} from "core/application/model/error";
-import { useState } from "react";
-import { useCsvApiMutation } from "./useCsvApiMutation";
+} from 'core/application/model/error'
+
+import { useCsvApiMutation } from './useCsvApiMutation'
 
 type ErrorCodes = {
-  1001: string[];
-  1002: ErrorDetailsSurveyUnit[];
-};
+  1001: string[]
+  1002: ErrorDetailsSurveyUnit[]
+}
 
 export type CsvMessages = {
-  warnings?: string[];
-  errors?: string[];
-  details?: ErrorDetailsSurveyUnit[];
-};
+  warnings?: string[]
+  errors?: string[]
+  details?: ErrorDetailsSurveyUnit[]
+}
 
 export const useCsvChecks = (
   checkSurveyUnitsCsvData: (
     poguesId: string,
-    surveyUnitsCSVData: File
-  ) => Promise<SurveyUnitsMessages>
+    surveyUnitsCSVData: File,
+  ) => Promise<SurveyUnitsMessages>,
 ) => {
-  const [messages, setMessages] = useState<CsvMessages>();
+  const [messages, setMessages] = useState<CsvMessages>()
 
   const {
     mutate: checkCsvData,
@@ -31,9 +33,9 @@ export const useCsvChecks = (
     isSuccess,
     reset,
   } = useCsvApiMutation({
-    mutationKey: ["csv-check"],
+    mutationKey: ['csv-check'],
     mutationFn: ({ id, data }: { id: string; data: File }) => {
-      return checkSurveyUnitsCsvData(id, data);
+      return checkSurveyUnitsCsvData(id, data)
     },
     options: {
       onMutate: () => {
@@ -41,35 +43,35 @@ export const useCsvChecks = (
           warnings: undefined,
           errors: undefined,
           details: undefined,
-        });
+        })
       },
       onSuccess: (warningMessages) => {
-        setMessages({ warnings: warningMessages });
+        setMessages({ warnings: warningMessages })
       },
       onError: (err: ApiErrorDetails) => {
         if (isErrorCode(err, 1001)) {
-          setMessages({ errors: err.details });
-          return;
+          setMessages({ errors: err.details })
+          return
         }
 
         if (isErrorCode(err, 1002)) {
-          setMessages({ details: err.details });
-          return;
+          setMessages({ details: err.details })
+          return
         }
-        setMessages({ errors: [err.message] });
+        setMessages({ errors: [err.message] })
       },
     },
-  });
+  })
 
   /**
    * force type check on ApiErrorDetails to get the correct type
    */
   function isErrorCode<Code extends keyof ErrorCodes>(
     err: ApiErrorDetails,
-    code: Code
+    code: Code,
   ): err is ApiErrorDetails<ErrorCodes[Code]> {
-    return err.code === code;
+    return err.code === code
   }
 
-  return { checkCsvData, messages, isSuccess, isCheckingCsvData, reset };
-};
+  return { checkCsvData, messages, isSuccess, isCheckingCsvData, reset }
+}

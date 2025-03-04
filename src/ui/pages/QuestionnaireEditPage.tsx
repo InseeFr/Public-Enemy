@@ -1,48 +1,49 @@
-import { Alert, AlertTitle, Grid } from "@mui/material";
+import { memo } from 'react'
+
+import { Alert, AlertTitle, Grid } from '@mui/material'
 import {
   Questionnaire,
   SurveyContext,
   SurveyUnitsMessages,
-} from "core/application/model";
-import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
-import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
-import { memo } from "react";
-import { useIntl } from "react-intl";
-import { useParams } from "react-router-dom";
-import { Block, Loader } from "ui/components/base";
-import { QuestionnaireEditForm } from "ui/components/QuestionnaireEditForm";
+} from 'core/application/model'
+import { useApiMutation } from 'core/infrastructure/hooks/useApiMutation'
+import { useApiQuery } from 'core/infrastructure/hooks/useApiQuery'
+import { useIntl } from 'react-intl'
+import { useParams } from 'react-router-dom'
+import { QuestionnaireEditForm } from 'ui/components/QuestionnaireEditForm'
+import { Block, Loader } from 'ui/components/base'
 
 export type QuestionnaireEditPageProps = {
-  fetchQuestionnaire: (id: number) => Promise<Questionnaire>;
-  fetchSurveyContexts: () => Promise<SurveyContext[]>;
-  editQuestionnaire: (questionnaire: Questionnaire) => Promise<Questionnaire>;
+  fetchQuestionnaire: (id: number) => Promise<Questionnaire>
+  fetchSurveyContexts: () => Promise<SurveyContext[]>
+  editQuestionnaire: (questionnaire: Questionnaire) => Promise<Questionnaire>
   checkSurveyUnitsCsvData: (
     poguesId: string,
-    surveyUnitsData: File
-  ) => Promise<SurveyUnitsMessages>;
-  getSurveyUnitsSchemaCSV: (poguesId: string) => Promise<void>;
-  getExistingSurveyUnitsSchemaCSV: (id: number) => Promise<void>;
-};
+    surveyUnitsData: File,
+  ) => Promise<SurveyUnitsMessages>
+  getSurveyUnitsSchemaCSV: (poguesId: string) => Promise<void>
+  getExistingSurveyUnitsSchemaCSV: (id: number) => Promise<void>
+}
 
 export const QuestionnaireEditPage = memo(
   (props: QuestionnaireEditPageProps) => {
-    const { id } = useParams();
-    const intl = useIntl();
+    const { id } = useParams()
+    const intl = useIntl()
 
     const { isLoading, data: questionnaire } = useApiQuery({
-      queryKey: ["questionnaire", id],
+      queryKey: ['questionnaire', id],
       queryFn: () => {
-        const idNumber = Number(id);
-        return props.fetchQuestionnaire(idNumber);
+        const idNumber = Number(id)
+        return props.fetchQuestionnaire(idNumber)
       },
-    });
+    })
 
     const { mutate: saveQuestionnaire, isPending: isSubmitting } =
       useApiMutation({
-        mutationKey: ["questionnaire-edit", questionnaire],
+        mutationKey: ['questionnaire-edit', questionnaire],
         mutationFn: (questionnaire: Questionnaire) =>
           props.editQuestionnaire(questionnaire),
-      });
+      })
 
     return (
       <Grid component="main" container justifyContent="center" spacing={3}>
@@ -54,11 +55,11 @@ export const QuestionnaireEditPage = memo(
                   <Alert severity="error">
                     <AlertTitle>
                       {intl.formatMessage({
-                        id: "questionnaire_notsynchronized_title",
+                        id: 'questionnaire_notsynchronized_title',
                       })}
                     </AlertTitle>
                     {intl.formatMessage({
-                      id: "questionnaire_notsynchronized_message",
+                      id: 'questionnaire_notsynchronized_message',
                     })}
                   </Alert>
                 )}
@@ -82,8 +83,8 @@ export const QuestionnaireEditPage = memo(
           </Block>
         </Grid>
       </Grid>
-    );
-  }
-);
+    )
+  },
+)
 
-QuestionnaireEditPage.displayName = "QuestionnaireEditPage";
+QuestionnaireEditPage.displayName = 'QuestionnaireEditPage'

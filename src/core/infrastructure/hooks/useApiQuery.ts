@@ -3,24 +3,24 @@ import {
   QueryKey,
   UseQueryOptions,
   useQuery,
-} from "@tanstack/react-query";
-import { ApiError } from "core/application/model/error";
+} from '@tanstack/react-query'
+import { ApiError } from 'core/application/model/error'
 
 export const useApiQuery = <
   TQueryFnData = unknown,
   TData = TQueryFnData,
-  TQueryKey extends QueryKey = QueryKey
+  TQueryKey extends QueryKey = QueryKey,
 >({
   queryKey,
   queryFn,
   options,
 }: {
-  queryKey: TQueryKey;
-  queryFn: QueryFunction<TQueryFnData, TQueryKey>;
+  queryKey: TQueryKey
+  queryFn: QueryFunction<TQueryFnData, TQueryKey>
   options?: Omit<
     UseQueryOptions<TQueryFnData, ApiError, TData, TQueryKey>,
-    "queryKey" | "queryFn"
-  >;
+    'queryKey' | 'queryFn'
+  >
 }) => {
   // const notifier = useNotifier();
   return useQuery({
@@ -39,5 +39,5 @@ export const useApiQuery = <
     //     notifier.error(options?.errorMessage ?? error.message);
     //   options?.onError?.(error);
     // },
-  });
-};
+  })
+}

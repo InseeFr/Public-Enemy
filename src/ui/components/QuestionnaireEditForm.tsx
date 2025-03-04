@@ -1,8 +1,11 @@
-import AttachFileIcon from "@mui/icons-material/AttachFile";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import SaveIcon from "@mui/icons-material/Save";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
-import { LoadingButton } from "@mui/lab";
+import * as React from 'react'
+import { memo, useEffect, useState } from 'react'
+
+import AttachFileIcon from '@mui/icons-material/AttachFile'
+import FileDownloadIcon from '@mui/icons-material/FileDownload'
+import SaveIcon from '@mui/icons-material/Save'
+import UploadFileIcon from '@mui/icons-material/UploadFile'
+import { LoadingButton } from '@mui/lab'
 import {
   Box,
   Button,
@@ -14,67 +17,66 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material";
-import { UseMutateFunction } from "@tanstack/react-query";
+} from '@mui/material'
+import { UseMutateFunction } from '@tanstack/react-query'
 import {
   Questionnaire,
   SurveyContext,
   SurveyUnitsMessages,
-} from "core/application/model";
-import { ApiError } from "core/application/model/error";
-import useNotifier from "core/infrastructure/Notifier";
-import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
-import { useCsvChecks } from "core/infrastructure/hooks/useCsvChecks";
-import { getEnvVar } from "core/utils/configuration/env";
-import * as React from "react";
-import { memo, useEffect, useState } from "react";
-import { useIntl } from "react-intl";
-import { useNavigate } from "react-router-dom";
-import { makeStyles } from "tss-react/mui";
-import { CsvAlert } from "./CsvAlert";
-import { ConfirmationDialog, Loader, Title } from "./base";
+} from 'core/application/model'
+import { ApiError } from 'core/application/model/error'
+import useNotifier from 'core/infrastructure/Notifier'
+import { useApiQuery } from 'core/infrastructure/hooks/useApiQuery'
+import { useCsvChecks } from 'core/infrastructure/hooks/useCsvChecks'
+import { getEnvVar } from 'core/utils/configuration/env'
+import { useIntl } from 'react-intl'
+import { useNavigate } from 'react-router-dom'
+import { makeStyles } from 'tss-react/mui'
+
+import { CsvAlert } from './CsvAlert'
+import { ConfirmationDialog, Loader, Title } from './base'
 
 export type QuestionnaireEditFormProps = {
-  questionnaire: Questionnaire;
-  isEditMode: boolean;
-  fetchSurveyContexts: () => Promise<SurveyContext[]>;
+  questionnaire: Questionnaire
+  isEditMode: boolean
+  fetchSurveyContexts: () => Promise<SurveyContext[]>
   checkSurveyUnitsCsvData: (
     poguesId: string,
-    surveyUnitsCsvData: File
-  ) => Promise<SurveyUnitsMessages>;
+    surveyUnitsCsvData: File,
+  ) => Promise<SurveyUnitsMessages>
   saveQuestionnaire: UseMutateFunction<
     Questionnaire,
     ApiError,
     Questionnaire,
     unknown
-  >;
-  isSubmitting: boolean;
-  getSurveyUnitsSchemaCSV: (poguesId: string) => Promise<void>;
-  getExistingSurveyUnitsSchemaCSV: (id: number) => Promise<void>;
-};
+  >
+  isSubmitting: boolean
+  getSurveyUnitsSchemaCSV: (poguesId: string) => Promise<void>
+  getExistingSurveyUnitsSchemaCSV: (id: number) => Promise<void>
+}
 
 export const QuestionnaireEditForm = memo(
   (props: QuestionnaireEditFormProps) => {
     const [questionnaire, setQuestionnaire] = useState<Questionnaire>({
       ...props.questionnaire,
-    });
+    })
     const [displayConfirmationDialog, setDisplayConfirmationDialog] =
-      useState(false);
-    const intl = useIntl();
-    const [isSurveyContextValid, setSurveyContextValid] = useState(false);
-    const { classes } = useStyles();
-    const navigate = useNavigate();
-    const apiUrl = getEnvVar("VITE_API_URL");
-    const notifier = useNotifier();
+      useState(false)
+    const intl = useIntl()
+    const [isSurveyContextValid, setSurveyContextValid] = useState(false)
+    const { classes } = useStyles()
+    const navigate = useNavigate()
+    const apiUrl = getEnvVar('VITE_API_URL')
+    const notifier = useNotifier()
 
     /**
      * Load contexts on mount
      */
 
     const { isLoading, data: surveyContexts } = useApiQuery({
-      queryKey: ["fetchSurveyContexts"],
+      queryKey: ['fetchSurveyContexts'],
       queryFn: props.fetchSurveyContexts,
-    });
+    })
 
     const {
       checkCsvData,
@@ -82,32 +84,32 @@ export const QuestionnaireEditForm = memo(
       isSuccess: isCsvDataValid,
       reset: resetChecks,
       messages,
-    } = useCsvChecks(props.checkSurveyUnitsCsvData);
+    } = useCsvChecks(props.checkSurveyUnitsCsvData)
 
     useEffect(() => {
       if (!questionnaire.surveyUnitData) {
-        return;
+        return
       }
-      resetChecks();
+      resetChecks()
       checkCsvData({
         id: questionnaire.poguesId,
         data: questionnaire.surveyUnitData,
-      });
-    }, [questionnaire.surveyUnitData, questionnaire.poguesId]);
+      })
+    }, [questionnaire.surveyUnitData, questionnaire.poguesId])
 
     /**
      * Check validation on context change
      */
     useEffect(() => {
       if (!questionnaire.context) {
-        setSurveyContextValid(false);
-        return;
+        setSurveyContextValid(false)
+        return
       }
 
       if (questionnaire.context.name) {
-        setSurveyContextValid(true);
+        setSurveyContextValid(true)
       }
-    }, [questionnaire.context]);
+    }, [questionnaire.context])
 
     /**
      * Event triggered when context field change
@@ -119,56 +121,56 @@ export const QuestionnaireEditForm = memo(
           ...questionnaire.context,
           name: event.target.value,
         },
-      });
-    };
+      })
+    }
 
     /**
      * Event triggered when survey unit data field change
      */
     const onSurveyUnitDataChange = (
-      event: React.ChangeEvent<HTMLInputElement>
+      event: React.ChangeEvent<HTMLInputElement>,
     ) => {
-      const fileList = event.target.files;
+      const fileList = event.target.files
       if (!fileList) {
-        return;
+        return
       }
 
       setQuestionnaire((state) => ({
         ...state,
         surveyUnitData: fileList[0],
-      }));
-    };
+      }))
+    }
 
     const submitAction = (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      saveAction();
-    };
+      event.preventDefault()
+      saveAction()
+    }
 
     const saveAction = () => {
       props.saveQuestionnaire(questionnaire, {
         onSuccess: (questionnaire) => {
           notifier.success(
-            intl.formatMessage({ id: "questionnaire_edit_success" })
-          );
-          navigate(`/questionnaires/${questionnaire.id}`);
+            intl.formatMessage({ id: 'questionnaire_edit_success' }),
+          )
+          navigate(`/questionnaires/${questionnaire.id}`)
         },
         onSettled: () => {
-          closeConfirmationDialog();
+          closeConfirmationDialog()
         },
-      });
-    };
+      })
+    }
 
     const closeConfirmationDialog = () => {
-      setDisplayConfirmationDialog(false);
-    };
+      setDisplayConfirmationDialog(false)
+    }
 
     const getExistingSchema = () => {
-      props.getExistingSurveyUnitsSchemaCSV(questionnaire.id);
-    };
+      props.getExistingSurveyUnitsSchemaCSV(questionnaire.id)
+    }
 
     const getExpectedSchema = () => {
-      props.getSurveyUnitsSchemaCSV(questionnaire.poguesId);
-    };
+      props.getSurveyUnitsSchemaCSV(questionnaire.poguesId)
+    }
 
     return (
       <Loader isLoading={isLoading}>
@@ -177,7 +179,7 @@ export const QuestionnaireEditForm = memo(
           <Grid item xs={12} sm={6}>
             <Typography variant="body2" gutterBottom>
               {intl.formatMessage({
-                id: "questionnaire_id",
+                id: 'questionnaire_id',
               })}
               : {questionnaire.poguesId}
             </Typography>
@@ -186,12 +188,12 @@ export const QuestionnaireEditForm = memo(
           <Grid item xs={12} sm={6}>
             <Typography variant="body2" gutterBottom>
               {intl.formatMessage({
-                id: "questionnaire_mode",
+                id: 'questionnaire_mode',
               })}
-              :{" "}
+              :{' '}
               {questionnaire.modes.map((mode) => (
                 <span key={`${mode.name}-${questionnaire.id}`}>
-                  {mode.name}{" "}
+                  {mode.name}{' '}
                 </span>
               ))}
             </Typography>
@@ -207,12 +209,12 @@ export const QuestionnaireEditForm = memo(
                 id="questionnaire-context"
                 select
                 onChange={onContextChange}
-                value={questionnaire.context.name ?? ""}
+                value={questionnaire.context.name ?? ''}
                 label={intl.formatMessage({
-                  id: "questionnaire_context",
+                  id: 'questionnaire_context',
                 })}
                 inputProps={{
-                  id: "select-input",
+                  id: 'select-input',
                 }}
               >
                 {surveyContexts?.map((surveyContext) => (
@@ -240,16 +242,16 @@ export const QuestionnaireEditForm = memo(
               >
                 {isCheckingCsvData
                   ? intl.formatMessage({
-                      id: "questionnaire_check_upload",
+                      id: 'questionnaire_check_upload',
                     })
                   : intl.formatMessage({
-                      id: "questionnaire_edit_upload",
+                      id: 'questionnaire_edit_upload',
                     })}
                 <Input
                   data-testid="upload"
                   onChange={onSurveyUnitDataChange}
                   name="surveyUnitData"
-                  sx={{ display: "none" }}
+                  sx={{ display: 'none' }}
                   type="file"
                 />
               </LoadingButton>
@@ -261,14 +263,14 @@ export const QuestionnaireEditForm = memo(
                   <Button onClick={getExistingSchema}>
                     <FileDownloadIcon></FileDownloadIcon>
                     {intl.formatMessage({
-                      id: "questionnaire_edit_existing_csv",
+                      id: 'questionnaire_edit_existing_csv',
                     })}
                   </Button>
                 )}
                 <Button onClick={getExpectedSchema}>
                   <AttachFileIcon></AttachFileIcon>
                   {intl.formatMessage({
-                    id: "questionnaire_schema",
+                    id: 'questionnaire_schema',
                   })}
                 </Button>
               </Typography>
@@ -278,7 +280,7 @@ export const QuestionnaireEditForm = memo(
           <Stack direction="row" justifyContent="center">
             <LoadingButton
               data-testid="save-questionnaire"
-              type={props.isEditMode ? "button" : "submit"}
+              type={props.isEditMode ? 'button' : 'submit'}
               color="info"
               variant="contained"
               startIcon={<SaveIcon />}
@@ -292,28 +294,28 @@ export const QuestionnaireEditForm = memo(
               })}
             >
               {props.isEditMode
-                ? intl.formatMessage({ id: "questionnaire_edit_save" })
-                : intl.formatMessage({ id: "questionnaire_add_save" })}
+                ? intl.formatMessage({ id: 'questionnaire_edit_save' })
+                : intl.formatMessage({ id: 'questionnaire_add_save' })}
             </LoadingButton>
           </Stack>
           {props.isEditMode && (
             <ConfirmationDialog
               data-testid="confirmation-dialog"
               title={intl.formatMessage({
-                id: "questionnaire_edit_confirmation_label",
+                id: 'questionnaire_edit_confirmation_label',
               })}
               body={intl.formatMessage(
-                { id: "questionnaire_edit_confirmation_body" },
-                { name: questionnaire.label }
+                { id: 'questionnaire_edit_confirmation_body' },
+                { name: questionnaire.label },
               )}
               disagreeBtn={{
                 label: intl.formatMessage({
-                  id: "questionnaire_edit_confirmation_disagree",
+                  id: 'questionnaire_edit_confirmation_disagree',
                 }),
               }}
               agreeBtn={{
                 label: intl.formatMessage({
-                  id: "questionnaire_edit_confirmation_agree",
+                  id: 'questionnaire_edit_confirmation_agree',
                 }),
                 isSubmitting: props.isSubmitting,
               }}
@@ -324,9 +326,9 @@ export const QuestionnaireEditForm = memo(
           )}
         </Box>
       </Loader>
-    );
-  }
-);
+    )
+  },
+)
 
 const useStyles = makeStyles()((theme) => ({
   vSpace: {
@@ -336,6 +338,6 @@ const useStyles = makeStyles()((theme) => ({
   vSpaceSelect: {
     marginTop: theme.spacing(1),
   },
-}));
+}))
 
-QuestionnaireEditForm.displayName = "QuestionnaireEditForm";
+QuestionnaireEditForm.displayName = 'QuestionnaireEditForm'

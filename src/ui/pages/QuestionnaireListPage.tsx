@@ -1,6 +1,7 @@
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import SettingsIcon from "@mui/icons-material/Settings";
+import { memo, useState } from 'react'
 
+import AddCircleIcon from '@mui/icons-material/AddCircle'
+import SettingsIcon from '@mui/icons-material/Settings'
 import {
   Alert,
   Button,
@@ -14,56 +15,55 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@mui/material";
-import { useQueryClient } from "@tanstack/react-query";
-import { Questionnaire } from "core/application/model";
-import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
-import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
-import { memo, useState } from "react";
-import { useIntl } from "react-intl";
-import { Link } from "react-router-dom";
-import { makeStyles } from "tss-react/mui";
-import { Block, Loader, Title } from "ui/components/base";
-import { SearchQuestionnaire } from "ui/components/SearchQuestionnaire";
-import { ModeListComponent } from "ui/components/ModeListComponent";
-import { QuestionnaireDeleteButton } from "ui/components/QuestionnaireDeleteButton";
+} from '@mui/material'
+import { useQueryClient } from '@tanstack/react-query'
+import { Questionnaire } from 'core/application/model'
+import { useApiMutation } from 'core/infrastructure/hooks/useApiMutation'
+import { useApiQuery } from 'core/infrastructure/hooks/useApiQuery'
+import { useIntl } from 'react-intl'
+import { Link } from 'react-router-dom'
+import { makeStyles } from 'tss-react/mui'
+import { ModeListComponent } from 'ui/components/ModeListComponent'
+import { QuestionnaireDeleteButton } from 'ui/components/QuestionnaireDeleteButton'
+import { SearchQuestionnaire } from 'ui/components/SearchQuestionnaire'
+import { Block, Loader, Title } from 'ui/components/base'
 
 export type QuestionnaireEditPageProps = {
-  fetchQuestionnaires: () => Promise<Questionnaire[]>;
-  deleteQuestionnaire: (id: number) => Promise<void>;
-};
+  fetchQuestionnaires: () => Promise<Questionnaire[]>
+  deleteQuestionnaire: (id: number) => Promise<void>
+}
 
 export const QuestionnaireListPage = memo(
   (props: QuestionnaireEditPageProps) => {
-    const intl = useIntl();
-    const { classes } = useStyles();
-    const queryClient = useQueryClient();
+    const intl = useIntl()
+    const { classes } = useStyles()
+    const queryClient = useQueryClient()
     const { isLoading, data: questionnaires } = useApiQuery({
-      queryKey: ["fetchQuestionnaires"],
+      queryKey: ['fetchQuestionnaires'],
       queryFn: props.fetchQuestionnaires,
-    });
-    const [searchTerm, setSearchTerm] = useState<string>("");
+    })
+    const [searchTerm, setSearchTerm] = useState<string>('')
 
     const filteredQuestionnaires = questionnaires?.filter(
       (questionnaire) =>
         questionnaire.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        questionnaire.poguesId.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+        questionnaire.poguesId.toLowerCase().includes(searchTerm.toLowerCase()),
+    )
 
     const {
       mutate: deleteQuestionnaire,
       isPending: isDeleting,
       isSuccess,
     } = useApiMutation({
-      mutationKey: ["questionnaire-delete"],
+      mutationKey: ['questionnaire-delete'],
       mutationFn: (questionnaire: Questionnaire) =>
         props.deleteQuestionnaire(questionnaire.id),
-    });
+    })
 
     if (isSuccess) {
       queryClient.invalidateQueries({
-        queryKey: ["fetchQuestionnaires"],
-      });
+        queryKey: ['fetchQuestionnaires'],
+      })
     }
 
     return (
@@ -72,7 +72,7 @@ export const QuestionnaireListPage = memo(
           <Block>
             <Loader isLoading={isLoading}>
               <Title>
-                {intl.formatMessage({ id: "questionnaire_list_label" })}
+                {intl.formatMessage({ id: 'questionnaire_list_label' })}
               </Title>
               <Stack
                 direction="row"
@@ -92,7 +92,7 @@ export const QuestionnaireListPage = memo(
                     startIcon={<AddCircleIcon />}
                     className={classes.btnAdd}
                   >
-                    {intl.formatMessage({ id: "questionnaire_list_btn_add" })}
+                    {intl.formatMessage({ id: 'questionnaire_list_btn_add' })}
                   </Button>
                 </Link>
               </Stack>
@@ -102,22 +102,22 @@ export const QuestionnaireListPage = memo(
                     <TableRow>
                       <TableCell>
                         {intl.formatMessage({
-                          id: "questionnaire_id",
+                          id: 'questionnaire_id',
                         })}
                       </TableCell>
                       <TableCell>
                         {intl.formatMessage({
-                          id: "questionnaire_name",
+                          id: 'questionnaire_name',
                         })}
                       </TableCell>
                       <TableCell>
                         {intl.formatMessage({
-                          id: "questionnaire_mode",
+                          id: 'questionnaire_mode',
                         })}
                       </TableCell>
                       <TableCell align="center">
                         {intl.formatMessage({
-                          id: "questionnaire_list_actions",
+                          id: 'questionnaire_list_actions',
                         })}
                       </TableCell>
                     </TableRow>
@@ -140,7 +140,7 @@ export const QuestionnaireListPage = memo(
                             ) : (
                               <Alert severity="error">
                                 {intl.formatMessage({
-                                  id: "questionnaire_list_synchronisation",
+                                  id: 'questionnaire_list_synchronisation',
                                 })}
                               </Alert>
                             )}
@@ -153,8 +153,8 @@ export const QuestionnaireListPage = memo(
                                 <SettingsIcon
                                   color={
                                     questionnaire.isSynchronized
-                                      ? "inherit"
-                                      : "error"
+                                      ? 'inherit'
+                                      : 'error'
                                   }
                                 />
                               </IconButton>
@@ -177,9 +177,9 @@ export const QuestionnaireListPage = memo(
           </Block>
         </Grid>
       </Grid>
-    );
-  }
-);
+    )
+  },
+)
 
 const useStyles = makeStyles()((theme) => ({
   listHead: {
@@ -187,11 +187,11 @@ const useStyles = makeStyles()((theme) => ({
     marginTop: theme.spacing(2),
   },
   searchBar: {
-    minWidth: "40%",
+    minWidth: '40%',
   },
   btnAdd: {
-    height: "100%",
+    height: '100%',
   },
-}));
+}))
 
-QuestionnaireListPage.displayName = "QuestionnaireListPage";
+QuestionnaireListPage.displayName = 'QuestionnaireListPage'
