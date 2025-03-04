@@ -1,44 +1,44 @@
-import { Questionnaire } from "core/application/model";
+import { Questionnaire } from 'core/application/model'
 
 export const simpleQuestionnaire: Questionnaire = {
   id: 0,
-  poguesId: "l8wwljbo",
-  label: "Label",
+  poguesId: 'l8wwljbo',
+  label: 'Label',
   modes: [
     {
-      name: "CAWI",
+      name: 'CAWI',
       isWebMode: true,
     },
     {
-      name: "CAPI",
+      name: 'CAPI',
       isWebMode: true,
     },
   ],
   context: {
-    name: "HOUSEHOLD",
-    value: "ménage",
+    name: 'HOUSEHOLD',
+    value: 'ménage',
   },
   surveyUnitData: undefined,
   isSynchronized: true,
-};
+}
 
 export const questionnaireAdd: Questionnaire = {
   id: 0,
-  poguesId: "l8wwljbo",
-  label: "Label",
+  poguesId: 'l8wwljbo',
+  label: 'Label',
   modes: [
     {
-      name: "CAWI",
+      name: 'CAWI',
       isWebMode: true,
     },
     {
-      name: "CAPI",
+      name: 'CAPI',
       isWebMode: true,
     },
   ],
   context: {
-    name: "",
+    name: '',
   },
   surveyUnitData: undefined,
   isSynchronized: true,
-};
+}

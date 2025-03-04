@@ -1,19 +1,20 @@
-import { Mode, Questionnaire } from "core/application/model";
-import React, { memo } from "react";
-import { Link } from "react-router-dom";
-import { ModeIcon } from "ui/components/base";
+import React, { memo } from 'react'
+
+import { Mode, Questionnaire } from 'core/application/model'
+import { Link } from 'react-router-dom'
+import { ModeIcon } from 'ui/components/base'
 
 type ModeListProps = {
-  questionnaire: Questionnaire;
-};
+  questionnaire: Questionnaire
+}
 export const ModeListComponent = memo(({ questionnaire }: ModeListProps) => {
   const getVisiblesModes = (questionnaire: Questionnaire): Mode[] => {
     //return questionnaire?.modes?.filter((mode) => mode.isWebMode);
     //as long as stromae is the only orchestrator, keep this line below, otherwise use line above
     return questionnaire?.modes?.filter((mode) =>
-      ["CATI", "CAPI", "CAWI"].includes(mode.name)
-    );
-  };
+      ['CATI', 'CAPI', 'CAWI'].includes(mode.name),
+    )
+  }
 
   return (
     <>
@@ -25,7 +26,7 @@ export const ModeListComponent = memo(({ questionnaire }: ModeListProps) => {
         </React.Fragment>
       ))}
     </>
-  );
-});
+  )
+})
 
-ModeListComponent.displayName = "ModeListComponent";
+ModeListComponent.displayName = 'ModeListComponent'

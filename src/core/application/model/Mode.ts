@@ -1,4 +1,4 @@
 export type Mode = {
-  name: string;
-  isWebMode: boolean;
-};
+  name: string
+  isWebMode: boolean
+}

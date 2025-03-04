@@ -1,16 +1,17 @@
-import { Box, CircularProgress } from "@mui/material";
-import { memo, PropsWithChildren } from "react";
-import { makeStyles } from "tss-react/mui";
+import { PropsWithChildren, memo } from 'react'
+
+import { Box, CircularProgress } from '@mui/material'
+import { makeStyles } from 'tss-react/mui'
 
 type LoaderType = PropsWithChildren<{
-  isLoading: boolean;
-}>;
+  isLoading: boolean
+}>
 
 /**
  * Loading component
  */
 export const Loader = memo(({ isLoading, children }: LoaderType) => {
-  const { classes } = useStyles();
+  const { classes } = useStyles()
   return (
     <>
       {isLoading ? (
@@ -21,15 +22,15 @@ export const Loader = memo(({ isLoading, children }: LoaderType) => {
         children
       )}
     </>
-  );
-});
+  )
+})
 
 const useStyles = makeStyles()(() => ({
   root: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-}));
+}))
 
-Loader.displayName = "Loader";
+Loader.displayName = 'Loader'

@@ -1,1 +1,1 @@
-export { getEnvVar } from "./env";
+export { getEnvVar } from './env'

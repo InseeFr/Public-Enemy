@@ -1,5 +1,5 @@
 export type SurveyUnit = {
-  id: string;
-  displayableId: number;
-  url: string;
-};
+  id: string
+  displayableId: number
+  url: string
+}

@@ -1,12 +1,12 @@
-import { SurveyContext } from "core/application/model";
+import { SurveyContext } from 'core/application/model'
 
 export const surveyContexts: SurveyContext[] = [
   {
-    name: "HOUSEHOLD",
-    value: "ménage",
+    name: 'HOUSEHOLD',
+    value: 'ménage',
   },
   {
-    name: "BUSINESS",
-    value: "entreprise",
+    name: 'BUSINESS',
+    value: 'entreprise',
   },
-];
+]

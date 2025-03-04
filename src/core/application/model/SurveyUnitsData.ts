@@ -1,6 +1,6 @@
-import { SurveyUnit } from "./SurveyUnit";
+import { SurveyUnit } from './SurveyUnit'
 
 export type SurveyUnitsData = {
-  questionnaireModelId: string;
-  surveyUnits: SurveyUnit[];
-};
+  questionnaireModelId: string
+  surveyUnits: SurveyUnit[]
+}

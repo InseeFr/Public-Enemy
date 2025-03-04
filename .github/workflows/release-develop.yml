@@ -28,7 +28,7 @@ jobs:
           tag: ${{ steps.version.outputs.pe-version }}
 
       - if: ${{ steps.checkTag.outputs.exists == 'true' }}
-        name: "Skip release"
+        name: 'Skip release'
         run: echo "Nothing to tag/release, the release ${{ steps.version.outputs.pe-version }} already exists"
 
   create-release:
@@ -110,4 +110,4 @@ jobs:
           name: inseefr/public-enemy
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          tags: "latest, ${{ needs.check-version.outputs.release-version }}"
+          tags: 'latest, ${{ needs.check-version.outputs.release-version }}'

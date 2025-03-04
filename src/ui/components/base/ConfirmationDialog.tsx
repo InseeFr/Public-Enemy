@@ -1,4 +1,6 @@
-import { LoadingButton } from "@mui/lab";
+import { memo } from 'react'
+
+import { LoadingButton } from '@mui/lab'
 import {
   Button,
   Dialog,
@@ -6,18 +8,17 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from "@mui/material";
-import { memo } from "react";
+} from '@mui/material'
 
 type DialogTypeProps = {
-  title: string;
-  body: string;
-  agreeBtn: { label: string; isSubmitting?: boolean };
-  disagreeBtn: { label: string };
-  handleConfirmation: () => void;
-  displayConfirmationDialog: boolean;
-  closeConfirmationDialog: () => void;
-};
+  title: string
+  body: string
+  agreeBtn: { label: string; isSubmitting?: boolean }
+  disagreeBtn: { label: string }
+  handleConfirmation: () => void
+  displayConfirmationDialog: boolean
+  closeConfirmationDialog: () => void
+}
 
 /**
  * Agree/DIsagree confirmation dialog
@@ -67,8 +68,8 @@ export const ConfirmationDialog = memo(
           </LoadingButton>
         </DialogActions>
       </Dialog>
-    );
-  }
-);
+    )
+  },
+)
 
-ConfirmationDialog.displayName = "ConfirmationDialog";
+ConfirmationDialog.displayName = 'ConfirmationDialog'

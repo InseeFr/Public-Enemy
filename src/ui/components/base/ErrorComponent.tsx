@@ -1,6 +1,8 @@
-import Typography from "@mui/material/Typography";
-import { memo } from "react";
-import { Title } from ".";
+import { memo } from 'react'
+
+import Typography from '@mui/material/Typography'
+
+import { Title } from '.'
 
 export const ErrorComponent = memo(() => {
   return (
@@ -8,7 +10,7 @@ export const ErrorComponent = memo(() => {
       <Title>Erreur</Title>
       <Typography component="p">Une erreur est survenue !!!</Typography>
     </>
-  );
-});
+  )
+})
 
-ErrorComponent.displayName = "ErrorComponent";
+ErrorComponent.displayName = 'ErrorComponent'

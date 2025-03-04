@@ -1,1 +1,1 @@
-export type SurveyUnitsMessages = string[];
+export type SurveyUnitsMessages = string[]
