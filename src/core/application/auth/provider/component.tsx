@@ -1,13 +1,14 @@
 import { createMockReactOidc } from "oidc-spa/mock/react";
 import { createReactOidc } from "oidc-spa/react";
 
+console.log(import.meta.env)
 
 export const { OidcProvider, useOidc, getOidc } =
   import.meta.env.VITE_AUTH_TYPE === "oidc"
     ? createReactOidc({
       clientId: import.meta.env.VITE_CLIENT_ID,
       issuerUri: import.meta.env.VITE_OIDC_ISSUER,
-      homeUrl: import.meta.env.VITE_BASE_URL,
+      homeUrl: import.meta.env.BASE_URL || "/",
     })
     : createMockReactOidc({
       isUserInitiallyLoggedIn: false,
@@ -18,5 +19,5 @@ export const { OidcProvider, useOidc, getOidc } =
           preferred_username: "mock-user",
         },
       },
-      homeUrl: import.meta.env.VITE_BASE_URL,
+      homeUrl: import.meta.env.BASE_URL || "/",
     });
