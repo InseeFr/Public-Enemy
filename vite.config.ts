@@ -7,7 +7,7 @@ import topLevelAwait from "vite-plugin-top-level-await";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  base: import.meta.env.VITE_OIDC_ISSUER || "/",
+  base: "/",
   server: {
     port: 3000,
   },
