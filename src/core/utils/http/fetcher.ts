@@ -1,3 +1,4 @@
+import { getAccessToken } from 'core/application/auth/provider/utils'
 import {
   ApiError,
   ApiErrorDetails,
@@ -13,8 +14,7 @@ import {
  */
 export const getRequest =
   <ResponseType>(url: string) =>
-  (token?: string) =>
-    simpleFetch<ResponseType>(url, 'GET', undefined, token)
+    simpleFetch<ResponseType>(url, 'GET', undefined)
 
 /**
  * Generic HTTP POST Request
@@ -24,8 +24,7 @@ export const getRequest =
  */
 export const postRequest =
   <ResponseType>(url: string, payload: object) =>
-  (token?: string) =>
-    simpleFetch<ResponseType>(url, 'POST', payload, token)
+    simpleFetch<ResponseType>(url, 'POST', payload)
 
 /**
  * Generic HTTP DELETE Request
@@ -34,8 +33,7 @@ export const postRequest =
  */
 export const deleteRequest =
   <ResponseType>(url: string) =>
-  (token?: string) =>
-    simpleFetch<ResponseType>(url, 'DELETE', undefined, token)
+    simpleFetch<ResponseType>(url, 'DELETE', undefined)
 
 /**
  * Generic HTTP PUT Request
@@ -45,8 +43,7 @@ export const deleteRequest =
  */
 export const putRequest =
   <ResponseType>(url: string, payload: object | undefined) =>
-  (token?: string) =>
-    simpleFetch<ResponseType>(url, 'PUT', payload, token)
+    simpleFetch<ResponseType>(url, 'PUT', payload)
 
 /**
  * Generic HTTP PATCH Request
@@ -56,8 +53,7 @@ export const putRequest =
  */
 export const patchRequest =
   <ResponseType>(url: string, payload: object) =>
-  (token?: string) =>
-    simpleFetch<ResponseType>(url, 'PATCH', payload, token)
+    simpleFetch<ResponseType>(url, 'PATCH', payload)
 
 /**
  * Generic HTTP POST Request with multipart data
@@ -67,8 +63,7 @@ export const patchRequest =
  */
 export const postRequestMultiPart =
   <ResponseType>(url: string, payload: FormData) =>
-  (token?: string) =>
-    multipartFetch<ResponseType>(url, 'POST', payload, token)
+    multipartFetch<ResponseType>(url, 'POST', payload)
 
 /**
  * Generic HTTP PUT Request with multipart data
@@ -78,8 +73,7 @@ export const postRequestMultiPart =
  */
 export const putRequestMultiPart =
   <ResponseType>(url: string, payload: FormData) =>
-  (token?: string) =>
-    multipartFetch<ResponseType>(url, 'PUT', payload, token)
+    multipartFetch<ResponseType>(url, 'PUT', payload)
 
 /**
  * Generic simple fetch request
@@ -92,16 +86,11 @@ const simpleFetch = <ResponseType>(
   url: string,
   method: 'GET' | 'POST' | 'PATCH' | 'DELETE' | 'PUT',
   payload: object | undefined,
-  token?: string,
 ): Promise<ResponseType> => {
   let headers: HeadersInit = {
     Accept: 'application/json, text/plain, */*',
     'Content-Type': 'application/json',
   }
-  if (token) {
-    headers = { ...headers, Authorization: `Bearer ${token}` }
-  }
-
   let payloadJson = undefined
   if (payload !== undefined) {
     payloadJson = JSON.stringify(payload)
@@ -121,12 +110,9 @@ const multipartFetch = <ResponseType>(
   url: string,
   method: 'POST' | 'PATCH' | 'PUT',
   payload: FormData,
-  token?: string,
 ): Promise<ResponseType> => {
   let headers = {}
-  if (token) {
-    headers = { ...headers, Authorization: `Bearer ${token}` }
-  }
+
   return fetcher<ResponseType>(url, method, headers, payload)
 }
 
@@ -138,13 +124,17 @@ const multipartFetch = <ResponseType>(
  * @param payload
  * @returns promise of ResponseType
  */
-const fetcher = <ResponseType>(
+const fetcher = async <ResponseType>(
   url: string,
   method: string,
   headers: HeadersInit | undefined,
   payload: string | FormData | undefined,
 ): Promise<ResponseType> => {
-  return fetch(url, {
+  const token = await getAccessToken()
+  if (token) {
+    headers = { ...headers, Authorization: `Bearer ${token}` }
+  }
+  return await fetch(url, {
     headers: headers,
     method,
     body: payload,
@@ -200,7 +190,9 @@ const getFilenameFromHeader = (header: string | null): string => {
   return 'default.csv'
 }
 
-export const fetcherFile = async (url: string, token?: string) => {
+export const fetcherFile = async (url: string) => {
+
+  const token = await getAccessToken()
   const response = await fetch(url, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
     method: 'GET',

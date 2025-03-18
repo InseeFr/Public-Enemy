@@ -40,8 +40,9 @@ if (getEnvVar('VITE_LOCALE')) {
 */
 root.render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <OidcProvider>
+    <OidcProvider>
+      <QueryClientProvider client={queryClient}>
+
         <ThemeProvider theme={appTheme}>
           <IntlProvider messages={getMessages(locale)} locale={locale}>
             <SnackbarProvider maxSnack={3}>
@@ -50,8 +51,9 @@ root.render(
             </SnackbarProvider>
           </IntlProvider>
         </ThemeProvider>
-      </OidcProvider>
-    </QueryClientProvider>
+
+      </QueryClientProvider>
+    </OidcProvider>
   </React.StrictMode>,
 ) /*
 })();*/

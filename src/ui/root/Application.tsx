@@ -28,7 +28,7 @@ export const Application = memo(() => {
     setOpen(!open)
   }
 
-  const { isUserLoggedIn, login, tokens } = useOidc()
+  const { isUserLoggedIn, login } = useOidc()
 
   if (!isUserLoggedIn && login) {
     login({
@@ -38,12 +38,10 @@ export const Application = memo(() => {
   }
 
   const questionnaireRepository = createQuestionnaireRepository(
-    getEnvVar('VITE_API_URL'),
-    tokens?.accessToken,
+    getEnvVar('VITE_API_URL')
   )
   const surveyUnitRepository = createSurveyUnitRepository(
-    getEnvVar('VITE_API_URL'),
-    tokens?.accessToken,
+    getEnvVar('VITE_API_URL')
   )
 
   return (

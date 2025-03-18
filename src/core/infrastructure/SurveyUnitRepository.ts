@@ -22,34 +22,34 @@ export function createSurveyUnitRepository(
   ): Promise<SurveyUnitsData> => {
     return getRequest<SurveyUnitsData>(
       `${apiUrl}/questionnaires/${questionnaireId}/modes/${modeName}/survey-units`,
-    )(token)
+    )
   }
 
   const checkSurveyUnitsCSV = (
     poguesId: string,
     surveyUnitCSVData: File,
   ): Promise<SurveyUnitsMessages> => {
-    const formData = new FormData()
+    const formData = new FormData
     formData.append('surveyUnitData', surveyUnitCSVData)
 
     return postRequestMultiPart<SurveyUnitsMessages>(
       `${apiUrl}/questionnaires/${poguesId}/checkdata`,
       formData,
-    )(token)
+    )
   }
   const resetSurveyUnit = (surveyUnitId: string): Promise<void> => {
     return putRequest<void>(
       `${apiUrl}/survey-units/${surveyUnitId}/reset`,
       undefined,
-    )(token)
+    )
   }
 
   const getSurveyUnitsSchemaCSV = (poguesId: string): Promise<void> => {
-    return fetcherFile(`${apiUrl}/questionnaires/${poguesId}/csv`, token)
+    return fetcherFile(`${apiUrl}/questionnaires/${poguesId}/csv`)
   }
 
   const getExistingSurveyUnitsSchemaCSV = (id: number): Promise<void> => {
-    return fetcherFile(`${apiUrl}/questionnaires/${id}/data`, token)
+    return fetcherFile(`${apiUrl}/questionnaires/${id}/data`)
   }
 
   return {
