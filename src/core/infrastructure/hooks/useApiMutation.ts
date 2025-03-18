@@ -1,7 +1,7 @@
 import {
-  MutationFunction,
-  MutationKey,
-  UseMutationOptions,
+  type MutationFunction,
+  type MutationKey,
+  type UseMutationOptions,
   useMutation,
 } from '@tanstack/react-query'
 import { ApiError } from 'core/application/model/error'

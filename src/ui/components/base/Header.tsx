@@ -14,7 +14,7 @@ import { getEnvVar } from 'core/utils/configuration/env'
 import { useIntl } from 'react-intl'
 import { makeStyles } from 'tss-react/mui'
 
-import { SidebarNavProps } from '.'
+import type { SidebarNavProps } from '.'
 
 export const Header = memo((props: SidebarNavProps) => {
   const { toggleDrawer } = props
@@ -50,7 +50,7 @@ export const Header = memo((props: SidebarNavProps) => {
         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
           <Button sx={{ color: '#fff' }}>
             <PersonIcon fontSize="small"></PersonIcon>
-            {`${decodedIdToken?.preferred_username}`}
+            {`${decodedIdToken?.name}`}
           </Button>
 
           {'|'}

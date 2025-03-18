@@ -2,7 +2,7 @@ import React, { memo, useEffect } from 'react'
 
 import { Alert, AlertTitle } from '@mui/material'
 import { useNotifier } from 'core/infrastructure'
-import { CsvMessages } from 'core/infrastructure/hooks/useCsvChecks'
+import type { CsvMessages } from 'core/infrastructure/hooks/useCsvChecks'
 import { useIntl } from 'react-intl'
 
 type CsvAlertType = {

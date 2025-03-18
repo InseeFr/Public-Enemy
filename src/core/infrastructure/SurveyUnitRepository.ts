@@ -1,5 +1,8 @@
-import { SurveyUnitsData, SurveyUnitsMessages } from 'core/application/model'
-import { SurveyUnitRepositoryPort } from 'core/application/port'
+import type {
+  SurveyUnitsData,
+  SurveyUnitsMessages,
+} from 'core/application/model'
+import type { SurveyUnitRepositoryPort } from 'core/application/port'
 import { getRequest } from 'core/utils/http'
 import {
   fetcherFile,
@@ -29,7 +32,7 @@ export function createSurveyUnitRepository(
     poguesId: string,
     surveyUnitCSVData: File,
   ): Promise<SurveyUnitsMessages> => {
-    const formData = new FormData
+    const formData = new FormData()
     formData.append('surveyUnitData', surveyUnitCSVData)
 
     return postRequestMultiPart<SurveyUnitsMessages>(

@@ -1,7 +1,7 @@
 import { memo } from 'react'
 
 import { Alert, AlertTitle, Grid } from '@mui/material'
-import {
+import type {
   Questionnaire,
   SurveyContext,
   SurveyUnitsMessages,

@@ -1,4 +1,4 @@
-import { SurveyUnitsData } from 'core/application/model'
+import type { SurveyUnitsData } from 'core/application/model'
 
 export const surveyUnitsData: SurveyUnitsData = {
   questionnaireModelId: 'l8wwljbo',

@@ -1,4 +1,4 @@
-import { Questionnaire } from 'core/application/model'
+import type { Questionnaire } from 'core/application/model'
 
 export const simpleQuestionnaire: Questionnaire = {
   id: 0,

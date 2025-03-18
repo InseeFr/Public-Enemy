@@ -2,7 +2,7 @@ import { memo, useEffect, useState } from 'react'
 
 import { Grid } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
-import {
+import type {
   Questionnaire,
   SurveyContext,
   SurveyUnitsMessages,

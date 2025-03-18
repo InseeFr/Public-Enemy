@@ -2,9 +2,9 @@ import { getAccessToken } from 'core/application/auth/provider/utils'
 import {
   ApiError,
   ApiErrorDetails,
-  ErrorDetails,
-  ErrorDetailsSurveyUnit,
-  ErrorObject,
+  type ErrorDetails,
+  type ErrorDetailsSurveyUnit,
+  type ErrorObject,
 } from 'core/application/model/error'
 
 /**
@@ -12,9 +12,8 @@ import {
  * @param url endpoint for request
  * @returns promise of ResponseType
  */
-export const getRequest =
-  <ResponseType>(url: string) =>
-    simpleFetch<ResponseType>(url, 'GET', undefined)
+export const getRequest = <ResponseType>(url: string) =>
+  simpleFetch<ResponseType>(url, 'GET', undefined)
 
 /**
  * Generic HTTP POST Request
@@ -22,18 +21,16 @@ export const getRequest =
  * @param payload
  * @returns promise of ResponseType
  */
-export const postRequest =
-  <ResponseType>(url: string, payload: object) =>
-    simpleFetch<ResponseType>(url, 'POST', payload)
+export const postRequest = <ResponseType>(url: string, payload: object) =>
+  simpleFetch<ResponseType>(url, 'POST', payload)
 
 /**
  * Generic HTTP DELETE Request
  * @param url endpoint for request
  * @returns
  */
-export const deleteRequest =
-  <ResponseType>(url: string) =>
-    simpleFetch<ResponseType>(url, 'DELETE', undefined)
+export const deleteRequest = <ResponseType>(url: string) =>
+  simpleFetch<ResponseType>(url, 'DELETE', undefined)
 
 /**
  * Generic HTTP PUT Request
@@ -41,9 +38,10 @@ export const deleteRequest =
  * @param payload
  * @returns promise of ResponseType
  */
-export const putRequest =
-  <ResponseType>(url: string, payload: object | undefined) =>
-    simpleFetch<ResponseType>(url, 'PUT', payload)
+export const putRequest = <ResponseType>(
+  url: string,
+  payload: object | undefined,
+) => simpleFetch<ResponseType>(url, 'PUT', payload)
 
 /**
  * Generic HTTP PATCH Request
@@ -51,9 +49,8 @@ export const putRequest =
  * @param payload
  * @returns promise of ResponseType
  */
-export const patchRequest =
-  <ResponseType>(url: string, payload: object) =>
-    simpleFetch<ResponseType>(url, 'PATCH', payload)
+export const patchRequest = <ResponseType>(url: string, payload: object) =>
+  simpleFetch<ResponseType>(url, 'PATCH', payload)
 
 /**
  * Generic HTTP POST Request with multipart data
@@ -61,9 +58,10 @@ export const patchRequest =
  * @param payload
  * @returns promise of ResponseType
  */
-export const postRequestMultiPart =
-  <ResponseType>(url: string, payload: FormData) =>
-    multipartFetch<ResponseType>(url, 'POST', payload)
+export const postRequestMultiPart = <ResponseType>(
+  url: string,
+  payload: FormData,
+) => multipartFetch<ResponseType>(url, 'POST', payload)
 
 /**
  * Generic HTTP PUT Request with multipart data
@@ -71,9 +69,10 @@ export const postRequestMultiPart =
  * @param payload
  * @returns promise of ResponseType
  */
-export const putRequestMultiPart =
-  <ResponseType>(url: string, payload: FormData) =>
-    multipartFetch<ResponseType>(url, 'PUT', payload)
+export const putRequestMultiPart = <ResponseType>(
+  url: string,
+  payload: FormData,
+) => multipartFetch<ResponseType>(url, 'PUT', payload)
 
 /**
  * Generic simple fetch request
@@ -191,7 +190,6 @@ const getFilenameFromHeader = (header: string | null): string => {
 }
 
 export const fetcherFile = async (url: string) => {
-
   const token = await getAccessToken()
   const response = await fetch(url, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},

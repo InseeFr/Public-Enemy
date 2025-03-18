@@ -1,5 +1,5 @@
-import { Questionnaire, SurveyContext } from 'core/application/model'
-import { QuestionnaireRepositoryPort } from 'core/application/port'
+import type { Questionnaire, SurveyContext } from 'core/application/model'
+import type { QuestionnaireRepositoryPort } from 'core/application/port'
 import { deleteRequest, getRequest } from 'core/utils/http'
 import { postRequestMultiPart } from 'core/utils/http/fetcher'
 

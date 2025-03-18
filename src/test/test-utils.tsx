@@ -1,9 +1,9 @@
-import React, { ReactElement } from 'react'
+import React, { type ReactElement } from 'react'
 
 import { ThemeProvider } from '@emotion/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { RenderOptions, render } from '@testing-library/react'
-import { LocaleType, getMessages } from 'core/i18n/messages'
+import { type RenderOptions, render } from '@testing-library/react'
+import { type LocaleType, getMessages } from 'core/i18n/messages'
 import { NotifierProvider } from 'core/infrastructure/Notifier'
 import { getEnvVar } from 'core/utils/configuration/env'
 import { SnackbarProvider } from 'notistack'

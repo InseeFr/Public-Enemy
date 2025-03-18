@@ -18,8 +18,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { UseMutateFunction } from '@tanstack/react-query'
-import {
+import type { UseMutateFunction } from '@tanstack/react-query'
+import type {
   Questionnaire,
   SurveyContext,
   SurveyUnitsMessages,

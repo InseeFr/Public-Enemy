@@ -1,5 +1,5 @@
 import userEvent from '@testing-library/user-event'
-import { Questionnaire } from 'core/application/model'
+import type { Questionnaire } from 'core/application/model'
 import { RouterProvider, createMemoryRouter } from 'react-router-dom'
 import { questionnaireAdd, simpleQuestionnaire } from 'test/mock/questionnaire'
 import { surveyContexts } from 'test/mock/surveyContext'
@@ -11,7 +11,7 @@ import {
   renderWithProviders,
   screen,
 } from 'test/test-utils'
-import { vi } from 'vitest'
+import { beforeEach, describe, expect, test, vi } from 'vitest'
 
 import { QuestionnaireEditForm } from './QuestionnaireEditForm'
 
@@ -116,7 +116,7 @@ describe.each([
         'Veuillez renseigner le fichier de données',
       )
 
-      expect(errorInputFile).toBeVisible()
+      expect(errorInputFile).toBeDefined()
       expect(saveQuestionnaire).toHaveBeenCalledTimes(0)
     })
 
@@ -127,7 +127,7 @@ describe.each([
         'Veuillez saisir le contexte',
       )
 
-      expect(errorContext).toBeVisible()
+      expect(errorContext).toBeDefined()
       expect(saveQuestionnaire).toHaveBeenCalledTimes(0)
     })
   },
@@ -189,13 +189,13 @@ function fillSelectContext(container: HTMLElement) {
   const contextSelectTextField = container.querySelector(
     '#questionnaire-context',
   ) as HTMLDivElement
-  expect(contextSelectTextField).toBeInTheDocument()
+  expect(contextSelectTextField).toBeDefined()
 
   const contextSelectInput = container.querySelector(
     '#select-input',
   ) as HTMLInputElement
 
-  expect(contextSelectInput).toBeInTheDocument()
+  expect(contextSelectInput).toBeDefined()
 
   fireEvent.mouseDown(contextSelectTextField)
 

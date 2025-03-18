@@ -1,7 +1,7 @@
 import type { PropsWithChildren, ReactNode } from 'react'
 import { createContext, useContext } from 'react'
 
-import { NotificationType, NotifierPort } from 'core/application/port'
+import type { NotificationType, NotifierPort } from 'core/application/port'
 import { useSnackbar } from 'notistack'
 
 type NotifyFunction = (notification: NotificationType) => void

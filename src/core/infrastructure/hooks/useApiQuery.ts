@@ -1,7 +1,7 @@
 import {
-  QueryFunction,
-  QueryKey,
-  UseQueryOptions,
+  type QueryFunction,
+  type QueryKey,
+  type UseQueryOptions,
   useQuery,
 } from '@tanstack/react-query'
 import { ApiError } from 'core/application/model/error'

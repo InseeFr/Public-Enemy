@@ -2,7 +2,7 @@ import userEvent from '@testing-library/user-event'
 import { RouterProvider, createMemoryRouter } from 'react-router-dom'
 import { simpleQuestionnaire } from 'test/mock/questionnaire'
 import { notifySpy, renderWithProviders, screen } from 'test/test-utils'
-import { vi } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 
 import { QuestionnaireCheckPoguesIdPage } from '.'
 

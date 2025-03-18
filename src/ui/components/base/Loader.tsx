@@ -1,4 +1,4 @@
-import { PropsWithChildren, memo } from 'react'
+import { type PropsWithChildren, memo } from 'react'
 
 import { Box, CircularProgress } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
