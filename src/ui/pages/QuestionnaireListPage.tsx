@@ -16,7 +16,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
-import { Questionnaire } from "core/application/model";
+import type { Questionnaire } from "core/application/model";
 import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
 import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
 import { memo, useState } from "react";

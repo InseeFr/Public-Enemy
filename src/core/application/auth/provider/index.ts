@@ -1,1 +1,1 @@
-export { AuthProvider } from "./component";
+export { OidcProvider, useOidc, getOidc } from './component'

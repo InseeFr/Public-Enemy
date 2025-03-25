@@ -1,35 +1,28 @@
 /// <reference types="vitest" />
 /// <reference types="vite/client" />
-
-import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
-import topLevelAwait from "vite-plugin-top-level-await";
-import viteTsconfigPaths from "vite-tsconfig-paths";
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
-  server: {
-    port: 3000,
-  },
   plugins: [
     react(),
-    viteTsconfigPaths(),
-    topLevelAwait({
-      // The export name of top-level await promise for each chunk module
-      promiseExportName: "__tla",
-      // The function to generate import names of top-level await promise in each chunk module
-      promiseImportName: (i) => `__tla_${i}`,
+    tsconfigPaths({
+      projects: [
+        './tsconfig.json', // To avoid tsconfigPaths read website tsconfig path
+      ],
     }),
   ],
   test: {
     globals: true,
-    environment: "jsdom",
-    coverage: {
-      reporter: ["text", "json", "html"],
-    },
-    setupFiles: ["src/setupTests.ts"],
+    environment: 'jsdom',
+    setupFiles: ['src/setupTests.ts'],
   },
 
   build: {
-    target: "es2017",
+    target: 'esnext',
   },
-});
+  define: {
+    global: 'window',
+  },
+})

@@ -1,15 +1,16 @@
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
+import { memo, useState } from 'react'
+
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import { useOidc } from 'core/application/auth/provider'
 import {
   createQuestionnaireRepository,
   createSurveyUnitRepository,
-} from "core/infrastructure";
-import { useAuth } from "core/infrastructure/hooks/useAuth";
-import { getEnvVar } from "core/utils/configuration/env";
-import { memo, useState } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { makeStyles } from "tss-react/mui";
-import { Footer, Header, SidebarNav } from "ui/components/base";
+} from 'core/infrastructure'
+import { getEnvVar } from 'core/utils/configuration/env'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { makeStyles } from 'tss-react/mui'
+import { Footer, Header, SidebarNav } from 'ui/components/base'
 import {
   ErrorPage,
   QuestionnaireAddPage,
@@ -17,35 +18,31 @@ import {
   QuestionnaireDetailsPage,
   QuestionnaireEditPage,
   QuestionnaireListPage,
-} from "ui/pages";
-import { SurveyUnitListPage } from "ui/pages/SurveyUnitListPage";
+} from 'ui/pages'
+import { SurveyUnitListPage } from 'ui/pages/SurveyUnitListPage'
 
 export const Application = memo(() => {
-  const { classes } = useStyles();
-  const [open, setOpen] = useState<boolean>(false);
+  const { classes } = useStyles()
+  const [open, setOpen] = useState<boolean>(false)
   const toggleDrawer = () => {
-    setOpen(!open);
-  };
+    setOpen(!open)
+  }
 
-  const {
-    oidc: { isUserLoggedIn, login, oidcTokens },
-  } = useAuth();
+  const { isUserLoggedIn, login } = useOidc()
 
   if (!isUserLoggedIn && login) {
     login({
       doesCurrentHrefRequiresAuth: true,
-    });
-    return <></>;
+    })
+    return <></>
   }
 
   const questionnaireRepository = createQuestionnaireRepository(
-    getEnvVar("VITE_API_URL"),
-    oidcTokens?.accessToken
-  );
+    getEnvVar('VITE_API_URL')
+  )
   const surveyUnitRepository = createSurveyUnitRepository(
-    getEnvVar("VITE_API_URL"),
-    oidcTokens?.accessToken
-  );
+    getEnvVar('VITE_API_URL')
+  )
 
   return (
     <>
@@ -178,20 +175,20 @@ export const Application = memo(() => {
       </BrowserRouter>
       <Footer />
     </>
-  );
-});
+  )
+})
 
 const useStyles = makeStyles()((theme) => ({
   container: {
     marginTop: theme.spacing(11),
     marginBottom: theme.spacing(5),
-    flexGrow: "1",
+    flexGrow: '1',
   },
   horizontalContainer: {
-    display: "flex",
-    minHeight: "100vh",
-    backgroundColor: "#E1E8EF",
+    display: 'flex',
+    minHeight: '100vh',
+    backgroundColor: '#E1E8EF',
   },
-}));
+}))
 
-Application.displayName = "Application";
+Application.displayName = 'Application'

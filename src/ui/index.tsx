@@ -1,62 +1,194 @@
-import { ThemeProvider } from "@emotion/react";
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
-import { CssBaseline } from "@mui/material";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthProvider } from "core/application/auth/provider/component";
-import { LocaleType, getMessages } from "core/i18n/messages";
-import { getEnvVar } from "core/utils/configuration/env";
-import { SnackbarProvider } from "notistack";
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { IntlProvider } from "react-intl";
-import reportWebVitals from "../reportWebVitals";
-import { Application } from "./root/Application";
-import { appTheme } from "./theme";
+import { memo, useState } from 'react'
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 0,
-      refetchOnWindowFocus: false,
-      retry: false,
-    },
+import { Box } from '@mui/material'
+import Container from '@mui/material/Container'
+import { useOidc } from 'core/application/auth/provider'
+import {
+  createQuestionnaireRepository,
+  createSurveyUnitRepository,
+} from 'core/infrastructure'
+import { getEnvVar } from 'core/utils/configuration/env'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { makeStyles } from 'tss-react/mui'
+import { Footer, Header, SidebarNav } from 'ui/components/base'
+import {
+  ErrorPage,
+  QuestionnaireAddPage,
+  QuestionnaireCheckPoguesIdPage,
+  QuestionnaireDetailsPage,
+  QuestionnaireEditPage,
+  QuestionnaireListPage,
+} from 'ui/pages'
+import { SurveyUnitListPage } from 'ui/pages/SurveyUnitListPage'
+
+export const Application = memo(() => {
+  const { classes } = useStyles()
+  const [open, setOpen] = useState<boolean>(false)
+  const toggleDrawer = () => {
+    setOpen(!open)
+  }
+
+  const { isUserLoggedIn, login } = useOidc()
+
+  if (!isUserLoggedIn && login) {
+    login({
+      doesCurrentHrefRequiresAuth: true,
+    })
+    return <></>
+  }
+
+  const questionnaireRepository = createQuestionnaireRepository(
+    getEnvVar('VITE_API_URL')
+  )
+  const surveyUnitRepository = createSurveyUnitRepository(
+    getEnvVar('VITE_API_URL')
+  )
+
+  return (
+    <>
+      <Header open={open} toggleDrawer={toggleDrawer} />
+      <BrowserRouter>
+        <Box className={classes.horizontalContainer}>
+          <SidebarNav open={open} toggleDrawer={toggleDrawer} />
+          <Container maxWidth="lg" className={classes.container}>
+            <Routes>
+              <Route path="/" element={<Navigate to="/questionnaires" />} />
+              <Route
+                path="/questionnaires"
+                element={
+                  <QuestionnaireListPage
+                    fetchQuestionnaires={
+                      questionnaireRepository.getQuestionnaires
+                    }
+                    deleteQuestionnaire={
+                      questionnaireRepository.deleteQuestionnaire
+                    }
+                  />
+                }
+              />
+              <Route
+                path="/questionnaires/:id/edit"
+                element={
+                  <QuestionnaireEditPage
+                    fetchQuestionnaire={
+                      questionnaireRepository.getQuestionnaire
+                    }
+                    fetchSurveyContexts={
+                      questionnaireRepository.getSurveyContexts
+                    }
+                    editQuestionnaire={
+                      questionnaireRepository.editQuestionnaire
+                    }
+                    checkSurveyUnitsCsvData={
+                      surveyUnitRepository.checkSurveyUnitsCSV
+                    }
+                    getSurveyUnitsSchemaCSV={
+                      surveyUnitRepository.getSurveyUnitsSchemaCSV
+                    }
+                    getExistingSurveyUnitsSchemaCSV={
+                      surveyUnitRepository.getExistingSurveyUnitsSchemaCSV
+                    }
+                  />
+                }
+              />
+              <Route
+                path="/questionnaires/:id"
+                element={
+                  <QuestionnaireDetailsPage
+                    fetchQuestionnaire={
+                      questionnaireRepository.getQuestionnaire
+                    }
+                    deleteQuestionnaire={
+                      questionnaireRepository.deleteQuestionnaire
+                    }
+                  />
+                }
+              />
+              <Route
+                path="/questionnaires/check"
+                element={
+                  <QuestionnaireCheckPoguesIdPage
+                    fetchPoguesQuestionnaire={
+                      questionnaireRepository.getPoguesQuestionnaire
+                    }
+                    fetchQuestionnaireFromPoguesId={
+                      questionnaireRepository.getQuestionnaireFromPoguesId
+                    }
+                  />
+                }
+              >
+                <Route
+                  path="/questionnaires/check/:poguesId"
+                  element={
+                    <QuestionnaireCheckPoguesIdPage
+                      fetchPoguesQuestionnaire={
+                        questionnaireRepository.getPoguesQuestionnaire
+                      }
+                      fetchQuestionnaireFromPoguesId={
+                        questionnaireRepository.getQuestionnaireFromPoguesId
+                      }
+                    />
+                  }
+                />
+              </Route>
+              <Route
+                path="/questionnaires/add"
+                element={
+                  <QuestionnaireAddPage
+                    fetchSurveyContexts={
+                      questionnaireRepository.getSurveyContexts
+                    }
+                    fetchQuestionnaireFromPoguesId={
+                      questionnaireRepository.getQuestionnaireFromPoguesId
+                    }
+                    addQuestionnaire={questionnaireRepository.addQuestionnaire}
+                    checkSurveyUnitsCsvData={
+                      surveyUnitRepository.checkSurveyUnitsCSV
+                    }
+                    getSurveyUnitsSchemaCSV={
+                      surveyUnitRepository.getSurveyUnitsSchemaCSV
+                    }
+                    getExistingSurveyUnitsSchemaCSV={
+                      surveyUnitRepository.getExistingSurveyUnitsSchemaCSV
+                    }
+                  />
+                }
+              ></Route>
+              <Route
+                path="/questionnaires/:questionnaireId/modes/:modeName"
+                element={
+                  <SurveyUnitListPage
+                    fetchSurveyUnitsData={
+                      surveyUnitRepository.getSurveyUnitsData
+                    }
+                    fetchQuestionnaire={
+                      questionnaireRepository.getQuestionnaire
+                    }
+                    resetSurveyUnit={surveyUnitRepository.resetSurveyUnit}
+                  />
+                }
+              />
+              <Route path="*" element={<ErrorPage />} />
+            </Routes>
+          </Container>
+        </Box>
+      </BrowserRouter>
+      <Footer />
+    </>
+  )
+})
+
+const useStyles = makeStyles()((theme) => ({
+  container: {
+    marginTop: theme.spacing(11),
+    marginBottom: theme.spacing(5),
+    flexGrow: '1',
   },
-});
+  horizontalContainer: {
+    display: 'flex',
+    minHeight: '100vh',
+    backgroundColor: '#E1E8EF',
+  },
+}))
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
-
-let locale: LocaleType = "en";
-if (getEnvVar("VITE_LOCALE")) {
-  locale = getEnvVar("VITE_LOCALE");
-}
-
-/*(async () => {
-  const { messages } = await import(`/i18n-${locale}.js`);
-*/
-root.render(
-  <React.StrictMode>
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={appTheme}>
-          <IntlProvider messages={getMessages(locale)} locale={locale}>
-            <SnackbarProvider maxSnack={3}>
-              <CssBaseline />
-              <Application />
-            </SnackbarProvider>
-          </IntlProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </AuthProvider>
-  </React.StrictMode>
-); /*
-})();*/
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+Application.displayName = 'Application'
