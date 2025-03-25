@@ -1,5 +1,5 @@
-import { messagesEn } from "../../i18n-en";
-import { messagesFr } from "../../i18n-fr";
+import { messagesEn } from "i18n-en";
+import { messagesFr } from "i18n-fr";
 
 export type LocaleType = "fr" | "en";
 

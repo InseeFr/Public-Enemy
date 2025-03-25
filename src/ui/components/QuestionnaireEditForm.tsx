@@ -15,8 +15,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { UseMutateFunction } from "@tanstack/react-query";
-import {
+import type { UseMutateFunction } from "@tanstack/react-query";
+import type {
   Questionnaire,
   SurveyContext,
   SurveyUnitsMessages,
@@ -240,11 +240,11 @@ export const QuestionnaireEditForm = memo(
               >
                 {isCheckingCsvData
                   ? intl.formatMessage({
-                      id: "questionnaire_check_upload",
-                    })
+                    id: "questionnaire_check_upload",
+                  })
                   : intl.formatMessage({
-                      id: "questionnaire_edit_upload",
-                    })}
+                    id: "questionnaire_edit_upload",
+                  })}
                 <Input
                   data-testid="upload"
                   onChange={onSurveyUnitDataChange}

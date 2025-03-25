@@ -1,7 +1,7 @@
-import { SurveyUnitsMessages } from "core/application/model";
+import type { SurveyUnitsMessages } from "core/application/model";
 import {
   ApiErrorDetails,
-  ErrorDetailsSurveyUnit,
+  type ErrorDetailsSurveyUnit,
 } from "core/application/model/error";
 import { useState } from "react";
 import { useCsvApiMutation } from "./useCsvApiMutation";

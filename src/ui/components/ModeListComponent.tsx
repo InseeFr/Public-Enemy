@@ -1,4 +1,4 @@
-import { Mode, Questionnaire } from "core/application/model";
+import type { Mode, Questionnaire } from "core/application/model";
 import React, { memo } from "react";
 import { Link } from "react-router-dom";
 import { ModeIcon } from "ui/components/base";

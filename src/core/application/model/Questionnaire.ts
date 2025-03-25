@@ -1,4 +1,4 @@
-import { Mode, SurveyContext } from "./";
+import type { Mode, SurveyContext } from './'
 
 export type Questionnaire = {
   id: number;

@@ -1,5 +1,5 @@
 import Typography from "@mui/material/Typography";
-import { memo, PropsWithChildren } from "react";
+import { memo, type PropsWithChildren } from "react";
 
 export type SubtitleProps = PropsWithChildren;
 

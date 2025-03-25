@@ -1,4 +1,4 @@
-import { SurveyUnitsData, SurveyUnitsMessages } from "../model";
+import type { SurveyUnitsData, SurveyUnitsMessages } from "../model";
 
 export type SurveyUnitRepositoryPort = {
   getSurveyUnitsData: (

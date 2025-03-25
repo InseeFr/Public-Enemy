@@ -1,4 +1,4 @@
-import { SurveyContext } from "core/application/model";
+import type { SurveyContext } from "core/application/model";
 
 export const surveyContexts: SurveyContext[] = [
   {

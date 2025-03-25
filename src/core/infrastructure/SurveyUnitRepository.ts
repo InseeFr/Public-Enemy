@@ -29,7 +29,7 @@ export function createSurveyUnitRepository(
     poguesId: string,
     surveyUnitCSVData: File,
   ): Promise<SurveyUnitsMessages> => {
-    const formData = new FormData
+    const formData = new FormData()
     formData.append('surveyUnitData', surveyUnitCSVData)
 
     return postRequestMultiPart<SurveyUnitsMessages>(

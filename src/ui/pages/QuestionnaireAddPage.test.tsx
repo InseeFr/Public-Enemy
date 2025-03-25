@@ -3,7 +3,8 @@ import { simpleQuestionnaire } from "test/mock/questionnaire";
 import { surveyContexts } from "test/mock/surveyContext";
 import { surveyUnitsWarningMessages } from "test/mock/surveyUnitsWarningMessages";
 import { notifySpy, renderWithProviders } from "test/test-utils";
-import { vi } from "vitest";
+import { expect, test, vi } from 'vitest'
+import { describe } from 'node:test'
 import { QuestionnaireAddPage } from "./QuestionnaireAddPage";
 
 describe("QuestionnaireAddPage", () => {

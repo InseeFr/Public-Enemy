@@ -1,6 +1,6 @@
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { IconButton } from "@mui/material";
-import { UseMutateFunction } from "@tanstack/react-query";
+import type { UseMutateFunction } from "@tanstack/react-query";
 import { ApiError } from "core/application/model/error";
 import { useNotifier } from "core/infrastructure";
 import { memo, useState } from "react";

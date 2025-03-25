@@ -1,5 +1,5 @@
 import { Paper } from "@mui/material";
-import { memo, PropsWithChildren } from "react";
+import { memo, type PropsWithChildren } from "react";
 import { makeStyles } from "tss-react/mui";
 
 export type BlocProps = PropsWithChildren<{

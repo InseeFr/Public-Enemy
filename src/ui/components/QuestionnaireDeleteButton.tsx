@@ -1,7 +1,7 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton } from "@mui/material";
-import { UseMutateFunction } from "@tanstack/react-query";
-import { Questionnaire } from "core/application/model";
+import type { UseMutateFunction } from "@tanstack/react-query";
+import type { Questionnaire } from "core/application/model";
 import { ApiError } from "core/application/model/error";
 import { useNotifier } from "core/infrastructure";
 import { memo, useState } from "react";

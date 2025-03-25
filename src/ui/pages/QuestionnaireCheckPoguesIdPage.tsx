@@ -1,7 +1,7 @@
 import GetAppIcon from "@mui/icons-material/GetApp";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Grid, Stack, TextField } from "@mui/material";
-import { Questionnaire } from "core/application/model";
+import type { Questionnaire } from "core/application/model";
 import { useNotifier } from "core/infrastructure";
 import { useCustomQuery } from "core/infrastructure/hooks/useCustomQuery";
 import * as React from "react";
