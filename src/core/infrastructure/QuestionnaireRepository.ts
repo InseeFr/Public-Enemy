@@ -15,6 +15,7 @@ export function createQuestionnaireRepository(
     return getRequest<Questionnaire[]>(`${apiUrl}/questionnaires`)
   }
 
+
   const getQuestionnaire = (id: number): Promise<Questionnaire> => {
     return getRequest<Questionnaire>(`${apiUrl}/questionnaires/${id}`)
   }

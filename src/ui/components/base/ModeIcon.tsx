@@ -3,7 +3,7 @@ import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import WebIcon from "@mui/icons-material/Web";
 import { Chip } from "@mui/material";
-import { Mode } from "core/application/model";
+import type { Mode } from "core/application/model";
 import { memo } from "react";
 import { makeStyles } from "tss-react/mui";
 
