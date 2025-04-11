@@ -12,7 +12,7 @@ export DEFAULT_SRC="'self'"
 export SCRIPT_SRC="$DEFAULT_SRC 'unsafe-inline'"
 # Some css library inject style as inline, so we allow that.
 export STYLE_SRC="$DEFAULT_SRC 'unsafe-inline'"
-export FONT_SRC="$DEFAULT_SRC"
+export FONT_SRC="$DEFAULT_SRC data:"
 # Keep 'data:' if you load img as blob inside src attribute of img, remove if not
 export IMG_SRC="$DEFAULT_SRC data:"
 # Keep 'blob:' if you load dynamically a worker as blob, remove if not
