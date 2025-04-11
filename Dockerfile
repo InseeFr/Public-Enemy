@@ -14,12 +14,12 @@ COPY --chown=$NGINX_USER:$NGINX_USER dist /usr/share/nginx/html
 
 # Copy nginx configuration
 RUN rm etc/nginx/conf.d/default.conf
-COPY --chown=$NGINX_USER:$NGINX_USER container/nginx.conf etc/nginx/conf.d/
+COPY --chown=$NGINX_USER:$NGINX_USER container/nginx.conf etc/nginx/conf.d/nginx.conf.template
 
 
 # Add entrypoint
 COPY --chown=$NGINX_USER:$NGINX_USER container/entrypoint.sh /entrypoint.sh
-RUN chmod 755 /entrypoint.sh
+COPY --chown=$NGINX_USER:$NGINX_USER container/nginx-envs.sh /nginx-envs.sh
+RUN chmod 755 /entrypoint.sh && chmod 755 /nginx-envs.sh
 
-ENTRYPOINT [ "/entrypoint.sh" ]
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT sh -c "/entrypoint.sh && /nginx-envs.sh && nginx -g 'daemon off;'"
