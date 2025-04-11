@@ -1,6 +1,6 @@
 {
   "name": "public-enemy",
-  "version": "2.1.8",
+  "version": "2.2.0-rc.2",
   "description": "Check and test questionnaire models",
   "repository": {
     "type": "git",
