@@ -2,8 +2,7 @@ name: Build release candidate
 
 on:
   push:
-    branches:
-      - develop
+    branches: ['develop','feat/**']
 
 jobs:
   check-version:
