@@ -23,5 +23,7 @@ export CONNECT_SRC="$DEFAULT_SRC $(originsOf "$VITE_API_URL $VITE_AUTH_URL")"
 # Frame src: the workflow of oidc auth in frontend needs having server auth origin as frame-src (iframe is temporarily created)
 export FRAME_SRC="$DEFAULT_SRC $(originOf $VITE_AUTH_URL)"
 
-envsubst '${DEFAULT_SRC} ${SCRIPT_SRC} ${STYLE_SRC} ${FONT_SRC} ${IMG_SRC} ${WORKER_SRC} ${CONNECT_SRC} ${FRAME_SRC}' < /etc/nginx/conf.d/nginx.conf.template > /etc/nginx/conf.d/default.conf
+export CSP_HEADER="default-src $DEFAULT_SRC; script-src $SCRIPT_SRC; style-src $STYLE_SRC; img-src $IMG_SRC; font-src $FONT_SRC; worker-src $WORKER_SRC; object-src 'none'; connect-src $CONNECT_SRC; frame-src $FRAME_SRC; require-trusted-types-for 'script';"
+
+envsubst '${CSP_HEADER}' < /etc/nginx/conf.d/nginx.conf.template > /etc/nginx/conf.d/default.conf
 
