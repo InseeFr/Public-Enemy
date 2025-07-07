@@ -1,8 +1,8 @@
-import { SurveyUnitsData } from "core/application/model";
+import { InterrogationsData } from "core/application/model";
 
-export const surveyUnitsData: SurveyUnitsData = {
+export const interrogationsData: InterrogationsData = {
   questionnaireModelId: "l8wwljbo",
-  surveyUnits: [
+  interrogations: [
     {
       id: "13-CAPI-1",
       displayableId: 1,

@@ -1,23 +1,23 @@
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { simpleQuestionnaire } from "test/mock/questionnaire";
-import { surveyUnitsData } from "test/mock/surveyUnitsData";
 import { notifySpy, renderWithProviders } from "test/test-utils";
-import { vi } from "vitest";
-import { SurveyUnitListPage } from "./SurveyUnitListPage";
+import { describe, expect, test, vi } from "vitest";
+import { InterrogationListPage } from "./InterrogationListPage";
+import { interrogationsData } from "test/mock/surveyUnitsData";
 
-describe.only("SurveyUnitListPage", () => {
-  const fetchSurveyUnitsData = vi.fn(() => Promise.resolve(surveyUnitsData));
+describe.only("InterrogationListPage", () => {
+  const fetchInterrogationsData = vi.fn(() => Promise.resolve(interrogationsData));
   const fetchQuestionnaire = vi.fn(() => Promise.resolve(simpleQuestionnaire));
-  const resetSurveyUnit = vi.fn(() => Promise.resolve());
+  const resetInterrogation = vi.fn(() => Promise.resolve());
   const router = createMemoryRouter(
     [
       {
         path: "/",
         element: (
-          <SurveyUnitListPage
-            fetchSurveyUnitsData={fetchSurveyUnitsData}
+          <InterrogationListPage
+            fetchInterrogationsData={fetchInterrogationsData}
             fetchQuestionnaire={fetchQuestionnaire}
-            resetSurveyUnit={resetSurveyUnit}
+            resetInterrogation={resetInterrogation}
           />
         ),
       },

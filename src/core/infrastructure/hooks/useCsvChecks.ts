@@ -1,27 +1,27 @@
-import { SurveyUnitsMessages } from "core/application/model";
+import { InterrogationsMessages } from "core/application/model";
 import {
   ApiErrorDetails,
-  ErrorDetailsSurveyUnit,
+  ErrorDetailsInterrogation,
 } from "core/application/model/error";
 import { useState } from "react";
 import { useCsvApiMutation } from "./useCsvApiMutation";
 
 type ErrorCodes = {
   1001: string[];
-  1002: ErrorDetailsSurveyUnit[];
+  1002: ErrorDetailsInterrogation[];
 };
 
 export type CsvMessages = {
   warnings?: string[];
   errors?: string[];
-  details?: ErrorDetailsSurveyUnit[];
+  details?: ErrorDetailsInterrogation[];
 };
 
 export const useCsvChecks = (
-  checkSurveyUnitsCsvData: (
+  checkInterrogationsCsvData: (
     poguesId: string,
-    surveyUnitsCSVData: File
-  ) => Promise<SurveyUnitsMessages>
+    interrogationsCSVData: File
+  ) => Promise<InterrogationsMessages>
 ) => {
   const [messages, setMessages] = useState<CsvMessages>();
 
@@ -33,7 +33,7 @@ export const useCsvChecks = (
   } = useCsvApiMutation({
     mutationKey: ["csv-check"],
     mutationFn: ({ id, data }: { id: string; data: File }) => {
-      return checkSurveyUnitsCsvData(id, data);
+      return checkInterrogationsCsvData(id, data);
     },
     options: {
       onMutate: () => {

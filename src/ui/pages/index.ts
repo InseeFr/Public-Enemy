@@ -4,4 +4,4 @@ export { QuestionnaireCheckPoguesIdPage } from "./QuestionnaireCheckPoguesIdPage
 export { QuestionnaireDetailsPage } from "./QuestionnaireDetailsPage";
 export { QuestionnaireEditPage } from "./QuestionnaireEditPage";
 export { QuestionnaireListPage } from "./QuestionnaireListPage";
-export { SurveyUnitListPage } from "./SurveyUnitListPage";
+export { InterrogationListPage } from "./InterrogationListPage";

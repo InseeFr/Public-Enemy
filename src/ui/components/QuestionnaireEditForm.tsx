@@ -19,7 +19,7 @@ import { UseMutateFunction } from "@tanstack/react-query";
 import {
   Questionnaire,
   SurveyContext,
-  SurveyUnitsMessages,
+  InterrogationsMessages,
 } from "core/application/model";
 import { ApiError } from "core/application/model/error";
 import useNotifier from "core/infrastructure/Notifier";
@@ -38,10 +38,10 @@ export type QuestionnaireEditFormProps = {
   questionnaire: Questionnaire;
   isEditMode: boolean;
   fetchSurveyContexts: () => Promise<SurveyContext[]>;
-  checkSurveyUnitsCsvData: (
+  checkInterrogationsCsvData: (
     poguesId: string,
-    surveyUnitsCsvData: File
-  ) => Promise<SurveyUnitsMessages>;
+    interrogationsCsvData: File
+  ) => Promise<InterrogationsMessages>;
   saveQuestionnaire: UseMutateFunction<
     Questionnaire,
     ApiError,
@@ -49,8 +49,8 @@ export type QuestionnaireEditFormProps = {
     unknown
   >;
   isSubmitting: boolean;
-  getSurveyUnitsSchemaCSV: (poguesId: string) => Promise<void>;
-  getExistingSurveyUnitsSchemaCSV: (id: number) => Promise<void>;
+  getInterrogationsSchemaCSV: (poguesId: string) => Promise<void>;
+  getExistingInterrogationsSchemaCSV: (id: number) => Promise<void>;
 };
 
 export const QuestionnaireEditForm = memo(
@@ -82,18 +82,18 @@ export const QuestionnaireEditForm = memo(
       isSuccess: isCsvDataValid,
       reset: resetChecks,
       messages,
-    } = useCsvChecks(props.checkSurveyUnitsCsvData);
+    } = useCsvChecks(props.checkInterrogationsCsvData);
 
     useEffect(() => {
-      if (!questionnaire.surveyUnitData) {
+      if (!questionnaire.interrogationData) {
         return;
       }
       resetChecks();
       checkCsvData({
         id: questionnaire.poguesId,
-        data: questionnaire.surveyUnitData,
+        data: questionnaire.interrogationData,
       });
-    }, [questionnaire.surveyUnitData, questionnaire.poguesId]);
+    }, [questionnaire.interrogationData, questionnaire.poguesId]);
 
     /**
      * Check validation on context change
@@ -125,7 +125,7 @@ export const QuestionnaireEditForm = memo(
     /**
      * Event triggered when survey unit data field change
      */
-    const onSurveyUnitDataChange = (
+    const onInterrogationDataChange = (
       event: React.ChangeEvent<HTMLInputElement>
     ) => {
       const fileList = event.target.files;
@@ -135,7 +135,7 @@ export const QuestionnaireEditForm = memo(
 
       setQuestionnaire((state) => ({
         ...state,
-        surveyUnitData: fileList[0],
+        interrogationData: fileList[0],
       }));
     };
 
@@ -163,11 +163,11 @@ export const QuestionnaireEditForm = memo(
     };
 
     const getExistingSchema = () => {
-      props.getExistingSurveyUnitsSchemaCSV(questionnaire.id);
+      props.getExistingInterrogationsSchemaCSV(questionnaire.id);
     };
 
     const getExpectedSchema = () => {
-      props.getSurveyUnitsSchemaCSV(questionnaire.poguesId);
+      props.getInterrogationsSchemaCSV(questionnaire.poguesId);
     };
 
     return (
@@ -247,14 +247,14 @@ export const QuestionnaireEditForm = memo(
                     })}
                 <Input
                   data-testid="upload"
-                  onChange={onSurveyUnitDataChange}
-                  name="surveyUnitData"
+                  onChange={onInterrogationDataChange}
+                  name="interrogationData"
                   sx={{ display: "none" }}
                   type="file"
                 />
               </LoadingButton>
               <FormHelperText>
-                {questionnaire.surveyUnitData?.name}
+                {questionnaire.interrogationData?.name}
               </FormHelperText>
               <Typography variant="body2" gutterBottom>
                 {props.isEditMode && (

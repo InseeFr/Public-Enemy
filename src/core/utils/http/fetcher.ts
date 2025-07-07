@@ -2,7 +2,7 @@ import {
   ApiError,
   ApiErrorDetails,
   ErrorDetails,
-  ErrorDetailsSurveyUnit,
+  ErrorDetailsInterrogation,
   ErrorObject,
 } from "core/application/model/error";
 
@@ -177,9 +177,9 @@ const resolveErrors = async (response: Response) => {
       // survey specific validations error
       case 1002: {
         const errObjectDetails = errObject as ErrorDetails<
-          ErrorDetailsSurveyUnit[]
+          ErrorDetailsInterrogation[]
         >;
-        throw new ApiErrorDetails<ErrorDetailsSurveyUnit[]>(
+        throw new ApiErrorDetails<ErrorDetailsInterrogation[]>(
           errObjectDetails.code,
           errObjectDetails.path,
           errObjectDetails.message,

@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
-import { Questionnaire, SurveyUnitsData } from "core/application/model";
+import { Questionnaire, InterrogationsData } from "core/application/model";
 import { useNotifier } from "core/infrastructure";
 import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
 import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
@@ -20,27 +20,27 @@ import { memo, useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { useParams } from "react-router-dom";
 import { Block, Loader, Subtitle, Title } from "ui/components/base";
-import { SurveyUnitResetButton } from "ui/components/SurveyUnitResetButton";
+import { InterrogationResetButton } from "ui/components/InterrogationResetButton";
 
-type SurveyUnitParams = {
+type InterrogationParams = {
   questionnaireId: string;
   modeName: string;
 };
 
-type SurveyUnitListPageProps = {
+type InterrogationListPageProps = {
   fetchQuestionnaire: (id: number) => Promise<Questionnaire>;
-  fetchSurveyUnitsData: (
+  fetchInterrogationsData: (
     id: number,
     modeName: string
-  ) => Promise<SurveyUnitsData>;
-  resetSurveyUnit: (surveyUnitId: string) => Promise<void>;
+  ) => Promise<InterrogationsData>;
+  resetInterrogation: (interrogationId: string) => Promise<void>;
 };
 
-export const SurveyUnitListPage = memo((props: SurveyUnitListPageProps) => {
+export const InterrogationListPage = memo((props: InterrogationListPageProps) => {
   const intl = useIntl();
   const notifier = useNotifier();
   const orchestratorUrl = getEnvVar("VITE_ORCHESTRATOR_URL");
-  const { questionnaireId, modeName } = useParams<SurveyUnitParams>();
+  const { questionnaireId, modeName } = useParams<InterrogationParams>();
   const [canFetchData, setCanFetchData] = useState(false);
   const queryClient = useQueryClient();
 
@@ -64,28 +64,30 @@ export const SurveyUnitListPage = memo((props: SurveyUnitListPageProps) => {
       options: { enabled: canFetchData },
     });
 
-  const { isLoading: isSurveyUnitsLoading, data: surveyUnitsData } =
+  const { isLoading: isInterrogationsLoading, data: interrogationsData } =
     useApiQuery({
-      queryKey: ["surveyUnitsData", questionnaireId, modeName],
+      queryKey: ["interrogationsData", questionnaireId, modeName],
       queryFn: () => {
         const idNumber = Number(questionnaireId);
-        return props.fetchSurveyUnitsData(idNumber, modeName as string);
+        return props.fetchInterrogationsData(idNumber, modeName as string);
       },
       options: { enabled: canFetchData },
     });
 
+    console.log("interrogationsData",interrogationsData)
+
   const {
-    mutate: resetSurveyUnit,
+    mutate: resetInterrogation,
     isPending: isResetting,
     isSuccess,
   } = useApiMutation({
     mutationKey: ["reset-survey-unit"],
-    mutationFn: (surveyUnitId: string) => props.resetSurveyUnit(surveyUnitId),
+    mutationFn: (interrogationId: string) => props.resetInterrogation(interrogationId),
   });
 
   if (isSuccess) {
     queryClient.invalidateQueries({
-      queryKey: ["surveyUnitsData", questionnaireId, modeName],
+      queryKey: ["interrogationsData", questionnaireId, modeName],
     });
   }
 
@@ -93,7 +95,7 @@ export const SurveyUnitListPage = memo((props: SurveyUnitListPageProps) => {
     <Grid component="main" container justifyContent="center">
       <Grid item xs={12} md={6}>
         <Block>
-          <Loader isLoading={isSurveyUnitsLoading || isQuestionnaireLoading}>
+          <Loader isLoading={isInterrogationsLoading || isQuestionnaireLoading}>
             <Title>
               {intl.formatMessage({ id: "survey_unit_list_label" })}
             </Title>
@@ -110,7 +112,7 @@ export const SurveyUnitListPage = memo((props: SurveyUnitListPageProps) => {
             </Subtitle>
 
             <TableContainer component={Paper}>
-              <Table aria-label="surveyUnit table">
+              <Table aria-label="interrogation table">
                 <TableHead>
                   <TableRow>
                     <TableCell>
@@ -128,18 +130,18 @@ export const SurveyUnitListPage = memo((props: SurveyUnitListPageProps) => {
                 {
                   <TableBody>
                     {questionnaire &&
-                      surveyUnitsData?.surveyUnits?.map((surveyUnit) => (
-                        <TableRow key={surveyUnit.id}>
+                      interrogationsData?.interrogationRests?.map((interrogation) => (
+                        <TableRow key={interrogation.id}>
                           <TableCell component="th" scope="row">
-                            {surveyUnit.displayableId}
+                            {interrogation.displayableId}
                           </TableCell>
                           <TableCell align="center">
                             <a
                               target="_blank"
-                              href={surveyUnit.url}
+                              href={interrogation.url}
                               aria-label={intl.formatMessage(
                                 { id: "survey_unit_list_new_window" },
-                                { surveyUnitId: surveyUnit.displayableId }
+                                { interrogationId: interrogation.displayableId }
                               )}
                               rel="noreferrer"
                             >
@@ -148,13 +150,13 @@ export const SurveyUnitListPage = memo((props: SurveyUnitListPageProps) => {
                               </IconButton>
                             </a>
 
-                            <SurveyUnitResetButton
-                              surveyUnitId={surveyUnit.id}
+                            <InterrogationResetButton
+                              interrogationId={interrogation.id}
                               mutateReset={{
-                                resetSurveyUnit: resetSurveyUnit,
+                                resetInterrogation: resetInterrogation,
                                 isResetting: isResetting,
                               }}
-                            ></SurveyUnitResetButton>
+                            ></InterrogationResetButton>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -169,4 +171,4 @@ export const SurveyUnitListPage = memo((props: SurveyUnitListPageProps) => {
   );
 });
 
-SurveyUnitListPage.displayName = "SurveyUnitListPage";
+InterrogationListPage.displayName = "InterrogationListPage";
