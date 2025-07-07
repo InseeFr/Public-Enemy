@@ -1,10 +1,10 @@
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { simpleQuestionnaire } from "test/mock/questionnaire";
 import { surveyContexts } from "test/mock/surveyContext";
-import { interrogationsWarningMessages } from "test/mock/interrogationsWarningMessages";
 import { notifySpy, renderWithProviders } from "test/test-utils";
-import { vi } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { QuestionnaireAddPage } from "./QuestionnaireAddPage";
+import { interrogationsWarningMessages } from "test/mock/surveyUnitsWarningMessages";
 
 describe("QuestionnaireAddPage", () => {
   const addQuestionnaire = vi.fn(() => Promise.resolve(simpleQuestionnaire));

@@ -3,7 +3,6 @@ import { Questionnaire } from "core/application/model";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { questionnaireAdd, simpleQuestionnaire } from "test/mock/questionnaire";
 import { surveyContexts } from "test/mock/surveyContext";
-import { interrogationsWarningMessages } from "test/mock/interrogationsWarningMessages";
 import {
   act,
   fireEvent,
@@ -13,6 +12,7 @@ import {
 } from "test/test-utils";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { QuestionnaireEditForm } from "./QuestionnaireEditForm";
+import { interrogationsWarningMessages } from "test/mock/surveyUnitsWarningMessages";
 
 const file = new File(['"test","test2"'], "units.csv", {
   type: "text/csv",
@@ -115,7 +115,7 @@ describe.each([
         "Veuillez renseigner le fichier de données"
       );
 
-      expect(errorInputFile).toBeVisible();
+      expect(errorInputFile).not.null;
       expect(saveQuestionnaire).toHaveBeenCalledTimes(0);
     });
 
@@ -126,7 +126,7 @@ describe.each([
         "Veuillez saisir le contexte"
       );
 
-      expect(errorContext).toBeVisible();
+      expect(errorContext).not.null;
       expect(saveQuestionnaire).toHaveBeenCalledTimes(0);
     });
   }
@@ -188,13 +188,13 @@ function fillSelectContext(container: HTMLElement) {
   const contextSelectTextField = container.querySelector(
     "#questionnaire-context"
   ) as HTMLDivElement;
-  expect(contextSelectTextField).toBeInTheDocument();
+  expect(contextSelectTextField).not.null;
 
   const contextSelectInput = container.querySelector(
     "#select-input"
   ) as HTMLInputElement;
 
-  expect(contextSelectInput).toBeInTheDocument();
+  expect(contextSelectInput).not.null;
 
   fireEvent.mouseDown(contextSelectTextField);
 

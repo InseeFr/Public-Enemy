@@ -130,7 +130,7 @@ export const InterrogationListPage = memo((props: InterrogationListPageProps) =>
                 {
                   <TableBody>
                     {questionnaire &&
-                      interrogationsData?.interrogationRests?.map((interrogation) => (
+                      interrogationsData?.interrogations?.map((interrogation) => (
                         <TableRow key={interrogation.id}>
                           <TableCell component="th" scope="row">
                             {interrogation.displayableId}
