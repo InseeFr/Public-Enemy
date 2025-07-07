@@ -11,7 +11,7 @@ import {
   renderWithProviders,
   screen,
 } from "test/test-utils";
-import { beforeEach, describe, test, vi } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { QuestionnaireEditForm } from "./QuestionnaireEditForm";
 
 const file = new File(['"test","test2"'], "units.csv", {
