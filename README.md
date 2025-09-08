@@ -1,5 +1,12 @@
 # Public-Enemy
 
+## ⚠️DEPRECATED⚠️
+
+This code repository is deprecated because functionality has been reinternalized in [Pogues-UI](https://github.com/InseeFr/Pogues).
+
+However, it still remains [Public Enemy Backoffice](https://github.com/InseeFr/Public-Enemy-Back-Office/).
+
+
 Contextualized questionnaire vizualisation tools developped with react/mui/vite
 
 This project is directly linked with [Public Enemy Backoffice](https://github.com/InseeFr/Public-Enemy-Back-Office/) to create and save questionnaires.
