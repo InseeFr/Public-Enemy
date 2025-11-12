@@ -57,7 +57,7 @@ export const messagesEn = {
   survey_unit_list_actions: "Actions",
   survey_unit_mode_label: "Collect mode: {modeName}",
   survey_unit_list_new_window:
-    "Open the survey in a new window for survey unit: {surveyUnitId}",
+    "Open the survey in a new window for survey unit: {interrogationId}",
   survey_unit_list_missing_parameters:
     "Some parameters are missing, the page will not be displayed correctly",
   survey_unit_reset_confirmation_label: "Reset confirmation",

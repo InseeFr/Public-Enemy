@@ -50,8 +50,8 @@ export function createQuestionnaireRepository(
     };
     formData.append("questionnaire", JSON.stringify(questionnaireRest));
 
-    if (questionnaire.surveyUnitData) {
-      formData.append("surveyUnitData", questionnaire.surveyUnitData);
+    if (questionnaire.interrogationData) {
+      formData.append("interrogationData", questionnaire.interrogationData);
     }
 
     return postRequestMultiPart<Questionnaire>(
@@ -66,8 +66,8 @@ export function createQuestionnaireRepository(
     const formData = new FormData();
     formData.append("context", JSON.stringify(questionnaire.context));
 
-    if (questionnaire.surveyUnitData) {
-      formData.append("surveyUnitData", questionnaire.surveyUnitData);
+    if (questionnaire.interrogationData) {
+      formData.append("interrogationData", questionnaire.interrogationData);
     }
 
     return postRequestMultiPart<Questionnaire>(

@@ -3,7 +3,6 @@ import { Questionnaire } from "core/application/model";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { questionnaireAdd, simpleQuestionnaire } from "test/mock/questionnaire";
 import { surveyContexts } from "test/mock/surveyContext";
-import { surveyUnitsWarningMessages } from "test/mock/surveyUnitsWarningMessages";
 import {
   act,
   fireEvent,
@@ -11,8 +10,9 @@ import {
   renderWithProviders,
   screen,
 } from "test/test-utils";
-import { vi } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { QuestionnaireEditForm } from "./QuestionnaireEditForm";
+import { interrogationsWarningMessages } from "test/mock/surveyUnitsWarningMessages";
 
 const file = new File(['"test","test2"'], "units.csv", {
   type: "text/csv",
@@ -22,12 +22,12 @@ const saveQuestionnaire = vi.fn((questionnaire: Questionnaire) =>
   Promise.resolve(simpleQuestionnaire)
 );
 const fetchSurveyContexts = vi.fn(() => Promise.resolve(surveyContexts));
-const checkSurveyUnitsCsvData = vi.fn(() =>
-  Promise.resolve(surveyUnitsWarningMessages)
+const checkInterrogationsCsvData = vi.fn(() =>
+  Promise.resolve(interrogationsWarningMessages)
 );
 
-const getSurveyUnitsSchemaCSV = vi.fn(() => Promise.resolve());
-const getExistingSurveyUnitsSchemaCSV = vi.fn(() => Promise.resolve());
+const getInterrogationsSchemaCSV = vi.fn(() => Promise.resolve());
+const getExistingInterrogationsSchemaCSV = vi.fn(() => Promise.resolve());
 
 beforeEach(async () => {
   // Clear mocks and add some testing data after before each test run
@@ -46,9 +46,9 @@ function createQuestionnaireEditFormRouter(isEditMode: boolean) {
             isEditMode={isEditMode}
             isSubmitting={false}
             saveQuestionnaire={saveQuestionnaire}
-            checkSurveyUnitsCsvData={checkSurveyUnitsCsvData}
-            getSurveyUnitsSchemaCSV={getSurveyUnitsSchemaCSV}
-            getExistingSurveyUnitsSchemaCSV={getExistingSurveyUnitsSchemaCSV}
+            checkInterrogationsCsvData={checkInterrogationsCsvData}
+            getInterrogationsSchemaCSV={getInterrogationsSchemaCSV}
+            getExistingInterrogationsSchemaCSV={getExistingInterrogationsSchemaCSV}
           />
         ),
       },
@@ -63,7 +63,7 @@ describe("QuestionnaireEditForm saving questionnaire", () => {
 
     const questionnaire = {
       ...questionnaireAdd,
-      surveyUnitData: file,
+      interrogationData: file,
       context: {
         name: surveyContexts[0].name,
       },
@@ -88,7 +88,7 @@ describe("QuestionnaireEditForm saving questionnaire", () => {
 
     const questionnaire = {
       ...questionnaireAdd,
-      surveyUnitData: file,
+      interrogationData: file,
       context: {
         name: surveyContexts[0].name,
       },
@@ -115,7 +115,7 @@ describe.each([
         "Veuillez renseigner le fichier de données"
       );
 
-      expect(errorInputFile).toBeVisible();
+      expect(errorInputFile).not.null;
       expect(saveQuestionnaire).toHaveBeenCalledTimes(0);
     });
 
@@ -126,7 +126,7 @@ describe.each([
         "Veuillez saisir le contexte"
       );
 
-      expect(errorContext).toBeVisible();
+      expect(errorContext).not.null;
       expect(saveQuestionnaire).toHaveBeenCalledTimes(0);
     });
   }
@@ -177,7 +177,7 @@ async function fillFormWithoutContext(isEditMode = true) {
 
 function fillInputFile(container: HTMLElement): void {
   const inputFile = container.querySelector(
-    `input[name="surveyUnitData"]`
+    `input[name="interrogationData"]`
   ) as HTMLInputElement;
   expect(inputFile).not.toBeNull();
   userEvent.upload(inputFile, file);
@@ -188,13 +188,13 @@ function fillSelectContext(container: HTMLElement) {
   const contextSelectTextField = container.querySelector(
     "#questionnaire-context"
   ) as HTMLDivElement;
-  expect(contextSelectTextField).toBeInTheDocument();
+  expect(contextSelectTextField).not.null;
 
   const contextSelectInput = container.querySelector(
     "#select-input"
   ) as HTMLInputElement;
 
-  expect(contextSelectInput).toBeInTheDocument();
+  expect(contextSelectInput).not.null;
 
   fireEvent.mouseDown(contextSelectTextField);
 

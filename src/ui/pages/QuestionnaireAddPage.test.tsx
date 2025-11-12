@@ -1,20 +1,20 @@
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { simpleQuestionnaire } from "test/mock/questionnaire";
 import { surveyContexts } from "test/mock/surveyContext";
-import { surveyUnitsWarningMessages } from "test/mock/surveyUnitsWarningMessages";
 import { notifySpy, renderWithProviders } from "test/test-utils";
-import { vi } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { QuestionnaireAddPage } from "./QuestionnaireAddPage";
+import { interrogationsWarningMessages } from "test/mock/surveyUnitsWarningMessages";
 
 describe("QuestionnaireAddPage", () => {
   const addQuestionnaire = vi.fn(() => Promise.resolve(simpleQuestionnaire));
   const fetchSurveyContexts = vi.fn(() => Promise.resolve(surveyContexts));
   const fetchQuestionnaire = vi.fn(() => Promise.resolve(simpleQuestionnaire));
-  const checkSurveyUnitsCsvData = vi.fn(() =>
-    Promise.resolve(surveyUnitsWarningMessages)
+  const checkInterrogationsCsvData = vi.fn(() =>
+    Promise.resolve(interrogationsWarningMessages)
   );
-  const getSurveyUnitsSchemaCSV = vi.fn(() => Promise.resolve());
-  const getExistingSurveyUnitsSchemaCSV = vi.fn(() => Promise.resolve());
+  const getInterrogationsSchemaCSV = vi.fn(() => Promise.resolve());
+  const getExistingInterrogationsSchemaCSV = vi.fn(() => Promise.resolve());
 
   const router = createMemoryRouter(
     [
@@ -25,9 +25,9 @@ describe("QuestionnaireAddPage", () => {
             addQuestionnaire={addQuestionnaire}
             fetchQuestionnaireFromPoguesId={fetchQuestionnaire}
             fetchSurveyContexts={fetchSurveyContexts}
-            checkSurveyUnitsCsvData={checkSurveyUnitsCsvData}
-            getSurveyUnitsSchemaCSV={getSurveyUnitsSchemaCSV}
-            getExistingSurveyUnitsSchemaCSV={getExistingSurveyUnitsSchemaCSV}
+            checkInterrogationsCsvData={checkInterrogationsCsvData}
+            getInterrogationsSchemaCSV={getInterrogationsSchemaCSV}
+            getExistingInterrogationsSchemaCSV={getExistingInterrogationsSchemaCSV}
           />
         ),
       },

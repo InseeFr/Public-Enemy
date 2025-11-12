@@ -1,1 +1,1 @@
-export const surveyUnitsWarningMessages: string[] = ["warning1", "warning2"];
+export const interrogationsWarningMessages: string[] = ["warning1", "warning2"];

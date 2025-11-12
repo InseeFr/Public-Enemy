@@ -6,6 +6,6 @@ export type Questionnaire = {
   label: string;
   modes: Mode[];
   context: SurveyContext;
-  surveyUnitData: File | undefined;
+  interrogationData: File | undefined;
   isSynchronized: boolean;
 };

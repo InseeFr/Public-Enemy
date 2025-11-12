@@ -9,8 +9,8 @@ export type ErrorDetails<Details> = ErrorObject & {
   details: Details;
 };
 
-export type ErrorDetailsSurveyUnit = {
-  surveyUnitId: string;
+export type ErrorDetailsInterrogation = {
+  interrogationId: string;
   attributesErrors: ErrorDetailsAttributes[];
 };
 

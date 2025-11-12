@@ -3,7 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import {
   Questionnaire,
   SurveyContext,
-  SurveyUnitsMessages,
+  InterrogationsMessages,
 } from "core/application/model";
 import { useNotifier } from "core/infrastructure";
 import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
@@ -18,12 +18,12 @@ export type QuestionnaireAddPageProps = {
   fetchSurveyContexts: () => Promise<SurveyContext[]>;
   fetchQuestionnaireFromPoguesId: (poguesId?: string) => Promise<Questionnaire>;
   addQuestionnaire: (questionnaire: Questionnaire) => Promise<Questionnaire>;
-  checkSurveyUnitsCsvData: (
+  checkInterrogationsCsvData: (
     poguesId: string,
-    surveyUnitsCsvData: File
-  ) => Promise<SurveyUnitsMessages>;
-  getSurveyUnitsSchemaCSV: (poguesId: string) => Promise<void>;
-  getExistingSurveyUnitsSchemaCSV: (id: number) => Promise<void>;
+    interrogationsCsvData: File
+  ) => Promise<InterrogationsMessages>;
+  getInterrogationsSchemaCSV: (poguesId: string) => Promise<void>;
+  getExistingInterrogationsSchemaCSV: (id: number) => Promise<void>;
 };
 
 export const QuestionnaireAddPage = memo((props: QuestionnaireAddPageProps) => {
@@ -89,10 +89,10 @@ export const QuestionnaireAddPage = memo((props: QuestionnaireAddPageProps) => {
                 questionnaire={questionnaire}
                 isEditMode={false}
                 fetchSurveyContexts={props.fetchSurveyContexts}
-                checkSurveyUnitsCsvData={props.checkSurveyUnitsCsvData}
-                getSurveyUnitsSchemaCSV={props.getSurveyUnitsSchemaCSV}
-                getExistingSurveyUnitsSchemaCSV={
-                  props.getExistingSurveyUnitsSchemaCSV
+                checkInterrogationsCsvData={props.checkInterrogationsCsvData}
+                getInterrogationsSchemaCSV={props.getInterrogationsSchemaCSV}
+                getExistingInterrogationsSchemaCSV={
+                  props.getExistingInterrogationsSchemaCSV
                 }
                 saveQuestionnaire={saveQuestionnaire}
                 isSubmitting={isSubmitting}

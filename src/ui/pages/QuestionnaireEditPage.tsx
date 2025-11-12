@@ -2,7 +2,7 @@ import { Alert, AlertTitle, Grid } from "@mui/material";
 import {
   Questionnaire,
   SurveyContext,
-  SurveyUnitsMessages,
+  InterrogationsMessages,
 } from "core/application/model";
 import { useApiMutation } from "core/infrastructure/hooks/useApiMutation";
 import { useApiQuery } from "core/infrastructure/hooks/useApiQuery";
@@ -16,12 +16,12 @@ export type QuestionnaireEditPageProps = {
   fetchQuestionnaire: (id: number) => Promise<Questionnaire>;
   fetchSurveyContexts: () => Promise<SurveyContext[]>;
   editQuestionnaire: (questionnaire: Questionnaire) => Promise<Questionnaire>;
-  checkSurveyUnitsCsvData: (
+  checkInterrogationsCsvData: (
     poguesId: string,
-    surveyUnitsData: File
-  ) => Promise<SurveyUnitsMessages>;
-  getSurveyUnitsSchemaCSV: (poguesId: string) => Promise<void>;
-  getExistingSurveyUnitsSchemaCSV: (id: number) => Promise<void>;
+    interrogationsData: File
+  ) => Promise<InterrogationsMessages>;
+  getInterrogationsSchemaCSV: (poguesId: string) => Promise<void>;
+  getExistingInterrogationsSchemaCSV: (id: number) => Promise<void>;
 };
 
 export const QuestionnaireEditPage = memo(
@@ -67,11 +67,11 @@ export const QuestionnaireEditPage = memo(
                   questionnaire={questionnaire}
                   isEditMode={true}
                   fetchSurveyContexts={props.fetchSurveyContexts}
-                  checkSurveyUnitsCsvData={props.checkSurveyUnitsCsvData}
-                  getExistingSurveyUnitsSchemaCSV={
-                    props.getExistingSurveyUnitsSchemaCSV
+                  checkInterrogationsCsvData={props.checkInterrogationsCsvData}
+                  getExistingInterrogationsSchemaCSV={
+                    props.getExistingInterrogationsSchemaCSV
                   }
-                  getSurveyUnitsSchemaCSV={props.getSurveyUnitsSchemaCSV}
+                  getInterrogationsSchemaCSV={props.getInterrogationsSchemaCSV}
                   saveQuestionnaire={saveQuestionnaire}
                   isSubmitting={isSubmitting}
                 />

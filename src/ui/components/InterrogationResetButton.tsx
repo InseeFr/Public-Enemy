@@ -7,10 +7,10 @@ import { memo, useState } from "react";
 import { useIntl } from "react-intl";
 import { ConfirmationDialog } from "./base";
 
-type SurveyUnitResetButtonType = {
-  surveyUnitId: string;
+type InterrogationResetButtonType = {
+  interrogationId: string;
   mutateReset: {
-    resetSurveyUnit: UseMutateFunction<void, ApiError, string, unknown>;
+    resetInterrogation: UseMutateFunction<void, ApiError, string, unknown>;
     isResetting: boolean;
   };
 };
@@ -18,15 +18,15 @@ type SurveyUnitResetButtonType = {
 /**
  * Component used for questionnaire deletion
  */
-export const SurveyUnitResetButton = memo(
-  (props: SurveyUnitResetButtonType) => {
+export const InterrogationResetButton = memo(
+  (props: InterrogationResetButtonType) => {
     const [displayConfirmationDialog, setDisplayConfirmationDialog] =
       useState(false);
     const intl = useIntl();
     const notifier = useNotifier();
 
     const resetAction = () => {
-      props.mutateReset.resetSurveyUnit(props.surveyUnitId, {
+      props.mutateReset.resetInterrogation(props.interrogationId, {
         onSuccess: () => {
           notifier.success(
             intl.formatMessage({ id: "survey_unit_reset_success" })
@@ -87,4 +87,4 @@ export const SurveyUnitResetButton = memo(
   }
 );
 
-SurveyUnitResetButton.displayName = "SurveyUnitResetButton";
+InterrogationResetButton.displayName = "InterrogationResetButton";

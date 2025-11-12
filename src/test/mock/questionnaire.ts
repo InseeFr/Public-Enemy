@@ -18,7 +18,7 @@ export const simpleQuestionnaire: Questionnaire = {
     name: "HOUSEHOLD",
     value: "ménage",
   },
-  surveyUnitData: undefined,
+  interrogationData: undefined,
   isSynchronized: true,
 };
 
@@ -39,6 +39,6 @@ export const questionnaireAdd: Questionnaire = {
   context: {
     name: "",
   },
-  surveyUnitData: undefined,
+  interrogationData: undefined,
   isSynchronized: true,
 };

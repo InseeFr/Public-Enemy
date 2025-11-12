@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import {
   createQuestionnaireRepository,
-  createSurveyUnitRepository,
+  createInterrogationRepository,
 } from "core/infrastructure";
 import { useAuth } from "core/infrastructure/hooks/useAuth";
 import { getEnvVar } from "core/utils/configuration/env";
@@ -12,13 +12,13 @@ import { makeStyles } from "tss-react/mui";
 import { Footer, Header, SidebarNav } from "ui/components/base";
 import {
   ErrorPage,
+  InterrogationListPage,
   QuestionnaireAddPage,
   QuestionnaireCheckPoguesIdPage,
   QuestionnaireDetailsPage,
   QuestionnaireEditPage,
   QuestionnaireListPage,
 } from "ui/pages";
-import { SurveyUnitListPage } from "ui/pages/SurveyUnitListPage";
 
 export const Application = memo(() => {
   const { classes } = useStyles();
@@ -42,7 +42,7 @@ export const Application = memo(() => {
     getEnvVar("VITE_API_URL"),
     oidcTokens?.accessToken
   );
-  const surveyUnitRepository = createSurveyUnitRepository(
+  const interrogationRepository = createInterrogationRepository(
     getEnvVar("VITE_API_URL"),
     oidcTokens?.accessToken
   );
@@ -82,14 +82,14 @@ export const Application = memo(() => {
                     editQuestionnaire={
                       questionnaireRepository.editQuestionnaire
                     }
-                    checkSurveyUnitsCsvData={
-                      surveyUnitRepository.checkSurveyUnitsCSV
+                    checkInterrogationsCsvData={
+                      interrogationRepository.checkInterrogationsCSV
                     }
-                    getSurveyUnitsSchemaCSV={
-                      surveyUnitRepository.getSurveyUnitsSchemaCSV
+                    getInterrogationsSchemaCSV={
+                      interrogationRepository.getInterrogationsSchemaCSV
                     }
-                    getExistingSurveyUnitsSchemaCSV={
-                      surveyUnitRepository.getExistingSurveyUnitsSchemaCSV
+                    getExistingInterrogationsSchemaCSV={
+                      interrogationRepository.getExistingInterrogationsSchemaCSV
                     }
                   />
                 }
@@ -145,14 +145,14 @@ export const Application = memo(() => {
                       questionnaireRepository.getQuestionnaireFromPoguesId
                     }
                     addQuestionnaire={questionnaireRepository.addQuestionnaire}
-                    checkSurveyUnitsCsvData={
-                      surveyUnitRepository.checkSurveyUnitsCSV
+                    checkInterrogationsCsvData={
+                      interrogationRepository.checkInterrogationsCSV
                     }
-                    getSurveyUnitsSchemaCSV={
-                      surveyUnitRepository.getSurveyUnitsSchemaCSV
+                    getInterrogationsSchemaCSV={
+                      interrogationRepository.getInterrogationsSchemaCSV
                     }
-                    getExistingSurveyUnitsSchemaCSV={
-                      surveyUnitRepository.getExistingSurveyUnitsSchemaCSV
+                    getExistingInterrogationsSchemaCSV={
+                      interrogationRepository.getExistingInterrogationsSchemaCSV
                     }
                   />
                 }
@@ -160,14 +160,14 @@ export const Application = memo(() => {
               <Route
                 path="/questionnaires/:questionnaireId/modes/:modeName"
                 element={
-                  <SurveyUnitListPage
-                    fetchSurveyUnitsData={
-                      surveyUnitRepository.getSurveyUnitsData
+                  <InterrogationListPage                    
+                    fetchInterrogationsData={
+                      interrogationRepository.getInterrogationsData
                     }
                     fetchQuestionnaire={
                       questionnaireRepository.getQuestionnaire
                     }
-                    resetSurveyUnit={surveyUnitRepository.resetSurveyUnit}
+                    resetInterrogation={interrogationRepository.resetInterrogation}
                   />
                 }
               />
